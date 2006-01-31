@@ -1,12 +1,17 @@
 <?php
 /*
-  Copyright (c) 2005 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
+
+  Id: $Id$
 */
 
+///Crea un arbol del sistema virtual de ficheros.
 class ApfTree {
 	var $tree;
 
+	///Constructor
+	///@param vals Número de valores
 	function ApfTree($vals) {
 		
 		$cnt=count($vals);
@@ -33,6 +38,8 @@ class ApfTree {
 		$this->tree=&$tree;
 	}
 	
+	/// Escribe las opciones del nodo selecionado.
+	/// @param id El identificador del nodo.
 	function writeOptions($id) {
 		$stack[]=&$this->tree;
 		$this->tree["j"]=0;
@@ -70,6 +77,11 @@ class ApfTree {
 		<option value="4">&nbsp; |- bla6</option>*/
 	}
 	
+	///Escribe un Nodo.
+	///@param id Identificador
+	///@param name Nombre del nodo
+	///@param level Nivel dentro del arbol
+	///@param sel_id Identificador del nodo actualmente selecionado
 	function writeNode($id,$name,$level,$sel_id) {
 		echo('<option value="' . $id . '"');
 		if($id==$sel_id) {

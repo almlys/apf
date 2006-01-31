@@ -1,21 +1,24 @@
 <?php
 /*
-  Copyright (c) 2005 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
+
+  Id: $Id$
 */
 
 include_once(dirname(__FILE__) . "/manager.php"); 
 
-
+///Página del vídeo
 class ApfVideoPage extends ApfManager {
 	var $desc;
 	var $pid=1;
-	//Contructor
+	///Constructor
 	function ApfVideoPage() {
 		$this->ApfManager("");
 		$this->setTitle($this->lan->get("untitled"));
 	}
 	
+	///Cabezera
 	function head() {
 		$this->state=2;
 		//Obtener id
@@ -44,7 +47,7 @@ class ApfVideoPage extends ApfManager {
 		ApfManager::head();
 	}
 	
-	//Method body - override parent class method
+	///Método cuerpo
 	function body() {
 		$args=$this->getArgs("categ") . "&amp;id=" . $this->pid;
 		$family="<a href=\"$args\">" . $this->category . "</a>";
@@ -96,6 +99,7 @@ class ApfVideoPage extends ApfManager {
 		<?php
 	}
 	
+	///Muestra los botones de administración.
 	function showAdminButtons() {
 		?>
 		<form action="<?php echo($this->buildBaseUri() . $this->getArgs("edit")); ?>" method="POST">

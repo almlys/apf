@@ -1,48 +1,48 @@
 <?
 /*
-  Copyright (c) 2005 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
-   Strings file, for localized versions.
-   Add new language definitions here.
+  Id: $Id$
+*/
 
+/*
    Fichero de cadenas, para versiones localizadas.
    Añadir nuevas definiciones de idioma en este fichero.
-
 */
-/* Set Here new language resources */
+
+/* Recuros de idiomas */
 $APF_STR['en']="strings.en.php"; //english
 $APF_STR['es']="strings.es.php"; //Español
 $APF_STR['ca']="strings.ca.php"; //Català
-/* End language resources */
+/* Final del listado */
 
-//define allowed languages
+//Vector de idiomas soportados
 $APF['languages']=array("es","en","ca");
 
 /**
-	Language Manager - object (for localized strings)
+	Gestor de idiomas, para cadenas localizadas
 */
 class ApfLocal {
 	var $language;
-	/** Constructor
-		/param Supported language code vector. (es,ca,en...)
-		/param The vector is a comma separated list
-	*/
+	/// Constructor
+	/// @param lan Vector de idiomas (lista separada por comas)
 	function ApfLocal($lan) {
 		$this->setLanguageVector($lan);
 	}
+	///Fijar el vector
+	/// @param lan Vector de idiomas (lista separada por comas)
 	function setLanguageVector($lan) {
 		$this->language=$lan;
 	}
+	///Obtener el idioma por defecto
 	function getDefaultLanguage() {
 		return(substr($this->language[0],0,2));
 	}
-	/**
-		Get a localized string
-		/param String Key
-		/return Translated String in local language
-		If not exists it will search an alternative localization, if it is available in the language vector.
-	*/ 
+	/// Obtener una cadena traducida.
+	/// @param key Clave.
+	/// @return Cadena traducida.
+	/// @note Si la cadena no existe, buscara una alternativa si esta disponible en el vector. (Este codigo tiene algún bug, al usar una cache interna).
 	function get($key) {
 		global $APF,$APF_STR,$APF_STRINGS;
 		$language=$this->language; //$APF['accept_language']

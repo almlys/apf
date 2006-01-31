@@ -1,11 +1,15 @@
 <?
 /*
-  Copyright (c) 2005 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
-   Strings file, for localized versions
-
+  Id: $Id$
 */
+
+/*
+   Strings file, for localized versions
+*/
+
 $APF_STRINGS["id"]="en";
 $APF_STRINGS["name"]="English";
 $APF_STRINGS["es"]="Spanish";

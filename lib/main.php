@@ -1,7 +1,9 @@
 <?php
 /*
-  Copyright (c) 2005 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
+
+  Id: $Id$
 */
 
 $APF['start_time']=microtime(); //Calcular el tiempo de generación de página
@@ -12,9 +14,7 @@ include_once(dirname(__FILE__) . "/auth.php");
 include_once(dirname(__FILE__) . "/tree.php");
 include_once(dirname(__FILE__) . "/folder.php");
 
-/**
-	Base document class
-*/
+/// Clase del documento base
 class ApfBaseDocument {
 	var $title="Untitled";
 	var $start_time=0;
@@ -25,7 +25,7 @@ class ApfBaseDocument {
 	var $stylesheets;
 	var $path="tfc/";
 	
-	/** Constructor */
+	/// Constructor
 	function ApfBaseDocument($title="Untitled") {
 		global $APF;
 		$this->start_time=$APF['start_time'];
@@ -90,7 +90,7 @@ class ApfBaseDocument {
 		return($duration . $sufix);
 	}
 	
-	/** Generates and prints the document Head */
+	/** Genera y imprime la cabezera del documento */
 	function head() {
 		if($state==1) return;
 		$state=1;
@@ -126,7 +126,7 @@ class ApfBaseDocument {
 <?php
 	}
 	
-	/** Generates and prints the document Footer */
+	/** Genera e imprime el pie del documento */
 	function foot() {
 		?>
 </body>
@@ -135,7 +135,7 @@ class ApfBaseDocument {
 	
 	}
 	
-	/** Shows an error message and ends */
+	/** Muestra un mensaje de error y acaba */
 	function error($msg,$title="Error") {
 		if($this->state==0) $this->head();
 		if($this->state==2) ApfBaseDocument::head();
@@ -155,7 +155,7 @@ class ApfBaseDocument {
 		exit();
 	}
 	
-	/** Returns full base URL protocol://base_install to the root of the install */
+	/** Devuelve dirección completa URL protocol://base_install al directorio base de la instalación */
 	function buildBaseURI() {
 		$proto=$this->getProtocol();
 		$port=$this->getPort();
@@ -167,16 +167,18 @@ class ApfBaseDocument {
 		return $proto . "://"  . $_SERVER['SERVER_NAME'] . $port . "/" . $this->path;
 	}
 	
+	///Obtiene el protocolo
 	function getProtocol() {
 		return ($HTTP_SERVER_VARS["HTTPS"]=="on" ? "https" : "http");
 	}
 	
+	///Obtinen el puerto
 	function getPort() {
 		return $_SERVER["SERVER_PORT"];
 	}
 
-	//Shows the ip of the client
-	//
+	///Muestra la ip del cliente
+	///@param how short=solo ip, rshort=ip + x_forward, sino mostrará información completa ip+x_forward+client_ip+via
 	// Where: $format
 	//   short shows the ip connection, rshort shows the cue of forwarded ip's,
 	//   and long or no value shows all addresses.
@@ -211,20 +213,21 @@ class ApfBaseDocument {
 		}
 	}
 
-	/** Implementation of getlastmod not working on new versions of php and apache */
+	/** Devuelve la fecha de la última modificación del script en ejecución. */
 	function getLastMod() {
 		return filemtime($_SERVER["SCRIPT_FILENAME"]);
 	}
 
 }
 
-
+///Documento base
 class ApfDocument extends ApfBaseDocument {
 	//Contructor
 	var $authed=0;
 	var $admin=0;
 	var $DB;
 	var $auth;
+	///Constructor
 	function ApfDocument($title) {
 		$this->ApfBaseDocument($title);
 		$this->auth=new ApfAuth($this);
@@ -245,6 +248,7 @@ class ApfDocument extends ApfBaseDocument {
 		}
 	}
 	
+	///Finaliza la session
 	function endSession() {
 		$_SESSION["AuthHash"]="";
 		$_SESSION["admin"]=0;
@@ -253,6 +257,8 @@ class ApfDocument extends ApfBaseDocument {
 		setcookie("ApfVoDAuthHash","",time()-36000);
 	}
 	
+	///Genera una redirección.
+	///@param to Dirección destino
 	function redirect($to) {
 		session_commit();
 		header("Location: $to");
@@ -266,6 +272,7 @@ class ApfDocument extends ApfBaseDocument {
 		exit();
 	}
 	
+	///Comprueba la conexión con la base de datos.
 	function checkConnection() {
 		$this->state=2;
 		if(empty($this->DB)) {
@@ -276,6 +283,8 @@ class ApfDocument extends ApfBaseDocument {
 		}
 	}
 
+	///Realiza una petición a la base de datos.
+	///@param what Petición SQL.
 	function query($what) {
 		$this->checkConnection();
 		//echo($what);
@@ -284,10 +293,12 @@ class ApfDocument extends ApfBaseDocument {
 		}
 	}
 	
+	///Obtiene un array de los datos devueltos de la base de datos desde la última petición que devolvió datos.
 	function fetchArray() {
 		return $this->DB->fetchArray();
 	}
 
+	///Escapa caracteres especiales como "'".
 	function escape_string($what) {
 		$this->checkConnection();
 		if(get_magic_quotes_gpc()) {
@@ -301,6 +312,7 @@ class ApfDocument extends ApfBaseDocument {
 		}
 	}
 	
+	///Devuelve el identificador de la última petición de inserción realizada a la base de datos.
 	function insertId() {
 		return(mysql_insert_id());
 	}

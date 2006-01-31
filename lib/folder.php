@@ -1,9 +1,12 @@
 <?php
 /*
-  Copyright (c) 2005 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
+
+  Id: $Id$
 */
 
+///Carpeta o directorio (Nodo) del sistema virtual de ficheros.
 class ApfFolder {
 	var $id;
 	var $name;
@@ -12,7 +15,7 @@ class ApfFolder {
 	var $parent;
 	var $image;
 
-	//Constructor
+	///Constructor.
 	function ApfFolder(&$parent,$id=0,$name="unnamed",$desc="no available desc",$count=0) {
 		$this->parent=&$parent;
 		$this->id=$id;
@@ -21,11 +24,13 @@ class ApfFolder {
 		$this->count=$count;
 		$this->image=$parent->buildBaseUri() . "/imgs/folder.jpg";
 	}
-	
+
+	///Obtener URL carpeta.
 	function getFinalUrl() {
 		return $this->parent->getArgs() . "&amp;id=" . $this->id;
 	}
 
+	///Mostrar la carpeta.
 	function show() {
 		$max=12;
 		if(strlen($this->name)>$max) {
@@ -48,6 +53,7 @@ class ApfFolder {
 		<?php
 	}
 	
+	///Mostrar detalles.
 	function details() {
 			//if(!empty($this->count)) {
 				echo("<br>" . $this->count . " " . $this->parent->lan->get("objects")); 
@@ -56,9 +62,10 @@ class ApfFolder {
 
 }
 
+///Clase representativa de un video.
 class ApfVideo extends ApfFolder {
 	var $dur=0;
-	//Constructor
+	///Constructor
 	function ApfVideo(&$parent,$id=0,$name="unnamed",$desc="no available desc",$prev="",$dur=0) {
 		$this->parent=&$parent;
 		$this->id=$id;
@@ -72,11 +79,13 @@ class ApfVideo extends ApfFolder {
 		$this->dur=$dur;
 		$this->count="";
 	}
-
+	
+	///Obtener URL
 	function getFinalUrl() {
 		return $this->parent->getArgs("videos") . "&amp;id=" . $this->id;
 	}
 	
+	///Mostrar detalles.
 	function details() {
 		
 	}

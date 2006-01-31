@@ -1,10 +1,13 @@
 <?
 /*
-   Copyright (c) 2005 Alberto Montañola Lacort.
+   Copyright (c) 2005-2006 Alberto Montañola Lacort.
    Licensed under the GNU GPL. For full terms see the file COPYING.
 
+  Id: $Id$
+*/
+
+/*
    Fichero de cadenas de texto, para versiones traducidas.
-   
 */
 
 $APF_STRINGS["id"]="en";

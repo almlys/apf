@@ -1,23 +1,28 @@
 <?php
 /*
-  Copyright (c) 2005 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
+
+  Id: $Id$
 */
 
 
-
+///Modulo de autenticación.
 class ApfAuth {
 	var $login;
 	var $hash;
 	var $uid;
 	var $parent;
 
-	//Constructor
+	///Constructor
 	function ApfAuth(&$parent) {
 		$this->parent=&$parent;
 	}
 	
-	//Autentica el usuario
+	///Autentica el usuario
+	///@param login Login del usuario
+	///@param pass Password del usuario a comprovar
+	///@param sid Session del usuario
 	function authenticate($login,$pass,$sid=0) {
 		$hash=md5($pass);
 		$query="select password,uid,admin from vid_users where name=\"$login\"";
@@ -35,6 +40,9 @@ class ApfAuth {
 		return false;
 	}
 	
+	///Verifica que el usuario esta debidamente autenticado.
+	///@param uid Identificador del usuario.
+	///@param hash Hash de comprovación.
 	function verify($uid,$hash) {
 		$query="select hash from vid_users where uid=$uid";
 		$this->parent->query($query);
