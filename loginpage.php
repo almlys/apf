@@ -1,14 +1,15 @@
 <?php
 /*
-  Copyright (c) 2005 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 */
 
 include_once(dirname(__FILE__) . "/manager.php"); 
 
+///Página de autenticación
 class ApfLoginPage extends ApfManager {
 	var $login_status=0;
-	//Contructor
+	///Constructor
 	function ApfLoginPage($logout=0) {
 		$this->ApfManager("");
 		$this->setTitle($this->lan->get("login_page"));
@@ -47,11 +48,12 @@ class ApfLoginPage extends ApfManager {
 		}
 	}
 	
+	///Cabezera
 	function head() {
 		ApfManager::head();
 	}
 	
-	//Method body - override parent class method
+	///Método cuerpo
 	function body() {
 		if($this->login_status==1) {
 			?>

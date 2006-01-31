@@ -1,15 +1,20 @@
 <?php
+/*
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Licensed under the GNU GPL. For full terms see the file COPYING.
+*/
 
 include_once(dirname(__FILE__) . "/manager.php"); 
 
+///Página principal
 class ApfMainPage extends ApfManager {
-	//Contructor
+	///Constructor
 	function ApfMainPage() {
 		$this->ApfManager("");
 		$this->setTitle($this->lan->get(main_page));
 	}
 	
-	//Method body - override parent class method
+	///Método cuerpo
 	function body() {
 		$lan=$this->lan->getDefaultLanguage();
 		$query='select value from vid_cfg where `key`="intro_' . $lan . '"';
@@ -19,7 +24,5 @@ class ApfMainPage extends ApfManager {
 		echo($vals[0]);
 	}
 }
-
-
 
 ?>

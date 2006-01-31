@@ -6,7 +6,7 @@
 
 //configuración del gestor
 
-//Previsualizaciones, y otros datos dinamicos
+//Previsualizaciones, y otros datos dinámicos
 $APF['cache']=dirname(__FILE__) . "/cache";
 
 //Directorio de videos disponibles (para VoD sobre http y videolan)

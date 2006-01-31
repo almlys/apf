@@ -7,25 +7,31 @@
 //Pagina de administración
 include_once(dirname(__FILE__) . "/manager.php"); 
 
-/**
-@brief Página de administracion
+/** Página de administración.
 */
 class ApfAdminPage extends ApfManager {
+	///	Estado (0=lectura datos,1=datos salvados)
 	var $status=0;
+	/// Tipo de servidor.
+	/// Posibles valores: http,rtsp,...
 	var $server_type="http";
 	///Constructor
 	function ApfAdminPage() {
 		$this->ApfManager("");
 
+		//Obtener idioma
 		global $APF;
 		$lns=$APF["languages"];
 		$cnt=count($lns);
 
+		//Fijar título
 		$this->setTitle($this->lan->get("admin_page"));
+		//Verificar credenciales
 		if(!$this->authed || !$this->admin) {
 			$this->redirect2page("login");
 		}
 
+		//Obtener valores de configuración de la db.
 		$query="select value from vid_cfg where `key`='server_type'";
 		$this->query($query);
 		if($vals=$this->fetchArray()) {
@@ -66,7 +72,8 @@ class ApfAdminPage extends ApfManager {
 		$this->server_type=$server_type;
 	}
 	
-	//Method body - override parent class method
+	/** Método cuerpo, redefine el método de la clase padre.
+	*/
 	function body() {
 		global $APF;
 		$lns=$APF["languages"];
@@ -131,7 +138,6 @@ class ApfAdminPage extends ApfManager {
 <?php
 	}
 }
-
 
 
 ?>

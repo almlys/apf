@@ -1,19 +1,20 @@
 <?php
 /*
-  Copyright (c) 2005 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 */
 
-//Startup and Init
+//Inicialización
 include_once(dirname(__FILE__) . "/lib/main.php"); 
 
-
+///Clase página del gestor
 class ApfManager extends ApfDocument {
 	var $page="main";
 	var $params=""; //A list of extra parameters, starting with &amp;key=value pairs
 	var $admin=0;
 	var $id=0;
 
+	///Constructor
 	function ApfManager($title) {
 		$this->ApfDocument("");
 		//Obtener id
@@ -47,12 +48,18 @@ class ApfManager extends ApfDocument {
 		}
 	}
 	
+	/// Añadir una nueva entrada al menú.
+	/// @param title titulo de la pagina.
+	/// @param page dirección de la página.
 	function add2Menu($title,$page) {
 		$x=count($this->menu);
 		$this->menu[$x][1]=$title;
 		$this->menu[$x][0]=$page;
 	}
 	
+	/// Obtener vector de argumentos del documento. (Para construir enlaces)
+	/// @param test Si se especifica, fijará nueva dirección de destino.
+	/// @param encode Si es verdadero, codificará & como &amp;
 	function getArgs($test="",$encode=1) {
 		if(!empty($test)) {
 			$page=$test;
@@ -69,6 +76,8 @@ class ApfManager extends ApfDocument {
 		return $args;
 	}
 	
+	/// Obtener vector de argumentos del documento. (Para uso en campos ocultos de un formulario)
+	/// @param test Si se especifica, fijará nueva dirección de destino.
 	function getArgsHidden($test="") {
 		if(!empty($test)) {
 			$page=$test;
@@ -82,11 +91,14 @@ class ApfManager extends ApfDocument {
 		return $args;
 	}
 	
+	/// Fija el título del documento.
+	/// @param title El título.
 	function setTitle($title) {
 		$this->subtitle=$title;
 		$this->title=$this->maintitle . " - " . $title;
 	}
 	
+	/// Cabezera
 	function head() {
 		ApfDocument::head(); //base function from parent class
 		?>
@@ -141,7 +153,7 @@ class ApfManager extends ApfDocument {
 <?php
 	} //End method head
 	
-	/** Create a simple navigation menu */
+	/// Crea el menú de navegación
 	function menu() {
 		?>
  <table border="0" width="97%" cellspacing="0" cellpadding="0" align="center" class="doc_body">
@@ -208,7 +220,7 @@ class ApfManager extends ApfDocument {
 
 	} //End menu method
 	
-	/** Page footer method */
+	/// Pie de la página
 	function foot() {
 		?>
  <!-- Footer -->
@@ -244,24 +256,26 @@ class ApfManager extends ApfDocument {
 	ApfDocument::foot();
 	} //end method foot
 	
-	/** Generates the page content */
+	/// Método cuerpo, Genera el contenido de la página.
 	function body() {
 		echo($this->lan->get("no_avail"));
 	}
 	
+	/// Muestra información de debug.
 	function debug() {
 		if(!empty($this->DB)) {
 			echo("<br>" . $this->lan->get("num_querys") . " " . $this->DB->query_count);
 		}
 	}
 	
-	/** Generates the page */
+	/// Genera y envía la página al cliente.
 	function show() {
 		$this->head();
 		$this->menu();
 		$this->foot();
 	}
-	
+
+	/// Genera una redirección.
 	function redirect2page($page) {
 		$this->redirect($this->BuildBaseUri() . "/" .  $this->getArgs($page,0));
 	}

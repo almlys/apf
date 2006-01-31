@@ -1,20 +1,22 @@
 <?php
 /*
-  Copyright (c) 2005 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 */
 
 include_once(dirname(__FILE__) . "/manager.php"); 
 
+/// Navegador de la biblioteca multimedia. (Sistema virtual de ficheros)
 class ApfMediaPage extends ApfManager {
 	var $desc;
 	var $pid=1;
-	//Contructor
+	/// Constructor
 	function ApfMediaPage() {
 		$this->ApfManager("");
 		$this->setTitle($this->lan->get("videos_page"));
 	}
 	
+	///Cabezera
 	function head() {
 		//Obtener id
 		$id=$this->id;
@@ -44,7 +46,7 @@ class ApfMediaPage extends ApfManager {
 		ApfManager::head();
 	}
 	
-	//Method body - override parent class method
+	///Método cuerpo.
 	function body() {
 		$pid=$this->pid;
 
@@ -131,6 +133,7 @@ class ApfMediaPage extends ApfManager {
 		<?php
 	}
 	
+	/// Muestra los botones de administración
 	function showAdminButtons() {
 		?>
 		<form action="<?php echo($this->buildBaseUri() . $this->getArgs("edit")); ?>" method="POST">

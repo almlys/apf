@@ -1,11 +1,12 @@
 <?php
 /*
-  Copyright (c) 2005 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 */
 
 include_once(dirname(__FILE__) . "/manager.php"); 
 
+///Página de edición de medios/categorias
 class ApfEditPage extends ApfManager {
 	var $action="";
 	var $name="";
@@ -18,7 +19,8 @@ class ApfEditPage extends ApfManager {
 	var $delete=0;
 	var $valid=1;
 	var $image="";
-	//Contructor
+
+	///Constructor
 	function ApfEditPage() {
 		global $APF;
 		$this->ApfManager("");
@@ -200,7 +202,7 @@ class ApfEditPage extends ApfManager {
 
 	}
 	
-	//Method body - override parent class method
+	///Método body
 	function body() {
 		global $APF;
 		$lns=$APF["languages"];
