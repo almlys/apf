@@ -26,6 +26,13 @@ $APF['db.user']="";
 //Password
 $APF['db.passwd']="";
 
+//Opciones de autenticación
+
+//Activa/Desactiva autenticación Desafío/Respuesta
+//Para que funcione el navegador debe soportar JavaScript.
+$APF['auth.chap']=1;
+
+
 //Configuración especifica por servidor VoD
 //Videolan
 //Direccion del servidor de gestión (administración)

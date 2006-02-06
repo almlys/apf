@@ -54,6 +54,10 @@ class ApfAuth {
 		}
 	}
 
+	///Genera un hash de un información aleatoria
+	///@param what Entrada de datos diversos (nombre, ip, etc..)
+	///Es possible cambiar la función, lo importante es que el valor
+	///devuelto no pueda ser predecido por un posible atacante.
 	function getHash($what) {
 		return(sha1(rand() . $what . rand()));
 	}
