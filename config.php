@@ -8,6 +8,7 @@
 
 //configuración del gestor
 
+
 //Previsualizaciones, y otros datos dinámicos
 $APF['cache']=dirname(__FILE__) . "/cache";
 
