@@ -21,7 +21,7 @@ class ApfBaseDocument {
 	var $lan;
 	var $state=0; /** state=0 (no html tags where sent) // state=1 (html tags sent) */
 	var $charset="iso-8859-15";
-	var $generator="App Writen with: Vim, Quanta Plus, and Cssed";
+	var $generator="ApfManager";
 	var $stylesheets;
 	var $path="tfc/";
 	
@@ -30,7 +30,7 @@ class ApfBaseDocument {
 		global $APF;
 		$this->start_time=$APF['start_time'];
 		$this->title=$title;
-		/* Get the default language vector... */
+		/* Obtener vector de idiomas preferidos por el cliente... */
 		if($_GET["lan"]) { 
 			$language=str_replace(",", "00",substr($_GET["lan"],0,2)) . "-nav,"; 
 		}
@@ -50,14 +50,14 @@ class ApfBaseDocument {
 				}
 			}
 		}
-		/* End setting up language */
+		/* Fin de construcción del vector */
 		$this->lan=new ApfLocal($final);
 
 	}
 	
 	/** Obtener el tiempo del script actual */
 	function getTime($how="") {
-		$START_TIME=$this->start_time; //Set startup time
+		$START_TIME=$this->start_time; //Fijar el tiempo de inicio
 		$end_time=microtime();
 		$parcial_calc=explode(' ',$START_TIME . ' ' . $end_time);
 		$duration=sprintf('%01.8f',($parcial_calc[2]+$parcial_calc[3])-($parcial_calc[0]+$parcial_calc[1]));
@@ -92,14 +92,14 @@ class ApfBaseDocument {
 	
 	/** Genera y imprime la cabezera del documento */
 	function head() {
-		if($state==1) return;
-		$state=1;
+		if($this->state==1) return;
+		$this->state=1;
 		?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head>
 <title><?php echo($this->title); ?></title>
 <?php
-		//Set Meta Tags
+		//Fijar Meta Tags
 		echo("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" . $this->charset . "\">\n");
 		echo("<meta name=\"Language\" content=\"" . substr($this->lan->language[0],0,2) . "\">\n");
 		if(!empty($this->description)) {
@@ -109,13 +109,13 @@ class ApfBaseDocument {
 			echo("<meta name=\"keywords\" content=\"" . $this->keywords . "\">\n");
 		}
 		echo("<meta name=\"Generator\" content=\"" . $this->generator . "\">\n");
-		//end setting meta info
+		//Fin de fijacción de información meta
 		
-		//set here the stylesheets
+		//Fijar las hojas de estilo (stylesheets)
 		$i=0;
 		$styles=$this->stylesheets;
 		while(!empty($styles[$i][0])) {
-			//main
+			//Principal
 			echo('<link rel="');
 			if($i!=0) echo("alternate ");
 			echo('stylesheet" title="' . $styles[$i][0] .'" href="' . $styles[$i++][1] . '" type="text/css">');
@@ -132,25 +132,30 @@ class ApfBaseDocument {
 </body>
 </html>
 <?php
-	
 	}
 	
-	/** Muestra un mensaje de error y acaba */
-	function error($msg,$title="Error") {
+	/** Muestra un mensaje de error */
+	function error($msg,$title="") {
+		if(empty($title)) $title=$this->lan->get("error_tit");
 		if($this->state==0) $this->head();
-		if($this->state==2) ApfBaseDocument::head();
+		//if($this->state==2) ApfBaseDocument::head();
 		?>
 <center>
 <table bgcolor="Yellow">
 <TR><td bgcolor="Red"><b><font color="yellow"><?php echo($title); ?></font></b></TD></TR>
 <tr><td><font color="red"><?php 
 		echo($msg);
-		echo("<br> Requesting resource: " . $_SERVER["REQUEST_URI"]);
-		echo("<br> <a href=\"" . $_SERVER["HTTP_REFERER"] . "\">Return to source page</a>");
+		echo("<br> " . $this->lan->get("error_req") . $_SERVER["REQUEST_URI"]);
+		echo("<br> <a href=\"" . $_SERVER["HTTP_REFERER"] . "\">" . $this->lan->get("error_ret") . "</a>");
 		?></font></TD></tr>
 </table>
 </center>
 <?php
+	}
+
+	///Muestra un mensaje de error y termina de forma immediata
+	function error_die($msg,$title="") {
+		$this->error($msg,$title);
 		$this->foot();
 		exit();
 	}
@@ -179,9 +184,6 @@ class ApfBaseDocument {
 
 	///Muestra la ip del cliente
 	///@param how short=solo ip, rshort=ip + x_forward, sino mostrará información completa ip+x_forward+client_ip+via
-	// Where: $format
-	//   short shows the ip connection, rshort shows the cue of forwarded ip's,
-	//   and long or no value shows all addresses.
 	function getRemoteAddress($how="") {
 		if($format=="short") {
 			return($_SERVER["REMOTE_ADDR"]);
@@ -222,7 +224,6 @@ class ApfBaseDocument {
 
 ///Documento base
 class ApfDocument extends ApfBaseDocument {
-	//Contructor
 	var $authed=0;
 	var $admin=0;
 	var $DB;
@@ -274,7 +275,7 @@ class ApfDocument extends ApfBaseDocument {
 	
 	///Comprueba la conexión con la base de datos.
 	function checkConnection() {
-		$this->state=2;
+		//$this->state=2;
 		if(empty($this->DB)) {
 			$this->DB=new ApfDB();
 			if($this->DB->connect()) {

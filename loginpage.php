@@ -10,8 +10,10 @@ include_once(dirname(__FILE__) . "/manager.php");
 
 ///Página de autenticación
 class ApfLoginPage extends ApfManager {
+	///Valor de la autenticación: 0=Ok, 1=Error
 	var $login_status=0;
 	///Constructor
+	///@param logout Si es verdadero cierra la sessión, en caso contrario muestra la página de entrada.
 	function ApfLoginPage($logout=0) {
 		$this->ApfManager("");
 		$this->setTitle($this->lan->get("login_page"));
@@ -72,7 +74,7 @@ class ApfLoginPage extends ApfManager {
 		<INPUT type="text" name="login"><br>
 		<?php echo($this->lan->get("password") . ":"); ?>
 		<INPUT type="password" name="password"><br>
-		<INPUT type="submit"><INPUT type="reset">
+		<INPUT type="submit" value="OK"><INPUT type="reset" value="Borrar">
 		</form>
 		<?php
 	}

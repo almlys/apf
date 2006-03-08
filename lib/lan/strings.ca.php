@@ -63,5 +63,9 @@ $APF_STRINGS["server_type"]="Tipus de servidor VoD";
 $APF_STRINGS["server_type_http"]="VoD sobre HTTP";
 $APF_STRINGS["server_type_rtsp"]="VoD sobre RTSP";
 $APF_STRINGS["category"]="Categoria";
+$APF_STRINGS["error_tit"]="Error";
+$APF_STRINGS["error_req"]="Sol·licitant el recurs: ";
+$APF_STRINGS["error_ret"]="Tornar a la p&aacute;gina anterior";
+
 
 ?>
