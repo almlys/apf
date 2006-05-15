@@ -11,7 +11,7 @@
 
 */
 
-$APF_STRINGS["id"]="en";
+$APF_STRINGS["id"]="ca";
 $APF_STRINGS["name"]="Catal&agrave;";
 $APF_STRINGS["es"]="Espanyol";
 $APF_STRINGS["en"]="Angl&egrave;s";

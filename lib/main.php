@@ -34,11 +34,14 @@ class ApfBaseDocument {
 		if($_GET["lan"]) { 
 			$language=str_replace(",", "00",substr($_GET["lan"],0,2)) . "-nav,"; 
 		}
-		$ACCEPT_LANGUAGE=explode(",",$language . $_SERVER["HTTP_ACCEPT_LANGUAGE"] . ",en-def");
+		//Fijar idioma por defecto
+		$default_language=$APF['default_language'] . "-def";
+		
+		$ACCEPT_LANGUAGE=explode(",",$language . $_SERVER["HTTP_ACCEPT_LANGUAGE"] . ",$default_language");
 		
 		//Filtrar y permitir solo estos idiomas para evitar sorpresas desagradables
 		$allow=$APF["languages"];
-		//array("es","en","ca");
+		//array("es","en","ca"); //definidos en DefaultConfig.php
 		
 		$f=0;
 		$imax=count($ACCEPT_LANGUAGE);

@@ -20,7 +20,7 @@ class ApfMediaPage extends ApfManager {
 	
 	///Cabezera
 	function head() {
-		//Obtener id
+		//Obtener id (del recurso soliciatdo)
 		$id=$this->id;
 		if($id==0) $id=$this->id=1;
 		/*if($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["id"]) && is_numeric($_POST["id"])) {
@@ -33,10 +33,16 @@ class ApfMediaPage extends ApfManager {
 		
 		if($id!=1) {
 			//1ra peticion
-			$query="select parent,$name,$desc,count from vid_categ where id=$id;";
+			//$query="select parent,$name,$desc,count from vid_categ where id=$id;";
+			$query="select a.parent,b.name,a.$desc
+							from  vid_categ a inner join vid_names b
+							on a.name_id=b.id where a.id=$id and b.lan=\"$lan\"";
+			echo($query);
 			$this->query($query);
 			
 			$vals=$this->fetchArray();
+			echo(count($vals));
+			print_r($vals);
 			$this->pid=$vals[0];
 			$this->setTitle($vals[1]);
 			$this->category=$vals[1];

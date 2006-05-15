@@ -12,7 +12,7 @@ include_once(dirname(__FILE__) . "/lib/main.php");
 ///Clase página del gestor
 class ApfManager extends ApfDocument {
 	var $page="main";
-	var $params=""; //A list of extra parameters, starting with &amp;key=value pairs
+	var $params=""; //Listado de parámetros extra, empezando por &amp;key=value pairs
 	var $admin=0;
 	var $id=0;
 
@@ -102,7 +102,7 @@ class ApfManager extends ApfDocument {
 	
 	/// Cabezera
 	function head() {
-		ApfDocument::head(); //base function from parent class
+		ApfDocument::head(); //Constructor de la clase base
 		?>
  <table border="0" width="97%" cellpadding="0" cellspacing="0" align="center" class="header">
  <tr>
@@ -128,7 +128,7 @@ class ApfManager extends ApfDocument {
 	</TD></tr><tr><TD align="right"> -->
    <div class="language_selector">
 <?php
-		//Show available languages
+		//Mostrar todos los idiomas disponibles
 		$page=$this->page;
 		$str_id=$this->params;
 		$CURRENT_LANGUAGE=substr($this->lan->language[0],0,2);
@@ -153,7 +153,7 @@ class ApfManager extends ApfDocument {
  </table>
 
 <?php
-	} //End method head
+	} //Fin del metodo head
 	
 	/// Crea el menú de navegación
 	function menu() {
@@ -168,7 +168,7 @@ class ApfManager extends ApfDocument {
   <td height="50">&nbsp;</td>
   </tr>
 <?
-		//show all index sections
+		//Mostrar todas las secciones del índice
 		$i=0; $done=0;
 		$menu=$this->menu;
 		$page=$this->page;
@@ -220,7 +220,7 @@ class ApfManager extends ApfDocument {
 
 <?php
 
-	} //End menu method
+	} //Final del método menú
 	
 	/// Pie de la página
 	function foot() {
@@ -256,7 +256,7 @@ class ApfManager extends ApfDocument {
  </table>
 <?php
 	ApfDocument::foot();
-	} //end method foot
+	} //Final del método foot
 	
 	/// Método cuerpo, Genera el contenido de la página.
 	function body() {

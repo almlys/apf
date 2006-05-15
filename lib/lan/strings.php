@@ -12,13 +12,15 @@
 */
 
 /* Recuros de idiomas */
-$APF_STR['en']="strings.en.php"; //english
+/*$APF_STR['en']="strings.en.php"; //english
 $APF_STR['es']="strings.es.php"; //Español
-$APF_STR['ca']="strings.ca.php"; //Català
+$APF_STR['ca']="strings.ca.php"; //Català*/
+// ^- Ya no es necessario (los autodectecta)
 /* Final del listado */
 
 //Vector de idiomas soportados
-$APF['languages']=array("es","en","ca");
+//$APF['languages']=array("es","en","ca");
+//El vector esta en Default¢onfig.php
 
 /**
 	Gestor de idiomas, para cadenas localizadas
@@ -42,30 +44,51 @@ class ApfLocal {
 	/// Obtener una cadena traducida.
 	/// @param key Clave.
 	/// @return Cadena traducida.
-	/// @note Si la cadena no existe, buscara una alternativa si esta disponible en el vector. (Este codigo tiene algún bug, al usar una cache interna).
+	/// @note Si la cadena no existe, buscara una alternativa si esta disponible en el vector.
 	function get($key) {
 		global $APF,$APF_STR,$APF_STRINGS;
 		$language=$this->language; //$APF['accept_language']
+		//Primero comprueba la Cache
 		$ret=$APF_STRINGS[$key];
 		$i=0;
 		$lan=substr($language[$i],0,2); $i++;
-		//echo("init-$lan-$i-$key-$ret<br>");
-		if(!empty($ret) && $APF_STRINGS[$id]==$lan) {
-			return $ret;
+		//echo("init-$lan-$i-$key-$ret-" . $APF_STRINGS["id"] . "<br>");
+		if(!empty($ret)) {
+			////$i--;
+			//Asegurate que el resultado obtenido corresponde a nuestro idioma
+			////if($APF_STRINGS["id"]==$lan) {
+				return $ret;
+			////}
 		}
+		//Inicialiación, o fallo en la cache, volver a cargar cadenas
 		while(!empty($lan)) {
-			while(!empty($lan) && empty($APF_STR[$lan])) {
+			$file=dirname(__FILE__) . "/strings.$lan.php";
+			while(!empty($lan) && !is_readable($file)) {
 				$lan=substr($language[$i],0,2); $i++;
 			}
+			/*while(!empty($lan) && empty($APF_STR[$lan])) {
+				$lan=substr($language[$i],0,2); $i++;
+			}*/
 			//echo("$lan-$i-<br>");
 			if(!empty($lan)) {
-				$file=dirname(__FILE__) . "/" . $APF_STR[$lan];
+				$file=dirname(__FILE__) . "/strings.$lan.php";
 				//echo("$file<br>");
-				if(!empty($APF_STR[$lan]) && is_file($file)) {
-					include_once($file);
+				//if(!empty($APF_STR[$lan]) && is_file($file)) {
+					//guardar y restaurar copia de la antigua estructura (si existe)
+					if(!empty($APF_STRINGS["id"])) {
+						$bk_copy=$APF_STRINGS;
+					}
+					require($file);
 					$ret=$APF_STRINGS[$key];
-					if(!empty($ret)) { return($ret); }
-				}
+					if(!empty($bk_copy["id"])) {
+						$APF_STRINGS=$bk_copy;
+					}
+					if(!empty($ret)) {
+						//Guardar en la cache
+						$APF_STRINGS[$key]=$ret;
+						return($ret); 
+					}
+				//}
 				$lan="NULL";
 			}
 		}

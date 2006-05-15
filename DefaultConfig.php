@@ -13,6 +13,15 @@
 // *** Preferencias Generales ***
 ///Idioma por defecto utilizado por la aplicación.
 $APF['default_language']="es";
+///Idiomas disponibles para la aplicación
+/// Para instalar una nueava localización, es importante hacer dos cosas.
+/// 1) Añadir el fichero strings.id.php al directorio lib/lan
+/// 2) Actualizar los campos enumerados (enum) de la base de datos para que
+/// contenplen estos nuevos valores, o simplemente cambiarlos al tipo carácter
+/// para poder añadir nuevas localizaciones en el futuro sin tener que modificar
+/// la base de datos.
+$APF['languages']=array("ca","en","es");
+$APF['language_names']=array("Catal&agrabe;","English","Espa&ntilde;ol");
 // ***
 
 // *** Directorios ***

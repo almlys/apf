@@ -10,7 +10,7 @@
    Fichero de cadenas de texto, para versiones traducidas.
 */
 
-$APF_STRINGS["id"]="en";
+$APF_STRINGS["id"]="es";
 $APF_STRINGS["name"]="Espa&ntilde;ol";
 $APF_STRINGS["es"]="Espa&ntilde;ol";
 $APF_STRINGS["en"]="Ingl&eacute;s";
@@ -65,6 +65,5 @@ $APF_STRINGS["category"]="Categor&iacute;a";
 $APF_STRINGS["error_tit"]="Error";
 $APF_STRINGS["error_req"]="Solicitando recurso: ";
 $APF_STRINGS["error_ret"]="Volver a la p&aacute;gina anterior";
-
 
 ?>
