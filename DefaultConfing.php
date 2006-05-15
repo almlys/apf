@@ -10,38 +10,56 @@
 // **** NO MODIFICAR ESTE FICHERO ****
 //Utilizar el fichero "LocalConfig.php" para la configuración de usuario
 
-//Previsualizaciones, y otros datos dinámicos
+// *** Preferencias Generales ***
+///Idioma por defecto utilizado por la aplicación.
+$APF['default_language']="es";
+// ***
+
+// *** Directorios ***
+
+///Previsualizaciones, y otros datos dinámicos
 $APF['cache']=dirname(__FILE__) . "/cache";
 
-//Directorio de videos disponibles (para VoD sobre http y videolan)
+///Directorio de videos disponibles (para VoD sobre http y videolan)
 $APF['videos']=dirname(__FILE__) . "/videos";
+// ***
 
-//Base de datos
-//Servidor (en blanco para usar el socket unix)
+// *** Base de datos ***
+///Servidor (en blanco para usar el socket unix)
 $APF['db.host']="";
-//Puerto, en blanco para usar puerto por defecto
+///Puerto, en blanco para usar puerto por defecto
 $APF['db.port']="";
-//Nombre de la base de datos
+///Nombre de la base de datos
 $APF['db.name']="";
-//Nombre de usuario
+///Nombre de usuario
 $APF['db.user']="";
-//Password
+///Password
 $APF['db.passwd']="";
+// ***
 
-//Opciones de autenticación
+// *** Opciones de autenticación ***
 
-//Activa/Desactiva autenticación Desafío/Respuesta
-//Para que funcione el navegador debe soportar JavaScript.
+///Activa/Desactiva autenticación Desafío/Respuesta
+///(Challenge Handshake Authentication Protocol)
+///Para que funcione el navegador debe soportar JavaScript.
 $APF['auth.chap']=1;
+// ***
 
-
-//Configuración especifica por servidor VoD
-//Videolan
-//Direccion del servidor de gestión (administración)
+// *** Configuración especifica por servidor VoD ***
+///Videolan
+///Direccion del servidor de gestión (administración)
 $APF['videolan.host']="";
-//Puerto de telnet
+///Puerto de telnet
 $APF['videolan.port']="";
+// ***
+
+
+// Cargar configuración local si existe
+if(file_exists(dirname(__FILE__) . "/LocalConfig.php")) {
+	require_once(dirname(__FILE__) . "/LocalConfig.php");
+}
 //
 
+//Post
 
 ?>

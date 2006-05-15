@@ -9,42 +9,45 @@
 //Recurso solicitado
 $page=$_GET['page'];
 
+//Fijar main como recurso por defecto
 if(empty($page)) $page="main";
 
-//Instanciar dinamicamente el recurso solicitado
+//Cargar la configuración de la aplicación
+require_once(dirname(__FILE__) . "/DefaultConfig.php");
 
+//Instanciar dinamicamente el recurso solicitado
 switch($page) {
 	case "main":
-		include_once(dirname(__FILE__) . "/mainpage.php");
+		require_once(dirname(__FILE__) . "/mainpage.php");
 		$doc = new ApfMainPage();
 		break;
 	case "categ":
-		include_once(dirname(__FILE__) . "/mediapage.php");
+		require_once(dirname(__FILE__) . "/mediapage.php");
 		$doc = new ApfMediaPage();
 		break;
 	case "videos":
-		include_once(dirname(__FILE__) . "/videopage.php");
+		require_once(dirname(__FILE__) . "/videopage.php");
 		$doc = new ApfVideoPage();
 		break;
 	case "login":
-		include_once(dirname(__FILE__) . "/loginpage.php");
+		require_once(dirname(__FILE__) . "/loginpage.php");
 		$doc = new ApfLoginPage();
 		break;
 	case "logout":
-		include_once(dirname(__FILE__) . "/loginpage.php");
+		require_once(dirname(__FILE__) . "/loginpage.php");
 		$doc = new ApfLoginPage(1);
 		break;
 	case "edit":
-		include_once(dirname(__FILE__) . "/editpage.php");
+		require_once(dirname(__FILE__) . "/editpage.php");
 		$doc = new ApfEditPage();
 		break;
 	case "admin":
-		include_once(dirname(__FILE__) . "/adminpage.php");
+		require_once(dirname(__FILE__) . "/adminpage.php");
 		$doc = new ApfAdminPage();
 		break;
 	default:
-		include_once(dirname(__FILE__) . "/manager.php");
-		$doc = new ApfManager("Unknown");
+		require_once(dirname(__FILE__) . "/manager.php");
+		$doc = new ApfManager("Desconocido");
 }
 
 
