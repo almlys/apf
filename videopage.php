@@ -66,7 +66,7 @@ class ApfVideoPage extends ApfManager {
 		<br><br>
 		<embed type="application/x-vlc-plugin"
        name="video1"
-			 autoplay="no" hidden="no" loop="yes" width="400" height="300"
+			 autoplay="true" hidden="no" loop="yes" width="400" height="300"
 			 target="rtsp://<?php echo($_SERVER["SERVER_NAME"]); ?>:5000/<?php echo($this->url); ?>" />
 		<br/>
 
@@ -74,6 +74,7 @@ class ApfVideoPage extends ApfManager {
 		<a href="javascript:;" onclick="document.video1.pause()">Pause RTSP</a>
 		<a href="javascript:;" onclick="document.video1.stop()">Stop RTSP</a>
 		<a href="javascript:;" onclick="document.video1.fullscreen()">Fullscreen RTSP</a>
+		<a href="javascript:;" onclick="document.video1.seek(10,1)">Seek</a>
 		
 		
 		<!--
