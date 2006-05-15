@@ -6,8 +6,9 @@
   Id: $Id$
 */
 
-//configuración del gestor
-
+//configuración por defecto del gestor
+// **** NO MODIFICAR ESTE FICHERO ****
+//Utilizar el fichero "LocalConfig.php" para la configuración de usuario
 
 //Previsualizaciones, y otros datos dinámicos
 $APF['cache']=dirname(__FILE__) . "/cache";
@@ -16,7 +17,7 @@ $APF['cache']=dirname(__FILE__) . "/cache";
 $APF['videos']=dirname(__FILE__) . "/videos";
 
 //Base de datos
-//Servidor (en blanco para usar el socke unix)
+//Servidor (en blanco para usar el socket unix)
 $APF['db.host']="";
 //Puerto, en blanco para usar puerto por defecto
 $APF['db.port']="";
