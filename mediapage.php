@@ -20,35 +20,48 @@ class ApfMediaPage extends ApfManager {
 	
 	///Cabezera
 	function head() {
+		if($this->state!=0) return;
 		//Obtener id (del recurso soliciatdo)
 		$id=$this->id;
 		if($id==0) $id=$this->id=1;
 		/*if($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["id"]) && is_numeric($_POST["id"])) {
 			$id=$this->id=$_POST["id"];
 		}*/
-		$lan=$this->lan->getDefaultLanguage(); //Obtener idioma por defecto
+/*		$lan=$this->lan->getDefaultLanguage(); //Obtener idioma por defecto
 
 		$name="name_" . $lan;
-		$desc="desc_" . $lan;
+		$desc="desc_" . $lan;*/
 		
 		if($id!=1) {
 			//1ra peticion
 			//$query="select parent,$name,$desc,count from vid_categ where id=$id;";
-			$query="select a.parent,b.name,a.$desc
+			/*$query="select a.parent,b.name,a.$desc
 							from  vid_categ a inner join vid_names b
-							on a.name_id=b.id where a.id=$id and b.lan=\"$lan\"";
-			echo($query);
-			$this->query($query);
-			
-			$vals=$this->fetchArray();
-			echo(count($vals));
-			print_r($vals);
-			$this->pid=$vals[0];
-			$this->setTitle($vals[1]);
-			$this->category=$vals[1];
-			$this->desc=$vals[2];
-			if($vals[3]>1) {
-				$this->desc=$this->desc . " - " . $vals[3] . " " . $this->lan->get("objects");
+							on ja.name_id=b.id where a.id=$id and b.lan=\"$lan\"";*/
+			foreach ($this->lan->getLanguageVector() as $lan) {
+				$lan=substr($lan,0,2);
+				/*$query="select a.parent,b.name,c.desc
+								from vid_categ a, vid_names b, vid_descs c
+								where	a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan and b.lan=\"$lan\" and a.id=$id";
+				*/
+				$query="select a.parent,b.name,c.desc
+								from vid_categ a inner join (vid_names b, vid_descs c)
+								on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+								where b.lan=\"$lan\" and a.id=$id";
+				$this->query($query);
+				
+				$vals=$this->fetchArray();
+				if($vals!=null) {
+					//Lo hemos encontrado (fijar algunas propiedades)
+					$this->pid=$vals[0];
+					$this->setTitle($vals[1]);
+					$this->category=$vals[1];
+					$this->desc=$vals[2];
+					if($vals[3]>1) {
+						$this->desc=$this->desc . " - " . $vals[3] . " " . $this->lan->get("objects");
+					}
+					break;
+				}
 			}
 		}
 		ApfManager::head();

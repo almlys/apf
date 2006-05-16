@@ -9,6 +9,9 @@
 //configuración del gestor
 //Mirar el fichero DefaultConfig.php como referencia
 
-
+$APF['db.host']="";
+$APF['db.name']="apf_test";
+$APF['db.user']="apf";
+$APF['db.passwd']="123";
 
 ?>

@@ -19,7 +19,9 @@ class ApfBaseDocument {
 	var $title="Untitled";
 	var $start_time=0;
 	var $lan;
-	var $state=0; /** state=0 (no html tags where sent) // state=1 (html tags sent) */
+	var $state=0; /**< state=0 (Etiquetas HTML no enviadas),
+                   state=1 (Etiquetas HTML enviadas)
+                   state=2 (Ha ocurrido un error) */
 	var $charset="iso-8859-15";
 	var $generator="ApfManager";
 	var $stylesheets;
@@ -38,6 +40,12 @@ class ApfBaseDocument {
 		$default_language=$APF['default_language'] . "-def";
 		
 		$ACCEPT_LANGUAGE=explode(",",$language . $_SERVER["HTTP_ACCEPT_LANGUAGE"] . ",$default_language");
+		$imax=count($ACCEPT_LANGUAGE);
+		if($imax>10) {
+			//Acortar el vector a un máximo de 10 idiomas
+			$ACCEPT_LANGUAGE=array_slice($ACCEPT_LANGUAGE,0,10);
+			$ACCEPT_LANGUAGE[9]=$default_language;
+		}
 		
 		//Filtrar y permitir solo estos idiomas para evitar sorpresas desagradables
 		$allow=$APF["languages"];
@@ -140,8 +148,10 @@ class ApfBaseDocument {
 	/** Muestra un mensaje de error */
 	function error($msg,$title="") {
 		if(empty($title)) $title=$this->lan->get("error_tit");
-		if($this->state==0) $this->head();
-		//if($this->state==2) ApfBaseDocument::head();
+		$this->state=2; //Fijar estado de error
+		//if($this->state==0) $this->head();
+		$this->head(); //El estado debe canviar a 1, sino protección contra llamada recursiva
+		if($this->state==2) ApfBaseDocument::head();
 		?>
 <center>
 <table bgcolor="Yellow">
@@ -278,9 +288,10 @@ class ApfDocument extends ApfBaseDocument {
 	
 	///Comprueba la conexión con la base de datos.
 	function checkConnection() {
+		global $APF;
 		//$this->state=2;
 		if(empty($this->DB)) {
-			$this->DB=new ApfDB();
+			$this->DB=new ApfDB($APF['db.user'],$APF['db.passwd'],$APF['db.name'],$APF['db.host']);
 			if($this->DB->connect()) {
 				$this->error($this->DB->getError());
 			}
@@ -293,7 +304,8 @@ class ApfDocument extends ApfBaseDocument {
 		$this->checkConnection();
 		//echo($what);
 		if(!$this->DB->query($what)) {
-			$this->error($this->DB->getError());
+			echo("<br><font color=red>Error</font><br>");
+			$this->error_die($this->DB->getError());
 		}
 	}
 	
@@ -311,7 +323,7 @@ class ApfDocument extends ApfBaseDocument {
 			return $what;
 		} else {
 			//los datos no estan escapados, evitar
-			// inyecciones
+			// inyecciones SQL
 			return(mysql_real_escape_string($what));
 		}
 	}

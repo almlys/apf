@@ -13,7 +13,7 @@ class ApfDB {
 	var $result;
 
 	///Constructor
-	function ApfDB($user="apf",$password="123",$database="apf_test",$host="localhost") {
+	function ApfDB($user="",$password="",$database="",$host="") {
 		$this->user=$user;
 		$this->password=$password;
 		$this->database=$database;
@@ -59,6 +59,8 @@ class ApfDB {
 		//echo($this->result . $this->link);
 		if($this->result) {
 			return (mysql_fetch_array($this->result));
+		} else {
+			return null;
 		}
 	}
 

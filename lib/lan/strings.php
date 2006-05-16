@@ -28,16 +28,22 @@ $APF_STR['ca']="strings.ca.php"; //Català*/
 class ApfLocal {
 	var $language;
 	/// Constructor
-	/// @param lan Vector de idiomas (lista separada por comas)
+	/// @param lan Vector de idiomas
 	function ApfLocal($lan) {
 		$this->setLanguageVector($lan);
 	}
 	///Fijar el vector
-	/// @param lan Vector de idiomas (lista separada por comas)
+	/// @param lan Vector de idiomas
 	function setLanguageVector($lan) {
 		$this->language=$lan;
 	}
+	///Devolver el vector
+	/// @return Vector de idomas
+	function getLanguageVector() {
+		return $this->language;
+	}
 	///Obtener el idioma por defecto
+	/// @return Idioma por defecto
 	function getDefaultLanguage() {
 		return(substr($this->language[0],0,2));
 	}
@@ -95,7 +101,7 @@ class ApfLocal {
 		return("UNSTRANSLATED:$key");
 	}
 
-}
+} //End ApfLocal class
 
 
 ?>

@@ -34,10 +34,8 @@ $APF['videos']=dirname(__FILE__) . "/videos";
 // ***
 
 // *** Base de datos ***
-///Servidor (en blanco para usar el socket unix)
+///Servidor y puerto (en blanco para usar el socket unix)
 $APF['db.host']="";
-///Puerto, en blanco para usar puerto por defecto
-$APF['db.port']="";
 ///Nombre de la base de datos
 $APF['db.name']="";
 ///Nombre de usuario
@@ -64,7 +62,7 @@ $APF['videolan.port']="";
 
 
 // Cargar configuración local si existe
-if(file_exists(dirname(__FILE__) . "/LocalConfig.php")) {
+if(is_readable(dirname(__FILE__) . "/LocalConfig.php")) {
 	require_once(dirname(__FILE__) . "/LocalConfig.php");
 }
 //

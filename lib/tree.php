@@ -11,7 +11,7 @@ class ApfTree {
 	var $tree;
 
 	///Constructor
-	///@param vals Número de valores
+	///@param vals Array de valores (id,parent,name)
 	function ApfTree($vals) {
 		
 		$cnt=count($vals);
@@ -44,6 +44,8 @@ class ApfTree {
 		$stack[]=&$this->tree;
 		$this->tree["j"]=0;
 		
+		$close[0]=0;
+		
 		//$this->writeNode(2,"kaki",1,$id);
 		
 		//$sane=0;
@@ -58,7 +60,7 @@ class ApfTree {
 			$cnt=count($stack);
 			$cnode=&$stack[$cnt-1];
 			if($cnode["j"]==0) {
-				$this->writeNode($cnode["id"],$cnode["name"],$cnt-1,$id);
+				$this->writeNode($cnode["id"],$cnode["name"],$cnt-1,$id,$close);
 			}
 			if($cnode["j"]>=count($cnode["childs"])) {
 				//echo("deleting from stack\n");
@@ -68,6 +70,11 @@ class ApfTree {
 				//echo("inserting into the stack\n");
 				$cnode["childs"][$cnode["j"]]["j"]=0;
 				$stack[$cnt]=&$cnode["childs"][$cnode["j"]++];
+				if($cnode["j"]>=count($cnode["childs"])) {
+					$close[$cnt-1]=1;
+				} else {
+					$close[$cnt-1]=0;
+				}
 			}
 		}
 	
@@ -82,7 +89,8 @@ class ApfTree {
 	///@param name Nombre del nodo
 	///@param level Nivel dentro del arbol
 	///@param sel_id Identificador del nodo actualmente selecionado
-	function writeNode($id,$name,$level,$sel_id) {
+	///@param close_table Tabla que identifica que niveles del arbol deben cerrarse
+	function writeNode($id,$name,$level,$sel_id,$close) {
 		echo('<option value="' . $id . '"');
 		if($id==$sel_id) {
 			echo(' selected');
@@ -92,9 +100,17 @@ class ApfTree {
 			echo("*");
 		} else {
 			for($i=0; $i<$level-1; $i++) {
-				echo("|&nbsp;&nbsp;&nbsp;&nbsp;");
+				if($close[$i]==1) {
+					echo("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+				} else {
+					echo("|&nbsp;&nbsp;&nbsp;&nbsp;");
+				}
 			}
-			echo("|--");
+			if($close[$i]==1) {
+				echo("`--");
+			} else {
+				echo("|--");
+			}
 		}
 		echo(" " . $name . "</option>" . "\n");
 	}
