@@ -66,6 +66,8 @@ $APF_STRINGS["category"]="Categoria";
 $APF_STRINGS["error_tit"]="Error";
 $APF_STRINGS["error_req"]="Sol·licitant el recurs: ";
 $APF_STRINGS["error_ret"]="Tornar a la p&aacute;gina anterior";
+$APF_STRINGS["redirecting_to"]="Redireccionant cap a: ";
+$APF_STRINGS["click_2_continue"]="Faci click aquí per continuar";
 
 
 ?>

@@ -20,7 +20,8 @@ class ApfVideoPage extends ApfManager {
 	
 	///Cabezera
 	function head() {
-		$this->state=2;
+		if($this->state!=0) return;
+		//$this->state=2;
 		//Obtener id
 		$id=$this->id;
 		$lan=$this->lan->getDefaultLanguage(); //Obtener idioma por defecto
@@ -29,7 +30,11 @@ class ApfVideoPage extends ApfManager {
 		$desc="desc_" . $lan;
 		
 		//1ra peticion
-		$query="select ctg,$name,$desc,prev,dur,url from vid_mfs where id=$id;";
+		//$query="select ctg,$name,$desc,prev,dur,url from vid_mfs where id=$id;";
+		$query="select a.ctg,b.name,c.desc,a.prev,a.dur,a.url
+						from vid_mfs a inner join (vid_names b, vid_descs c)
+						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+						where b.lan=\"$lan\" and a.id=$id";
 		$this->query($query);
 		$vals=$this->fetchArray();
 		$this->pid=$vals[0];
@@ -39,7 +44,11 @@ class ApfVideoPage extends ApfManager {
 		$this->dur=$vals[4];
 		$this->url=$vals[5];
 		
-		$query="select $name from vid_categ where id=" . $this->pid;
+		//$query="select $name from vid_categ where id=" . $this->pid;
+		$query="select b.name
+						from vid_categ a inner join vid_names b
+						on a.name_id=b.id
+						where b.lan=\"$lan\" and a.id=" . $this->pid;
 		$this->query($query);
 		$vals=$this->fetchArray();
 		$this->category=$vals[0];
@@ -61,7 +70,7 @@ class ApfVideoPage extends ApfManager {
 			echo($this->lan->get("lenght") . ": " . $this->dur . "<br>");
 		?>
 		</div>
-		<a href="<?php echo($this->buildBaseUri() . "/videos/" . $this->url); ?>">Play HTTP</a>
+		<a href="<?php echo($this->buildBaseUri() . "videos/" . $this->url); ?>">Play HTTP</a>
 		
 		<br><br>
 		<embed type="application/x-vlc-plugin"
@@ -78,9 +87,9 @@ class ApfVideoPage extends ApfManager {
 		
 		
 		<!--
-		<embed src="<?php echo($this->buildBaseUri() . "/videos/" . $this->url); ?>" width="1200" height="800"> -->
+		<embed src="<?php echo($this->buildBaseUri() . "videos/" . $this->url); ?>" width="1200" height="800"> -->
 		<!-- <object width="640" height="480"> 
-		<param name="src" value="<?php echo($this->buildBaseUri() . "/videos/" . $this->url); ?>">
+		<param name="src" value="<?php echo($this->buildBaseUri() . "videos/" . $this->url); ?>">
 		</object> -->
 		<?php
 

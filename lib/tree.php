@@ -18,6 +18,7 @@ class ApfTree {
 		
 		$tree["id"]=1;
 		$tree["name"]="Media";
+		$tree["parent"]=null;
 		$tnodes[]=&$tree;
 		
 		$e=0;
@@ -27,6 +28,7 @@ class ApfTree {
 				if($vals[$i][1]==$cnode["id"]) {
 					$node["id"]=$vals[$i][0];
 					$node["name"]=$vals[$i][2];
+					$node["parent"]=&$cnode;
 					$cnode["childs"][]=&$node;
 					$tnodes[]=&$node;
 					unset($node);
@@ -82,6 +84,39 @@ class ApfTree {
 			<option value="1">* bla</option>
 		<option value="2">|- bla2</option>
 		<option value="4">&nbsp; |- bla6</option>*/
+	}
+
+	///Busca un nodo
+	///@param id Identificador
+	///@return Devuelve una referencia al nodo (o null)
+	function findNode($id) {
+		$stack[]=&$this->tree;
+		$this->tree["j"]=0;
+		while(count($stack)>0) {
+			$cnt=count($stack);
+			$cnode=&$stack[$cnt-1];
+			if($cnode["j"]==0) {
+				//$this->writeNode($cnode["id"],$cnode["name"],$cnt-1,$id,$close);
+				if($cnode["id"]==$id) {
+					return $cnode;
+				}
+			}
+			if($cnode["j"]>=count($cnode["childs"])) {
+				//echo("deleting from stack\n");
+				unset($stack[$cnt-1]); //delete from stack
+			} else {
+				//add unwalked child to the stack
+				//echo("inserting into the stack\n");
+				$cnode["childs"][$cnode["j"]]["j"]=0;
+				$stack[$cnt]=&$cnode["childs"][$cnode["j"]++];
+				if($cnode["j"]>=count($cnode["childs"])) {
+					$close[$cnt-1]=1;
+				} else {
+					$close[$cnt-1]=0;
+				}
+			}
+		}
+		return null;
 	}
 	
 	///Escribe un Nodo.

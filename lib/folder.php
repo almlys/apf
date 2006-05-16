@@ -22,7 +22,7 @@ class ApfFolder {
 		$this->name=$name;
 		$this->desc=$desc;
 		$this->count=$count;
-		$this->image=$parent->buildBaseUri() . "/imgs/folder.jpg";
+		$this->image=$parent->buildBaseUri("imgs/folder.jpg");
 	}
 
 	///Obtener URL carpeta.
@@ -72,9 +72,9 @@ class ApfVideo extends ApfFolder {
 		$this->name=$name;
 		$this->desc=$desc;
 		if(empty($prev)) {
-			$this->image=$parent->buildBaseUri() . "/imgs/videoimg.jpg";
+			$this->image=$parent->buildBaseUri("imgs/videoimg.jpg");
 		} else {
-			$this->image=$parent->buildBaseUri() . "/cache/" . $prev;
+			$this->image=$parent->buildBaseUri("cache/" . $prev);
 		}
 		$this->dur=$dur;
 		$this->count="";

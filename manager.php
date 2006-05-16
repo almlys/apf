@@ -32,7 +32,7 @@ class ApfManager extends ApfDocument {
 		$this->maintitle=$this->lan->get("vod_viewer");
 		$this->setTitle($title);
 		$this->stylesheets[0][0]=$this->lan->get("default_style");
-		$this->stylesheets[0][1]=$this->buildBaseUri() . "styles/default.css";
+		$this->stylesheets[0][1]=$this->buildBaseUri("styles/default.css");
 		$this->add2Menu($this->lan->get("main_page"),"main");
 		$this->add2Menu($this->lan->get("videos_page"),"categ");
 		if(!empty($_GET['page'])) {
@@ -279,7 +279,7 @@ class ApfManager extends ApfDocument {
 
 	/// Genera una redirección.
 	function redirect2page($page) {
-		$this->redirect($this->BuildBaseUri() . "/" .  $this->getArgs($page,0));
+		$this->redirect($this->BuildBaseUri($this->getArgs($page,0)));
 	}
 
 } //End Class

@@ -16,22 +16,41 @@ include_once(dirname(__FILE__) . "/folder.php");
 
 /// Clase del documento base
 class ApfBaseDocument {
+	///Título de la página
 	var $title="Untitled";
+	///Tiempo de inicio de creación del script
 	var $start_time=0;
+	///Idioma de los contenidos
 	var $lan;
 	var $state=0; /**< state=0 (Etiquetas HTML no enviadas),
                    state=1 (Etiquetas HTML enviadas)
                    state=2 (Ha ocurrido un error) */
+	///charset
 	var $charset="iso-8859-15";
+	///Generador
 	var $generator="ApfManager";
+	///Array de estilos disponibles
 	var $stylesheets;
-	var $path="tfc/";
+	///Directorio base
+	var $path="";
 	
 	/// Constructor
 	function ApfBaseDocument($title="Untitled") {
 		global $APF;
 		$this->start_time=$APF['start_time'];
 		$this->title=$title;
+		if($APF['relative_paths']) {
+			$this->UseRelativePaths=true;
+		} else {
+			$this->UseRelativePaths=false;
+		}
+		if(empty($APF['server.path'])) {
+			$APF['server.path']=dirname($_SERVER["SCRIPT_NAME"]);
+			//echo($APF['server.path'] . "<br>");
+			//$APF['server.path']=str_replace("//","/",$APF['server.path']);
+			//echo($APF['server.path'] . "<br>");
+		}
+		$this->path=$APF['server.path'];
 		/* Obtener vector de idiomas preferidos por el cliente... */
 		if($_GET["lan"]) { 
 			$language=str_replace(",", "00",substr($_GET["lan"],0,2)) . "-nav,"; 
@@ -173,16 +192,29 @@ class ApfBaseDocument {
 		exit();
 	}
 	
-	/** Devuelve dirección completa URL protocol://base_install al directorio base de la instalación */
-	function buildBaseURI() {
-		$proto=$this->getProtocol();
-		$port=$this->getPort();
-		if (($proto=="http" && $port==80) || ($proto=="https" && $port==443)) {
-			$port="";
+	/**
+		@param path Url a concatenar
+		@return Si relative paths es falso, devuelve la dirección completa URL protocol://base_install al directorio base de la instalación, sino siempre
+		devolverá el path relativo
+	*/
+	function buildBaseURI($path="") {
+		if(!$this->UseRelativePaths) {
+			$proto=$this->getProtocol();
+			$port=$this->getPort();
+			if (($proto=="http" && $port==80) || ($proto=="https" && $port==443)) {
+				$port="";
+			} else {
+				$port=":" . $port;
+			}
+			$url=$proto . "://"  . $_SERVER['SERVER_NAME'] . $port . "/" . $this->path . "/";
+			if(!empty($path)) {
+				$url=$url . "/" . $path;
+			}
+			$url=str_replace("//","/",$url);
+			return $url;
 		} else {
-			$port=":" . $port;
+			return $path;
 		}
-		return $proto . "://"  . $_SERVER['SERVER_NAME'] . $port . "/" . $this->path;
 	}
 	
 	///Obtiene el protocolo
@@ -190,7 +222,7 @@ class ApfBaseDocument {
 		return ($HTTP_SERVER_VARS["HTTPS"]=="on" ? "https" : "http");
 	}
 	
-	///Obtinen el puerto
+	///Obtiene el puerto
 	function getPort() {
 		return $_SERVER["SERVER_PORT"];
 	}
@@ -233,13 +265,17 @@ class ApfBaseDocument {
 		return filemtime($_SERVER["SCRIPT_FILENAME"]);
 	}
 
-}
+} //End ApfBaseDocument Class
 
 ///Documento base
 class ApfDocument extends ApfBaseDocument {
+	///Indica si estamos autenticados
 	var $authed=0;
+	///Indica si tenemos privilegios administrativos
 	var $admin=0;
+	///Objecto Base de datos
 	var $DB;
+	///Objecto de autenticación
 	var $auth;
 	///Constructor
 	function ApfDocument($title) {
@@ -277,9 +313,9 @@ class ApfDocument extends ApfBaseDocument {
 		session_commit();
 		header("Location: $to");
 		?>
-		<html><head><TITLE>Redirecting to <?php echo($to); ?></TITLE>
+		<html><head><TITLE><?php echo($this->lan->get("redirecting_to") . $to); ?></TITLE>
 		</head><body>
-		<a href="<?php echo($to); ?>">Click here to continue</a>
+		<a href="<?php echo($to); ?>"><?php echo($this->lan->get("click_2_continue")); ?></a>
 		</body>
 		</html>
 		<?php
@@ -324,13 +360,15 @@ class ApfDocument extends ApfBaseDocument {
 		} else {
 			//los datos no estan escapados, evitar
 			// inyecciones SQL
-			return(mysql_real_escape_string($what));
+			return $this->DB->escape_string($what);
+			//return(mysql_real_escape_string($what));
 		}
 	}
 	
 	///Devuelve el identificador de la última petición de inserción realizada a la base de datos.
 	function insertId() {
-		return(mysql_insert_id());
+		//return(mysql_insert_id());
+		return $this->DB->insertId();
 	}
 
 }

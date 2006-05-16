@@ -26,11 +26,24 @@ $APF['language_names']=array("Catal&agrabe;","English","Espa&ntilde;ol");
 
 // *** Directorios ***
 
-///Previsualizaciones, y otros datos dinámicos
-$APF['cache']=dirname(__FILE__) . "/cache";
+///Ruta del directorio base del servidor (en blanco autodetectar)
+///Nota: Si se va a llamar el script desde otros scripts en otras rutas
+/// entonces es necessario especificar una ruta fija, ya que la autodetección
+/// fallará. Si la autodetección falla, entonces es necesario fijar una ruta.
+$APF['server.path']="";
+///Ruta donde se encuentra instalado el script en el sistema de ficheros
+$APF['system.path']=dirname(__FILE__);
 
-///Directorio de videos disponibles (para VoD sobre http y videolan)
-$APF['videos']=dirname(__FILE__) . "/videos";
+///Ruta relativa a previsualizaciones, y otros datos dinámicos
+$APF['cache']="cache";
+
+///Ruta relativa a videos disponibles (para VoD sobre http y videolan)
+$APF['videos']="videos";
+
+///Indica si se utilizarán rutas relativas, o absolutas.
+///Nota: No se pueden utilizar rutas relativas si se va a llamar al script desde
+///otros scripts. Desactivar rutas relativas en caso de problemas de funcionamiento.
+$APF['relative_paths']=1;
 // ***
 
 // *** Base de datos ***

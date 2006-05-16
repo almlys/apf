@@ -18,11 +18,13 @@ class ApfDB {
 		$this->password=$password;
 		$this->database=$database;
 		$this->host=$host;
+		$this->link=null;
 		//$this->connect();
 	}
 	
 	/** Conectar a la base de datos */
 	function connect() {
+		if($this->link!=null) return;
 		$this->link=@mysql_connect($this->host,$this->user,$this->password);
 		if(!$this->link) {
 			//echo("Error connecting to the DATABASE!");
@@ -39,6 +41,7 @@ class ApfDB {
 	/// Enviar petición sql a la base de datos.
 	/// @param query Petición
 	function query($query) {
+		if($this->link==null) $this->connect();
 		$this->query_count++;
 		$this->result=mysql_query($query,$this->link);
 		//echo($this->result . $this->link);
@@ -51,7 +54,7 @@ class ApfDB {
 	
 	///Obtener el último error producido en la última consulta.
 	function getError() {
-		return mysql_error();
+		return mysql_error($this->link);
 	}
 
 	///Obtener el vector de datos devueltos después de la última petición.
@@ -62,6 +65,15 @@ class ApfDB {
 		} else {
 			return null;
 		}
+	}
+
+	function escape_string($what) {
+		return(mysql_real_escape_string($what));
+	}
+	
+	///Devuelve el identificador de la última petición de inserción realizada a la base de datos.
+	function insertId() {
+		return(mysql_insert_id());
 	}
 
 }

@@ -66,6 +66,7 @@ $APF_STRINGS["category"]="Category";
 $APF_STRINGS["error_tit"]="Error";
 $APF_STRINGS["error_req"]="Requesting resource: ";
 $APF_STRINGS["error_ret"]="Return to previous page";
-
+$APF_STRINGS["redirecting_to"]="Redirecting to: ";
+$APF_STRINGS["click_2_continue"]="Click here to continue";
 
 ?>

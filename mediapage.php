@@ -69,11 +69,10 @@ class ApfMediaPage extends ApfManager {
 	
 	///Método cuerpo.
 	function body() {
-		$pid=$this->pid;
-
+		$pid=$this->pid; //Parent id
 		$lan=$this->lan->getDefaultLanguage();
-		$name="name_" . $lan;
-		$desc="desc_" . $lan;
+		//$name="name_" . $lan;
+		//$desc="desc_" . $lan;
 		
 		/*
 		$family=$this->category;
@@ -101,7 +100,11 @@ class ApfMediaPage extends ApfManager {
 			<?php
 		}*/
 		
-		$query="select id,parent,$name from vid_categ";
+		//$query="select id,parent,$name from vid_categ";
+		$query="select a.id,a.parent,b.name
+						from vid_categ a inner join vid_names b
+						on a.name_id=b.id
+						where b.lan=\"$lan\"";
 		$this->query($query);
 		$i=0;
 		while($vals[$i++]=$this->fetchArray()) {
@@ -110,6 +113,35 @@ class ApfMediaPage extends ApfManager {
 		//echo("<hr>");
 		
 		$tree=new ApfTree($vals);
+		
+		//Show family
+		$family=$this->category;
+		
+		if($this->id!=1) {
+			if($pid!=1) {
+				$node=&$tree->findNode($pid);
+				while($pid!=1 && $node!=null) {
+					$cname=$node["name"];
+					$args=$this->getArgs() . "&amp;id=$pid";
+					$pid=$node["parent"]["id"]; //Update pid
+					$node=&$node["parent"];
+					$family="<a href=\"$args\">$cname</a> &gt; $family";
+				}
+			}
+			
+			$args=$this->getArgs() . "&amp;id=1";
+			$family="<a href=\"$args\">Media</a> &gt; $family";
+			?>
+			<table width="100%"><tr><td>
+			<div class="family"><?php echo($family); ?></div>
+			</td>
+			<?php
+		} else {
+			?><table width="100%"><tr>
+			<?php
+		}
+		//Quick navigation
+		echo('<td align="right">');
 		echo('<form name="jumpfrm" action="' . $this->buildBaseUri() . $this->getArgs() . '" method="GET">' . "\n");
 		echo($this->getArgsHidden());
 		echo($this->lan->get("category") . ": ");
@@ -118,12 +150,21 @@ class ApfMediaPage extends ApfManager {
 		echo("</select>\n");
 		echo('<INPUT type="submit" value="' . $this->lan->get("go") . '">' . "\n");
 		echo('</form>');
-
+		echo("</td></tr></table>\n");
+		if($this->id!=1) {
+			?>
+			<div class="description"><?php echo($this->desc); ?></div>
+			<?php
+		}
 		?>
 		<table width="100%" border="0" cellpadding="0" cellspacing="0"><TR><TD>
 		<?php
 		//Mostrar todas las carpetas
-		$query="select id,$name,$desc,count from vid_categ where parent=" . $this->id;
+		//$query="select id,$name,$desc,count from vid_categ where parent=" . $this->id;
+		$query="select a.id,b.name,c.desc,a.count
+						from vid_categ a inner join (vid_names b, vid_descs c)
+						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+						where b.lan=\"$lan\" and a.parent=" . $this->id;
 		$this->query($query);
 		while($vals=$this->fetchArray()) {
 			$folder=new ApfFolder($this,$vals[0],$vals[1],$vals[2],$vals[3]);
@@ -131,7 +172,11 @@ class ApfMediaPage extends ApfManager {
 		}
 		
 		//Mostrar todos los recursos multimedia
-		$query="select id,$name,$desc,prev,dur from vid_mfs where ctg=" . $this->id;
+		//$query="select id,$name,$desc,prev,dur from vid_mfs where ctg=" . $this->id;
+		$query="select a.id,b.name,c.desc,a.prev,a.dur
+						from vid_mfs a inner join (vid_names b, vid_descs c)
+						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+						where b.lan=\"$lan\" and a.ctg=" . $this->id;
 		$this->query($query);
 		while($vals=$this->fetchArray()) {
 			$folder=new ApfVideo($this,$vals[0],$vals[1],$vals[2],$vals[3],$vals[4]);
