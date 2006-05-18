@@ -340,14 +340,19 @@ class ApfDocument extends ApfBaseDocument {
 		$this->checkConnection();
 		//echo($what);
 		if(!$this->DB->query($what)) {
-			echo("<br><font color=red>Error</font><br>");
+			//echo("<br><font color=red>Error</font><br>");
 			$this->error_die($this->DB->getError());
 		}
 	}
 	
 	///Obtiene un array de los datos devueltos de la base de datos desde la última petición que devolvió datos.
 	function fetchArray() {
-		return $this->DB->fetchArray();
+		return($this->DB->fetchArray());
+		/*if($ret==null) { //Cazurro
+			$this->error_die("fetchArray() " . $this->DB->getError());
+		} else {
+			return $ret;
+		}*/
 	}
 
 	///Escapa caracteres especiales como "'".

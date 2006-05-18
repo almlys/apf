@@ -10,17 +10,16 @@ include_once(dirname(__FILE__) . "/manager.php");
 
 ///Página de edición de medios/categorias
 class ApfEditPage extends ApfManager {
-	var $action="";
-	var $name="";
-	var $new=0; //0-insert, 1-update
-	var $edit=0; //0->from database, 1->to database
-	var $type=0; //0->ctg, 1->media
-	var $pid=0;
-	var $names;
-	var $descs;
-	var $delete=0;
-	var $valid=1;
-	var $image="";
+	var $action=""; ///< acción
+	var $name=""; ///< Nombre del nodo
+	var $new=0; ///< 0-insert, 1-update
+	var $edit=0; ///< 0->from database, 1->to database
+	var $type=0; ///< 0->ctg, 1->media
+	var $pid=0; ///< Identificador del padre
+	var $desc=""; ///< Descripción del nodo
+	var $delete=0; ///< ¿Borrar este nodo?
+	var $valid=1; ///< Validación de la entrada
+	var $image=""; ///< Imagen del nodo
 
 	///Constructor
 	function ApfEditPage() {
@@ -29,33 +28,24 @@ class ApfEditPage extends ApfManager {
 		$this->setTitle($this->lan->get("edit_page"));
 		$action="";
 
-		$lns=$APF["languages"];
-		$cnt=count($lns);
+		//$lns=$APF["languages"];
+		//$cnt=count($lns);
+		$lan=$this->lan->getDefaultLanguage();
 
 		if(!$this->authed || !$this->admin) {
 			$this->redirect2page("login");
 		} elseif($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["action"])) {
 			$this->action=$action=$this->escape_string($_POST["action"]);
-			$this->id=$id=$this->escape_string($_POST["id"]);
+			$this->id=$id=intval($_POST["id"]);
 			$this->name=$this->escape_string($_POST["name"]);
-			$this->pid=$this->escape_string($_POST["pid"]);
-			$this->ctg=$this->escape_string($_POST["ctg"]);
+			$this->pid=intval($_POST["pid"]);
+			$this->ctg=intval($_POST["ctg"]);
 			$this->prev=$this->escape_string($_POST["prev"]);
 			$this->dur=$this->escape_string($_POST["dur"]);
 			$this->url=$this->escape_string($_POST["url"]);
-			for($i=0; $i<$cnt; $i++) {
-				$this->names[$lns[$i]]=$this->escape_string($_POST["name_" . $lns[$i]]);
-				$this->descs[$lns[$i]]=$this->escape_string($_POST["desc_" . $lns[$i]]);
-				if(empty($this->names[$lns[$i]])) {
-					$this->names[$lns[$i]]=$this->names[$lns[0]];
-				}
-				if(empty($this->descs[$lns[$i]])) {
-					$this->descs[$lns[$i]]=$this->descs[$lns[0]];
-				}
-			}
-			$this->new=$this->escape_string($_POST["new"]);
-			$this->delete=$this->escape_string($_POST["delete"]);
-			
+			$this->desc=$this->escape_string($_POST["desc"]);
+			$this->new=intval($_POST["new"]);
+			$this->delete=intval($_POST["delete"]);
 		} else {
 			$this->action=$action=$this->escape_string($_GET["action"]);
 			$id=$this->id;
@@ -101,7 +91,7 @@ class ApfEditPage extends ApfManager {
 				$this->redirect2page("main");
 		}
 		
-		if(empty($this->names[$lns[0]]) || empty($this->descs[$lns[0]]) || empty($this->pid) || ((empty($this->id) || $this->id==0) && $this->new==0) || $this->pid==0 || ($this->type==0 && $this->id==$this->pid)) {
+		if(empty($this->name) || empty($this->desc) || empty($this->pid) || ((empty($this->id) || $this->id==0) && $this->new==0) || $this->pid==0 || ($this->type==0 && $this->id==$this->pid)) {
 			$this->valid=0;
 			//echo("invalid");
 			//echo($this->id . " - " . $this->pid . "-" . $this->names[$lns[0]] . "-" . $this->descs[$lns[0]] . " - " . $this->new);
@@ -112,19 +102,60 @@ class ApfEditPage extends ApfManager {
 			if($this->valid==1) {
 				if($this->type==0) { //Categorias
 					if($this->new==0 && $this->delete==0) { //update
-						$lans="";
+						//1o Actualizar nombre y descripción
+						$query="update vid_names b, vid_descs c, vid_categ a
+										set b.name=\"" . $this->name . "\",
+												c.desc=\"" . $this->desc . "\",
+												a.parent=\"" . $this->pid . "\"
+										where a.name_id=b.id and a.desc_id=c.id 
+												and b.lan=c.lan and b.lan=\"$lan\" and a.id=" . $this->id;
+						//}
+
+						//old code
+						/*$lans="";
 						for($i=0; $i<$cnt; $i++) {
 							$lans=$lans . ",name_" . $lns[$i] . '="' . $this->names[$lns[$i]] . '"' . ",desc_" . $lns[$i] . '="' . $this->descs[$lns[$i]] . '"';
 						}
-						$query="update vid_categ set parent = " . $this->pid . $lans . "where id = " . $this->id;
+						$query="update vid_categ set parent = " . $this->pid . $lans . "where id = " . $this->id;*/
 						$this->query($query);
 						$this->redirect($this->BuildBaseUri() . $this->getArgs("categ",0) . "&id=" . $this->id);
+						///TODO si el update falla realizar una inserción
 					} elseif($this->new==0 && $this->delete==1) { //delete
 						$query="delete from vid_categ where id=" . $this->id;
 						$this->query($query);
-						//TODO - borrar nodos huerfanos
+						///TODO - borrar nodos huerfanos
 						$this->redirect($this->BuildBaseUri() . $this->getArgs("categ",0) . "&id=" . $this->pid);
-					} else {
+					} else { //Insert
+						//1o obtener id mas alto de la tabla names
+						$query="select max(id) from vid_names";
+						$this->query($query);
+						$ret=$this->fetchArray();
+						if($ret==null) $this->error_die("Null fetchArray at line " . __LINE__);
+						$name_id=$ret[0]+1;
+						//2o obtener el id más lato de la tabla descs
+						$query="select max(id) from vid_descs";
+						$this->query($query);
+						$ret=$this->fetchArray();
+						if($ret==null) $this->error_die("Null fetchArray at line " . __LINE__);
+						$desc_id=$ret[0]+1;
+						//Por todos los idiomas
+						foreach ($APF["languages"] as $xlan) {
+							$xlan=substr($xlan,0,2);
+							//Insertar el nombre
+							$query="insert into vid_names (id,lan,name) values($name_id,\"$xlan\",\"" . $this->name . "\")";
+							echo($query);
+							$this->query($query);
+							//Insertar la descripción
+							//NOTA mental, desc es una fucking reserved keyword (y es fucking despues de estar 3 horas mirando la consulta intentado localizar el maldito error)
+							$query="insert into vid_descs (id,lan,`desc`) values($desc_id,\"$xlan\",\"" . $this->desc . "\")";
+							echo($query);
+							$this->query($query);
+						}
+						//Insertar el registro
+						$query="insert into vid_categ (parent,name_id,desc_id) values(" . $this->pid .
+						",$name_id,$desc_id)";
+						$this->query($query);
+						/*
 						$lans="";
 						for($i=0; $i<$cnt; $i++) {
 							$lans=$lans . ",name_" . $lns[$i] . ",desc_" . $lns[$i];
@@ -133,8 +164,9 @@ class ApfEditPage extends ApfManager {
 						for($i=0; $i<$cnt; $i++) {
 							$query=$query . ',"' . $this->names[$lns[$i]] . '","' . $this->names[$lns[$i]] . '"';
 						}
-						$query=$query . ")";
-						$this->query($query);
+						$query=$query . ")"; */
+						//$query="make me";
+						//$this->query($query);
 						$this->id=$this->insertId();
 						$this->redirect($this->BuildBaseUri() . $this->getArgs("categ",0) . "&id=" . $this->id);
 					}
@@ -170,20 +202,32 @@ class ApfEditPage extends ApfManager {
 			}
 		} else {
 			//grab from database
+			/*
 			$lans="";
 			for($i=0; $i<$cnt; $i++) {
 				$lans=$lans . ",name_" . $lns[$i] . ",desc_" . $lns[$i];
-			}
+			}*/
 			if($this->new==0) {
 				if($this->type==0) {
-					$query="select parent$lans from vid_categ where id=" . $this->id;
+					//$query="select parent$lans from vid_categ where id=" . $this->id;
+					$query="select a.parent,b.name,c.desc
+									from vid_categ a inner join (vid_names b,vid_descs c)
+									on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+									where b.lan=\"$lan\" and a.id=" . $this->id;
+					echo($query);
 					$this->query($query);
 					$vals=$this->fetchArray();
 					
 					$this->pid=$vals[0];
-					$off=1;
+					$this->name=$vals[1];
+					$this->desc=$vals[2];
+					//$off=1;
 				} else {
-					$query="select ctg,prev,dur,url$lans from vid_mfs where id=" . $this->id;
+					//$query="select ctg,prev,dur,url$lans from vid_mfs where id=" . $this->id;
+					$query="select a.ctg,a.prev,a.dur,a.url,b.name,c.desc
+									from vid_mfs a inner join (vid_names b,vid_descs c)
+									on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+									where b.lan=\"$lan\" and a.id=" . $this->id;
 					$this->query($query);
 					$vals=$this->fetchArray();
 					
@@ -191,14 +235,14 @@ class ApfEditPage extends ApfManager {
 					$this->prev=$vals[1];
 					$this->dur=$vals[2];
 					$this->url=$vals[3];
-					$off=4;
+					$this->name=$vals[4];
+					$this->desc=$vals[5];
+					//$off=4;
 				}
-				for($i=0; $i<$cnt; $i++) {
+				/*for($i=0; $i<$cnt; $i++) {
 					$this->names[$lns[$i]]=$vals[$off+($i*2)];
 					$this->descs[$lns[$i]]=$vals[$off+($i*2)+1];
-				}
-
-			
+				}*/
 			}
 		}
 
@@ -207,13 +251,13 @@ class ApfEditPage extends ApfManager {
 	///Método body
 	function body() {
 		global $APF;
-		$lns=$APF["languages"];
-		$cnt=count($lns);
+//		$lns=$APF["languages"];
+//		$cnt=count($lns);
 		if($this->valid==0 && $this->edit==1) {
 			echo($this->lan->get("data_error") . "<br>");
 		}
 		?>
-		<form action="<?php echo($this->buildBaseUri() . $this->getArgs()); ?>" method="POST">
+		<form action="<?php echo($this->buildBaseUri($this->getArgs())); ?>" method="POST">
 		<?php echo($this->lan->get("_id") . ": "); ?>
 		<INPUT type="hidden" name="id" value="<?php echo($this->id); ?>">
 		<INPUT type="text" name="id2" disabled="true" value="<?php echo($this->id); ?>">
@@ -230,7 +274,14 @@ class ApfEditPage extends ApfManager {
 		<INPUT  type="text" name="pid" value="<?php echo($this->pid); ?>"><br>
 
 		<hr>
+		<?php echo($this->lan->get("_name") . ": "); ?>
+		<input type="text" name="name" value="<?php echo($this->name); ?>"><br>
+		<?php echo($this->lan->get("desc") . ": "); ?>
+		<input size="60" type="text" name="desc" value="<?php echo($this->desc); ?>"><br>
+		<hr>
+
 		<?php
+			/*
 			for($i=0; $i<$cnt; $i++) {
 				$sname="name_" . $lns[$i];
 				$sdesc="desc_" . $lns[$i];
@@ -243,14 +294,14 @@ class ApfEditPage extends ApfManager {
 				echo($this->lan->get("desc") . ": ");
 				echo('<input size="60" type="text" name="' . $sdesc . '" value="' . $desc . '"><br>');
 				echo("<hr>");
-			}
+			}*/
 			
 			if($this->type==1) {
 				echo($this->lan->get("properties") . ":<br>");
 				if(empty($this->prev)) {
-					$this->image=$this->buildBaseUri() . "/imgs/videoimg.jpg";
+					$this->image=$this->buildBaseUri("imgs/videoimg.jpg");
 				} else {
-					$this->image=$this->buildBaseUri() . "/cache/" . $this->prev;
+					$this->image=$this->buildBaseUri("cache/" . $this->prev);
 				}
 				echo('<img src="' . $this->image . '" border=0 width="160" height="120"><br>');
 				echo($this->lan->get("preview") . ": ");
@@ -262,14 +313,13 @@ class ApfEditPage extends ApfManager {
 				echo('<input type="text" name="url" value="' . $this->url . '"><br>');
 				echo($this->lan->get("lenght") . ": ");
 				echo('<input type="text" name="dur" value="' . $this->dur . '"><br>');
-
 			}
 		?>
 		
 		<input type="hidden" name="new" value="<?php echo($this->new); ?>">
 		<input type="hidden" name="action" value="<?php echo($this->action); ?>">
 		<INPUT type="submit"><INPUT type="reset">
-		</form>    
+		</form>
 		
 		<?php
 	
