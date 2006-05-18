@@ -143,12 +143,12 @@ class ApfEditPage extends ApfManager {
 							$xlan=substr($xlan,0,2);
 							//Insertar el nombre
 							$query="insert into vid_names (id,lan,name) values($name_id,\"$xlan\",\"" . $this->name . "\")";
-							echo($query);
+							//echo($query);
 							$this->query($query);
 							//Insertar la descripción
 							//NOTA mental, desc es una fucking reserved keyword (y es fucking despues de estar 3 horas mirando la consulta intentado localizar el maldito error)
 							$query="insert into vid_descs (id,lan,`desc`) values($desc_id,\"$xlan\",\"" . $this->desc . "\")";
-							echo($query);
+							//echo($query);
 							$this->query($query);
 						}
 						//Insertar el registro
@@ -172,19 +172,33 @@ class ApfEditPage extends ApfManager {
 					}
 				} else { //Videos
 					if($this->new==0 && $this->delete==0) { //update
+						//1o Actualizar nombre y descripción
+						$query="update vid_names b, vid_descs c, vid_mfs a
+										set b.name=\"" . $this->name . "\",
+												c.desc=\"" . $this->desc . "\",
+												a.ctg=\"" . $this->pid . "\",
+												a.prev=\"" . $this->prev . "\",
+												a.dur=\"" . $this->dur . "\",
+												a.url=\"" . $this->url . "\"
+										where a.name_id=b.id and a.desc_id=c.id 
+												and b.lan=c.lan and b.lan=\"$lan\" and a.id=" . $this->id;
+						/* Old code
 						$lans="";
 						for($i=0; $i<$cnt; $i++) {
 							$lans=$lans . ",name_" . $lns[$i] . '="' . $this->names[$lns[$i]] . '"' . ",desc_" . $lns[$i] . '="' . $this->descs[$lns[$i]] . '"';
 						}
 						$query="update vid_mfs set ctg = " . $this->pid . ', prev = "' . $this->prev . '" ' . ', dur = "' . $this->dur . '" ' . ', url = "' . $this->url . '" ' . $lans . " where id = " . $this->id;
+						*/
+						///TODO si el update falla, realizar una insercción
 						$this->query($query);
 						$this->redirect($this->BuildBaseUri() . $this->getArgs("videos",0) . "&id=" . $this->id);
 					} elseif($this->new==0 && $this->delete==1) { //delete
 						$query="delete from vid_mfs where id=" . $this->id;
 						$this->query($query);
-						//TODO - borrar nodos huerfanos
+						///TODO - borrar nodos huerfanos
 						$this->redirect($this->BuildBaseUri() . $this->getArgs("categ",0) . "&id=" . $this->pid);
 					} else {
+						/* Old code
 						$lans="";
 						for($i=0; $i<$cnt; $i++) {
 							$lans=$lans . ",name_" . $lns[$i] . ",desc_" . $lns[$i];
@@ -194,6 +208,37 @@ class ApfEditPage extends ApfManager {
 							$query=$query . ',"' . $this->names[$lns[$i]] . '","' . $this->descs[$lns[$i]] . '"';
 						}
 						$query=$query . ")";
+						$this->query($query);*/
+						//1o obtener id mas alto de la tabla names
+						$query="select max(id) from vid_names";
+						$this->query($query);
+						$ret=$this->fetchArray();
+						if($ret==null) $this->error_die("Null fetchArray at line " . __LINE__);
+						$name_id=$ret[0]+1;
+						//2o obtener el id más lato de la tabla descs
+						$query="select max(id) from vid_descs";
+						$this->query($query);
+						$ret=$this->fetchArray();
+						if($ret==null) $this->error_die("Null fetchArray at line " . __LINE__);
+						$desc_id=$ret[0]+1;
+						//Por todos los idiomas
+						foreach ($APF["languages"] as $xlan) {
+							$xlan=substr($xlan,0,2);
+							//Insertar el nombre
+							$query="insert into vid_names (id,lan,name) values($name_id,\"$xlan\",\"" . $this->name . "\")";
+							//echo($query);
+							$this->query($query);
+							//Insertar la descripción
+							//NOTA mental, desc es una fucking reserved keyword (y es fucking despues de estar 3 horas mirando la consulta intentado localizar el maldito error)
+							$query="insert into vid_descs (id,lan,`desc`) values($desc_id,\"$xlan\",\"" . $this->desc . "\")";
+							//echo($query);
+							$this->query($query);
+						}
+						//Insertar el registro
+						$query="insert into vid_mfs (ctg,prev,dur,url,name_id,desc_id) values(" . 
+						$this->pid . ",\"" . $this->prev . "\",\"" . 
+						$this->dur . "\",\"" . $this->url . "\",$name_id,$desc_id)";
+						//echo($query);
 						$this->query($query);
 						$this->id=$this->insertId();
 						$this->redirect($this->BuildBaseUri() . $this->getArgs("videos",0) . "&id=" . $this->id);
@@ -214,7 +259,7 @@ class ApfEditPage extends ApfManager {
 									from vid_categ a inner join (vid_names b,vid_descs c)
 									on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
 									where b.lan=\"$lan\" and a.id=" . $this->id;
-					echo($query);
+					//echo($query);
 					$this->query($query);
 					$vals=$this->fetchArray();
 					
