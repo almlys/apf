@@ -11,10 +11,11 @@ include_once(dirname(__FILE__) . "/lib/main.php");
 
 ///Clase página del gestor
 class ApfManager extends ApfDocument {
-	var $page="main";
-	var $params=""; //Listado de parámetros extra, empezando por &amp;key=value pairs
-	var $admin=0;
-	var $id=0;
+	var $page="main"; ///<Nombre de la página
+	var $params=""; ///<Listado de parámetros extra, empezando por &amp;key=value pairs
+	var $admin=0; ///<Indica si el usuario tiene privilegios administrativos
+	var $id=0; ///<Identificador de un recurso (categoria, video, etc...)
+	var $tree=null; ///<Contiene una class ApfTree con el conjunto de categorías
 
 	///Constructor
 	function ApfManager($title) {
@@ -278,8 +279,27 @@ class ApfManager extends ApfDocument {
 	}
 
 	/// Genera una redirección.
+	/// @param page Página de destino
 	function redirect2page($page) {
 		$this->redirect($this->BuildBaseUri($this->getArgs($page,0)));
+	}
+
+	/// Genera el árbol de categorías
+	function generateMediaTree() {
+		if($this->tree==null) {
+			$lan=$this->lan->getDefaultLanguage();
+			$query="select a.id,a.parent,b.name
+							from vid_categ a inner join vid_names b
+							on a.name_id=b.id
+							where b.lan=\"$lan\"";
+			$this->query($query);
+			$i=0;
+			while($vals[$i++]=$this->fetchArray()) {
+				//echo($i-1 . " " . $vals[$i-1][0] . $vals[$i-1][2] . "<br>\n");
+			}
+			//echo("<hr>");
+			$this->tree=new ApfTree($vals);
+		}
 	}
 
 } //End Class

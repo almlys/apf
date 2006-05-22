@@ -44,6 +44,7 @@ class ApfDB {
 		if($this->link==null) $this->connect();
 		$this->query_count++;
 		$this->result=mysql_query($query,$this->link);
+		//echo($query);
 		//echo($this->result . $this->link);
 		if(!$this->result) {
 			//echo(mysql_error());

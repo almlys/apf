@@ -27,7 +27,6 @@ class ApfEditPage extends ApfManager {
 		$this->ApfManager("");
 		$this->setTitle($this->lan->get("edit_page"));
 		$action="";
-
 		//$lns=$APF["languages"];
 		//$cnt=count($lns);
 		$lan=$this->lan->getDefaultLanguage();
@@ -53,6 +52,7 @@ class ApfEditPage extends ApfManager {
 		$this->params = "&amp;id=$id&amp;action=$action";
 		
 		switch($this->action) {
+			//Categoria
 			case "add_ctg":
 				$this->new=1;
 				$this->type=0;
@@ -70,6 +70,17 @@ class ApfEditPage extends ApfManager {
 				$this->type=0;
 				$this->action="update_ctg";
 				break;
+			case "delete_ctg":
+				$this->new=0;
+				if(empty($this->id) || $this->id==0) {
+					$this->id=$this->pid;
+				}
+				$this->edit=1;
+				$this->type=0;
+				$this->delete=1;
+				$this->action="update_ctg";
+				break;
+			//Vídeo
 			case "add_media":
 				$this->new=1;
 				$this->type=1;
@@ -87,14 +98,21 @@ class ApfEditPage extends ApfManager {
 				$this->type=1;
 				$this->action="update_media";
 				break;
+			case "delete_media":
+				$this->new=0;
+				$this->edit=1;
+				$this->type=1;
+				$this->delete=1;
+				$this->action="update_media";
+				break;
 			default:
 				$this->redirect2page("main");
 		}
 		
-		if(empty($this->name) || empty($this->desc) || empty($this->pid) || ((empty($this->id) || $this->id==0) && $this->new==0) || $this->pid==0 || ($this->type==0 && $this->id==$this->pid)) {
+		if(((empty($this->name) || empty($this->desc) || empty($this->pid) || ((empty($this->id) || $this->id==0) && $this->new==0) || $this->pid==0 || ($this->type==0 && $this->id==$this->pid)) && $this->delete==0) || ($this->delete==1 && (empty($this->id) || $this->id==0))) {
 			$this->valid=0;
 			//echo("invalid");
-			//echo($this->id . " - " . $this->pid . "-" . $this->names[$lns[0]] . "-" . $this->descs[$lns[0]] . " - " . $this->new);
+			//echo("id: " . $this->id . " - pid: " . $this->pid . "- name: " . $this->name . "- desc: " . $this->desc . " - new:" . $this->new . " - delete:" . $this->delete);
 		}
 
 		if($this->edit==1) {
@@ -301,6 +319,8 @@ class ApfEditPage extends ApfManager {
 		if($this->valid==0 && $this->edit==1) {
 			echo($this->lan->get("data_error") . "<br>");
 		}
+		//Generar arbol de directorios
+		$this->generateMediaTree();
 		?>
 		<form action="<?php echo($this->buildBaseUri($this->getArgs())); ?>" method="POST">
 		<?php echo($this->lan->get("_id") . ": "); ?>
@@ -315,14 +335,28 @@ class ApfEditPage extends ApfManager {
 			}
 		?>
 		<br>
-		<?php echo($this->lan->get("parent") . ": "); ?>
+		<?php 
+			//echo($this->lan->get("parent") . ": "); 
+			echo($this->lan->get("category") . ": "); 
+		?>
+		<?php /*
 		<INPUT  type="text" name="pid" value="<?php echo($this->pid); ?>"><br>
+		*/ ?>
 
+		<SELECT name="pid">
+		<?php
+		$this->tree->writeOptions($this->pid);
+		?>
+		</select>
 		<hr>
 		<?php echo($this->lan->get("_name") . ": "); ?>
 		<input type="text" name="name" value="<?php echo($this->name); ?>"><br>
-		<?php echo($this->lan->get("desc") . ": "); ?>
+		<?php echo($this->lan->get("desc") . ": "); ?><br>
+		<?php /*
 		<input size="60" type="text" name="desc" value="<?php echo($this->desc); ?>"><br>
+		*/
+		?>
+		<textarea name="desc" rows="5" cols="50"><?php echo($this->desc); ?></textarea>
 		<hr>
 
 		<?php
@@ -342,6 +376,7 @@ class ApfEditPage extends ApfManager {
 			}*/
 			
 			if($this->type==1) {
+				//Vídeo
 				echo($this->lan->get("properties") . ":<br>");
 				if(empty($this->prev)) {
 					$this->image=$this->buildBaseUri("imgs/videoimg.jpg");
@@ -363,7 +398,8 @@ class ApfEditPage extends ApfManager {
 		
 		<input type="hidden" name="new" value="<?php echo($this->new); ?>">
 		<input type="hidden" name="action" value="<?php echo($this->action); ?>">
-		<INPUT type="submit"><INPUT type="reset">
+		<INPUT type="submit" value="<?php echo($this->lan->get("go")); ?>">
+		<INPUT type="reset" value="<?php echo($this->lan->get("reset")); ?>">
 		</form>
 		
 		<?php

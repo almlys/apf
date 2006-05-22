@@ -67,5 +67,7 @@ $APF_STRINGS["error_req"]="Solicitando recurso: ";
 $APF_STRINGS["error_ret"]="Volver a la p&aacute;gina anterior";
 $APF_STRINGS["redirecting_to"]="Redireccionando hacia: ";
 $APF_STRINGS["click_2_continue"]="Haz click aquí para continuar";
+$APF_STRINGS["reset"]="Reiniciar";
+$APF_STRINGS["delete_ctg"]="Borrar categoría";
 
 ?>

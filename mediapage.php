@@ -71,49 +71,9 @@ class ApfMediaPage extends ApfManager {
 	function body() {
 		$pid=$this->pid; //Parent id
 		$lan=$this->lan->getDefaultLanguage();
-		//$name="name_" . $lan;
-		//$desc="desc_" . $lan;
+		$this->generateMediaTree();
 		
-		/*
-		$family=$this->category;
-		
-		if($this->id!=1) {
-			while($pid!=1) {
-				$query="select parent,$name from vid_categ where id=$pid";
-				$this->query($query);
-				
-				$vals=$this->fetchArray();
-				$cname=$vals[1];
-				$args=$this->getArgs() . "&amp;id=$pid";
-				$pid=$vals[0];
-	
-				$family="<a href=\"$args\">$cname</a> &gt; $family";
-	
-			}
-			
-			$args=$this->getArgs() . "&amp;id=1";
-			$family="<a href=\"$args\">Media</a> &gt; $family";
-			
-			echo('<div class="family">' . $family . "</div>");
-			?>
-			<div class="description"><?php echo($this->desc); ?></div>
-			<?php
-		}*/
-		
-		//$query="select id,parent,$name from vid_categ";
-		$query="select a.id,a.parent,b.name
-						from vid_categ a inner join vid_names b
-						on a.name_id=b.id
-						where b.lan=\"$lan\"";
-		$this->query($query);
-		$i=0;
-		while($vals[$i++]=$this->fetchArray()) {
-			//echo($i-1 . " " . $vals[$i-1][0] . $vals[$i-1][2] . "<br>\n");
-		}
-		//echo("<hr>");
-		
-		$tree=new ApfTree($vals);
-		
+		$tree=&$this->tree;
 		//Show family
 		$family=$this->category;
 		
@@ -210,6 +170,7 @@ class ApfMediaPage extends ApfManager {
 			if ($this->id!=1) {
 		?>
 		<option value="edit_ctg"><?php echo($this->lan->get("edit_ctg")); ?></option>
+		<option value="delete_ctg"><?php echo($this->lan->get("delete_ctg")); ?></option>
 		<?php
 			}
 		?>
