@@ -45,7 +45,7 @@ class ApfLoginPage extends ApfManager {
 					$_SESSION["AuthHash"]=$this->auth->hash;
 					$_SESSION["admin"]=$this->auth->level;
 					$_SESSION["uid"]=$this->auth->uid;
-					setcookie("ApfVoDAuthHash",$_SESSION["AuthHash"],time()+3600);
+					setcookie("ApfVoDAuthHash",$_SESSION["AuthHash"],time()+3600,"/");
 					$this->redirect2page($dest);
 				}
 				$this->login_status=1;

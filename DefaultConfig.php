@@ -65,6 +65,11 @@ $APF['db.passwd']="";
 $APF['auth.chap']=1;
 // ***
 
+// *** Configuracion servidores VoD ***
+///Indica la ruta al manejador que conecta la aplicación con el servidor VoD
+$APF['vod.plug']="HttpVoDhandler.php";
+//$APF['vod.plug']="VideoLanVoDhandler.php";
+
 // *** Configuración especifica por servidor VoD ***
 ///Videolan
 ///Direccion del servidor de gestión (administración)
@@ -72,6 +77,12 @@ $APF['videolan.host']="";
 ///Puerto de telnet
 $APF['videolan.port']="";
 // ***
+
+// *** Subida de ficheros ***
+///Script que se encarga de ellos
+///Este script nos permite saltarnos los límites de 2MBytes a la vez que nos permite
+/// enviar un feedback al usuario.
+$APF['upload_script']="cgi-bin/upload.py";
 
 
 // Cargar configuración local si existe

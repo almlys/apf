@@ -26,7 +26,9 @@ switch($page) {
 		$doc = new ApfUploadPage();
 		break;
 	default:
-		die("Unknown resource");
+		require_once(dirname(__FILE__) . "/simplepage.php");
+		$doc = new ApfSimplePage();
+		break;
 }
 
 $doc->show();

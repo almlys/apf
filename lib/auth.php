@@ -12,11 +12,11 @@ class ApfAuth {
 	var $login;
 	var $hash;
 	var $uid;
-	var $parent;
+	var $DB;
 
 	///Constructor
-	function ApfAuth(&$parent) {
-		$this->parent=&$parent;
+	function ApfAuth(&$database) {
+		$this->DB=&$database;
 	}
 	
 	///Autentica el usuario
@@ -26,15 +26,15 @@ class ApfAuth {
 	function authenticate($login,$pass,$sid=0) {
 		$hash=md5($pass);
 		$query="select password,uid,admin from vid_users where name=\"$login\"";
-		$this->parent->query($query);
-		$vals=$this->parent->fetchArray();
+		$this->DB->query($query);
+		$vals=$this->DB->fetchArray() or return false;
 		if($vals[0]==$hash) {
 			$this->login=$login;
 			$this->hash=$this->getHash($sid . $login . $hash);
 			$this->level=$vals[2];
 			$this->uid=$vals[1];
 			$query="update vid_users set last=NOW(), hash=\"" . $this->hash . "\" where uid=" . $this->uid;
-			$this->parent->query($query);
+			$this->DB->query($query) or return false;
 			return true;
 		}
 		return false;
@@ -45,8 +45,8 @@ class ApfAuth {
 	///@param hash Hash de comprovación.
 	function verify($uid,$hash) {
 		$query="select hash from vid_users where uid=$uid";
-		$this->parent->query($query);
-		$vals=$this->parent->fetchArray();
+		$this->DB->query($query) or return false;
+		$vals=$this->DB->fetchArray();
 		if($vals[0]==$hash) {
 			return true;
 		} else {
@@ -54,12 +54,12 @@ class ApfAuth {
 		}
 	}
 
-	///Genera un hash de un información aleatoria
+	///Genera un hash de una información aleatoria
 	///@param what Entrada de datos diversos (nombre, ip, etc..)
 	///Es possible cambiar la función, lo importante es que el valor
 	///devuelto no pueda ser predecido por un posible atacante.
-	function getHash($what) {
-		return(sha1(rand() . $what . rand()));
+	function getHash($what="") {
+		return(sha1(rand() . $what . uniqid(time() . rand())));
 	}
 
 } //end class

@@ -13,6 +13,12 @@
 </head>
 <BODY>
 
+<script language="JavaScript" type="text/javascript">
+function parent_callback() {
+	alert("parent callback");
+}
+</script>
+
 <div id="test">
 <fieldset>
 <legend>Upload</legend>

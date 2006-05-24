@@ -193,6 +193,7 @@ class ApfBaseDocument {
 	}
 	
 	/**
+		Construye una ruta relativa al directorio de la aplicación
 		@param path Url a concatenar
 		@return Si relative paths es falso, devuelve la dirección completa URL protocol://base_install al directorio base de la instalación, sino siempre
 		devolverá el path relativo
@@ -206,15 +207,32 @@ class ApfBaseDocument {
 			} else {
 				$port=":" . $port;
 			}
-			$url=$proto . "://"  . $_SERVER['SERVER_NAME'] . $port . "/" . $this->path . "/";
-			if(!empty($path)) {
-				$url=$url . "/" . $path;
-			}
-			$url=str_replace("//","/",$url);
+			$url=$proto . "://"  . $_SERVER['SERVER_NAME'] . $port;
+			$path="/" . $this->path . "/" . $path;
+			$path=str_replace("//","/",$path);
+			$url=$url . $path;
 			return $url;
 		} else {
 			return $path;
 		}
+	}
+	
+	/// Construye una ruta relativa a la raiz
+	/// @param path Ruta
+	/// @return Ruta completa
+	function buildRootURI($path="") {
+		$proto=$this->getProtocol();
+		$port=$this->getPort();
+		if (($proto=="http" && $port==80) || ($proto=="https" && $port==443)) {
+			$port="";
+		} else {
+			$port=":" . $port;
+		}
+		$url=$proto . "://"  . $_SERVER['SERVER_NAME'] . $port;
+		$path="/" . $path;
+		$path=str_replace("//","/",$path);
+		$url=$url . $path;
+		return $url;
 	}
 	
 	///Obtiene el protocolo
