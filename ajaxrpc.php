@@ -14,6 +14,10 @@ if(empty($cmd)) die("ERROR");
 //Cargar la configuración de la aplicación
 require_once(dirname(__FILE__) . "/DefaultConfig.php");
 
+//Asegurar que los datos són salvados a lo largo de la sesión
+session_name("ApfVoDPHPSID");
+session_start();
+
 //Procesar comando RPC recibido
 switch($cmd) {
 	//Validar un fichero que va ser subido
@@ -29,7 +33,8 @@ switch($cmd) {
 			case "video":
 				//Instanciate APF_VOD class
 				require_once(dirname(__FILE__) . "/" . $APF["vod.plug"]);
-				if($APF_VOD->CheckVideoFileBeforeUpload($file)) {
+				$vod_server=createApfVoDHandler();
+				if($vod_server->CheckVideoFileBeforeUpload($file)) {
 					echo("OK");
 				} else {
 					echo("INVALID");
@@ -43,9 +48,50 @@ switch($cmd) {
 				break;
 		}
 		break;
+	//Obtener tamaño del fichero
+	case "file_size":
+		$xsid=$_GET["xsid"];
+		if($xsid==$_SESSION["xsid"]) {
+			$path=$APF['upload_dir'] . "/" . $xsid . "/lenght.txt";
+			if(is_readable($path)) {
+				$f=fopen($path,"r");
+				echo(fread($f,filesize($path)));
+				fclose($f);
+			} else {
+				echo("0");
+			}
+			//echo("XSID IS OK");
+		} else {
+			echo("-1");
+		}
+		break;
+	//Obtener tamaño subido
+	case "file_status":
+		$xsid=$_GET["xsid"];
+		if($xsid==$_SESSION["xsid"]) {
+			$path=$APF['upload_dir'] . "/" . $xsid . "/upload.raw";
+			if(is_readable($path)) {
+				echo(filesize($path));
+			} else {
+				echo("0");
+			}
+		} else {
+			echo("-1");
+		}
+		break;
 	//Verificar que el hash the autenticación es válido
 	case "auth_verify":
 		$hash=$_GET["hash"];
+		$uid=$_GET["uid"];
+		require_once(dirname(__FILE__) . "/lib/" . $APF["db.plug"]);
+		require_once(dirname(__FILE__) . "/lib/" . $APF["auth.plug"]);
+		$DB=createDBObject($APF['db.user'],$APF['db.passwd'],$APF['db.name'],$APF['db.host']);
+		$auth=createAuthObject(&$DB);
+		if($auth->verify($uid,$hash) && $auth->level>0) {
+			echo("OK");
+		} else {
+			echo("AUTHFAIL");
+		}
 		break;
 	default:
 		echo("ERROR");

@@ -8,11 +8,15 @@
 
 $APF['start_time']=microtime(); //Calcular el tiempo de generación de página
 /* Cargar contenido localizado de forma dinamica */
-include_once(dirname(__FILE__) . "/lan/strings.php");
-include_once(dirname(__FILE__) . "/bd.php");
-include_once(dirname(__FILE__) . "/auth.php");
-include_once(dirname(__FILE__) . "/tree.php");
-include_once(dirname(__FILE__) . "/folder.php");
+require_once(dirname(__FILE__) . "/lan/strings.php");
+//require_once(dirname(__FILE__) . "/bd.php");
+//include_once(dirname(__FILE__) . "/auth.php");
+require_once(dirname(__FILE__) . "/tree.php");
+require_once(dirname(__FILE__) . "/folder.php");
+
+//Plugins
+require_once(dirname(__FILE__) . "/" . $APF['auth.plug']);
+require_once(dirname(__FILE__) . "/" . $APF['db.plug']);
 
 /// Clase del documento base
 class ApfBaseDocument {
@@ -291,6 +295,7 @@ class ApfDocument extends ApfBaseDocument {
 	var $authed=0;
 	///Indica si tenemos privilegios administrativos
 	var $admin=0;
+	var $uid=0; ///< Identificador del usuario
 	///Objecto Base de datos
 	var $DB;
 	///Objecto de autenticación
@@ -298,7 +303,8 @@ class ApfDocument extends ApfBaseDocument {
 	///Constructor
 	function ApfDocument($title) {
 		$this->ApfBaseDocument($title);
-		$this->auth=new ApfAuth($this);
+		//$this->auth=new ApfAuth($this);
+		$this->auth=createAuthObject(&$this);
 		//sessions
 		session_name("ApfVoDPHPSID");
 		session_start();
@@ -308,6 +314,7 @@ class ApfDocument extends ApfBaseDocument {
 			if($this->auth->verify($_SESSION["uid"],$_SESSION["AuthHash"])) {
 				$this->authed=1;
 				$this->admin=$_SESSION["admin"];
+				$this->uid=$_SESSION["uid"];
 			} else {
 				$this->endSession();
 			}
@@ -345,7 +352,8 @@ class ApfDocument extends ApfBaseDocument {
 		global $APF;
 		//$this->state=2;
 		if(empty($this->DB)) {
-			$this->DB=new ApfDB($APF['db.user'],$APF['db.passwd'],$APF['db.name'],$APF['db.host']);
+			//$this->DB=new ApfDB($APF['db.user'],$APF['db.passwd'],$APF['db.name'],$APF['db.host']);
+			$this->DB=createDBObject($APF['db.user'],$APF['db.passwd'],$APF['db.name'],$APF['db.host']);
 			if($this->DB->connect()) {
 				$this->error($this->DB->getError());
 			}
@@ -361,6 +369,7 @@ class ApfDocument extends ApfBaseDocument {
 			//echo("<br><font color=red>Error</font><br>");
 			$this->error_die($this->DB->getError());
 		}
+		return 1;
 	}
 	
 	///Obtiene un array de los datos devueltos de la base de datos desde la última petición que devolvió datos.

@@ -21,7 +21,11 @@ class ApfHttpVoDHandler extends ApfBaseVoDHandler {
 } //End Class ApfHttVodHandler
 
 
-//Crear el objecto
-$APF_VOD=new ApfHttpVoDHandler();
+
+//$APF_VOD=new ApfHttpVoDHandler();
+///Crear el objecto HttpVoDHanler
+function createApfVoDHandler() {
+	return new ApfHttpVoDHandler();
+}
 
 ?>

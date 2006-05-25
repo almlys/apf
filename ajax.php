@@ -42,7 +42,7 @@ function getXMLHttpRequest() {
 }
 
 function get_ajax() {
-	http=getXMLHttpRequest();
+	var http=getXMLHttpRequest();
 	if(!http) alert("Imposible inicializar el HTTPRequest");
 	return http;
 }

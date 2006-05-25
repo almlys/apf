@@ -27,15 +27,31 @@ import os.path
 cgitb.enable()
 
 
+class mlog:
+    def __init__(self,handle,filename,mode="w"):
+        self.file=file(filename,mode)
+        self.handle=handle
+    def write(self,x):
+        self.handle.write(x)
+        self.file.write(x)
+    def flush(self):
+        self.handle.flush()
+        self.file.flush()
+    def close(self):
+        self.file.close()
+
 class slowFile:
     def __init__(self,path):
-        self.f=file(path + "/upload.raw","wb")
+        self.f=file(path + "/upload.raw","wb+")
         self.quota=0
         self.write_quota=0
     def __del__(self):
         self.f.close()
-    def read(self,len):
-        return self.f.read(len)
+    def read(self,len=None):
+        if len==None:
+            return self.f.read()
+        else:
+            return self.f.read(len)
     def write(self,input):
         w=len(input)
         self.quota=self.quota+w
@@ -45,9 +61,9 @@ class slowFile:
             self.f.flush()
             self.write_quota=0
         #Limitar la velocidad de subida
-        if self.quota>1024*250:
-            print self.quota
-            sys.stdout.flush()
+        if self.quota>1024*1024*2:
+            #print self.quota
+            #sys.stdout.flush()
             self.quota=0
             time.sleep(1)
         return self.f.write(input)
@@ -73,7 +89,17 @@ class rpcClient:
         f.close()
         return response
 
+def deleteTempFiles():
+    #Borrar los ficheros si existen
+    if dpath:
+        if os.path.isfile(dpath + "/lenght.txt"):
+            os.remove(dpath + "/lenght.txt")
+        if os.path.isfile(dpath + "/upload.raw"):
+            os.remove(dpath + "/upload.raw")
+        os.rmdir(dpath)
+
 def error(msg,head=True,die=True):
+    deleteTempFiles()
     if head:
         print """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -86,11 +112,11 @@ def error(msg,head=True,die=True):
     print msg
     print """
     <script language="JavaScript" type="text/javascript">
-        parent.abortUpload();
+        parent.abortUpload("%s");
     </script>
 </body>
 </html>
-    """
+    """ %(msg)
     if die:
         sys.exit()    
 
@@ -98,22 +124,30 @@ def main():
     global dpath
     print "Content-Type: text/html\n\n"
 
+    uid=0
     xsid=""
+    resource_type=""
     auth_hash=""
     server_name=""
     server_port=""
+    filesize=0
     if not os.environ.has_key("SERVER_NAME"):
         error("Cannot get SERVER_NAME")
     server_name=os.environ["SERVER_NAME"]
     if not os.environ.has_key("SERVER_PORT"):
         error("Cannot get SERVER_PORT")
-    server_port=os.environ["SERVER_PORT"]
+    server_port=int(os.environ["SERVER_PORT"])
     if server_port==80:
         server_port=""
     else:
         server_port=":" + str(server_port)
     server_root_path="http://" + server_name + server_port
     rpc_server_path=server_root_path + rpc_path
+
+    #Tamaño aproximado del fichero
+    if not os.environ.has_key("CONTENT_LENGTH"):
+        error("Cannot get CONTENT_LENGTH")
+    filesize=int(os.environ["CONTENT_LENGTH"])
 
     #Obtener xsid
     if not os.environ.has_key("QUERY_STRING"):
@@ -128,11 +162,17 @@ def main():
     for g in geta:
         if g[0]=="xsid":
             xsid=g[1]
-            break
+        elif g[0]=="uid":
+            uid=int(g[1])
+        elif g[0]=="type":
+            resource_type=g[1]
 
     #Limpiar xsid (No podemos confiar en su valor)
     if not re.match(r"^[a-f0-9]{32}$",xsid):
         error("xsid validation failed")
+    #print "res-%s-" % (resource_type)
+    if not re.match(r"^\w+$",resource_type):
+        error("malformed resource_type")
 
     #Obtener AuthHash
     if not os.environ.has_key("HTTP_COOKIE"):
@@ -154,9 +194,10 @@ def main():
 
     #Realizar llamada RPC al la aplicación, y verificar el auth_hash
     rpc=rpcClient(rpc_server_path)
-    print "<br>RPC Response: "
-    print rpc.request("cmd=auth_verify&hash=%s" % auth_hash)
-    print "<br>"
+    rpc_reply=rpc.request("cmd=auth_verify&hash=%s&uid=%i" % (auth_hash,uid))
+    #print "<br>RPC Response:-%s-<br>" %(rpc_reply)
+    if not rpc_reply=="OK":
+        error("rpc auth validation failed")
 
     dpath=upload_dir + "/" + xsid
     if os.path.isdir(dpath):
@@ -164,7 +205,21 @@ def main():
 
     os.makedirs(dpath)
 
-    file=cgiFiles()
+    #Guardar tamaño del fichero
+    f=file(dpath + "/lenght.txt","w")
+    f.write(str(filesize))
+    f.close()
+
+    cfile=cgiFiles()
+
+    if cfile.has_key("sourcefile"):
+        f=cfile["sourcefile"]
+        #print f.value, f.filename
+        if f.filename=="" or f.filename==None or f==None or len(f.value)==0:
+            error("No File was uploaded",False)
+    else:
+        error("No File data was uploaded",False)
+        
 
     print """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -173,8 +228,8 @@ def main():
 </head>
 <body>
 """
-    print os.environ
-    print geta
+    #print os.environ
+    #print geta
     
     print "DBG: Upload finished"
     time.sleep(1)
@@ -183,11 +238,19 @@ def main():
 
     print """
     <script language="JavaScript" type="text/javascript">
-        parent.abortUpload();
+        parent.finishUpload();
     </script>
 </body>
 </html>
     """
+    deleteTempFiles()
+
+log=mlog(sys.stdout,"/tmp/python_stdout.txt")
+log2=mlog(sys.stderr,"/tmp/python_stderr.txt")
+old_stdout=sys.stdout
+old_stderr=sys.stderr
+sys.stdout=log
+sys.stderr=log2
 
 try:
     main()
@@ -197,3 +260,5 @@ except:
     error("Unhadled Exception",False,False)
     cgitb.handler()
 
+sys.stdout=old_stdout
+sys.stderr=old_stderr

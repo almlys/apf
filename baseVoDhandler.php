@@ -21,7 +21,7 @@ class ApfBaseVoDHandler {
 	///Indica al VoD, que un nuevo fichero de video a sido subido al servidor
 	///@param path Ruta al fichero en el sistema local
 	///@param filename Nombre del fichero especificado por el usuario
-	///@return Devuelve un objecto 
+	///@return Devuelve un objecto ApfVoDFile
 	function UploadVideoFile($path,$filename) {}
 
 	///Pasa un nombre de fichero al VoD para validar antes de ser subido

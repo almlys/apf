@@ -22,7 +22,9 @@ class ApfVideoLanVoDHandler extends ApfBaseVoDHandler {
 
 
 //Crear el objecto
-$APF_VOD=new ApfVideoLanVoDHandler();
-
+//$APF_VOD=new ApfVideoLanVoDHandler();
+function createApfVoDHandler() {
+	return new ApfVideoLanVoDHandler();
+}
 
 ?>

@@ -79,6 +79,9 @@ class ApfDB {
 
 }
 
-
+///Crea el objecto de la base de datos
+function createDBObject($user="",$password="",$database="",$host="") {
+	return new ApfDB($user,$password,$database,$host);
+}
 
 ?>

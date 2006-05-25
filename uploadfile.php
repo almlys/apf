@@ -9,7 +9,7 @@
 //Cargar la configuración de la aplicación
 require_once(dirname(__FILE__) . "/DefaultConfig.php");
 
-//phpinfo();
+//VoD hooks
 require_once(dirname(__FILE__) . "/" . $APF["vod.plug"]);
 
 //echo("this does not work");
@@ -25,6 +25,7 @@ if(!empty($file_path) && $size!=0 && $error==0) {
 	//echo($file_path);
 	//echo("<br>");
 	//echo(basename($user_file_name));
+	$vod_server=createApfVoDHandler();
 	$APF_VOD->uploadVideoFile($file_path,$user_file_name);
 } else {
 	echo("Upload error");

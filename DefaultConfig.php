@@ -47,6 +47,8 @@ $APF['relative_paths']=1;
 // ***
 
 // *** Base de datos ***
+///Plugin de la base de datos
+$APF['db.plug']="bd.php";
 ///Servidor y puerto (en blanco para usar el socket unix)
 $APF['db.host']="";
 ///Nombre de la base de datos
@@ -58,6 +60,9 @@ $APF['db.passwd']="";
 // ***
 
 // *** Opciones de autenticación ***
+
+///Selecciona el modulo de autenticación a utilizar
+$APF['auth.plug']="auth.php";
 
 ///Activa/Desactiva autenticación Desafío/Respuesta
 ///(Challenge Handshake Authentication Protocol)
@@ -79,11 +84,12 @@ $APF['videolan.port']="";
 // ***
 
 // *** Subida de ficheros ***
-///Script que se encarga de ellos
+///Script que se encarga de la subida de ficheros
 ///Este script nos permite saltarnos los límites de 2MBytes a la vez que nos permite
 /// enviar un feedback al usuario.
 $APF['upload_script']="cgi-bin/upload.py";
-
+///Directorio de ficheros subidos (debe ser idéntico al configurado en el script)
+$APF['upload_dir']="/tmp/apf_upload";
 
 // Cargar configuración local si existe
 if(is_readable(dirname(__FILE__) . "/LocalConfig.php")) {
