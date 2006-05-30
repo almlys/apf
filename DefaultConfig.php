@@ -89,7 +89,8 @@ $APF['videolan.port']="";
 /// enviar un feedback al usuario.
 $APF['upload_script']="cgi-bin/upload.py";
 ///Directorio de ficheros subidos (debe ser idéntico al configurado en el script)
-$APF['upload_dir']="/tmp/apf_upload";
+//$APF['upload_dir']="/tmp/apf_upload";
+$APF['upload_dir']="/home/apf_upload";
 
 // Cargar configuración local si existe
 if(is_readable(dirname(__FILE__) . "/LocalConfig.php")) {

@@ -162,7 +162,9 @@ function updateUploadStats() {
 	out.innerHTML+="Speed: " + speed + " KB/s<br>";
 	out.innerHTML+="Percent: " + percent + "%<br>";
 	out.innerHTML+="Width: " + pg + "<br>";
-	out.innerHTML+="<img width=\"" + pg + "\" height=\"10\" src=\"imgs/progress_point.png\">";
+	out.innerHTML+="<img width=\"" + pg + "\" height=\"10\" src=\"<?php
+		echo($this->buildBaseURI("imgs/progress_point.png"));
+	?>\">";
 }
 
 //Parar la subida
@@ -202,7 +204,7 @@ function enableUpload() {
 		$upload_script=$APF["upload_script"];
 		$this->dump_js();
 		?>
-		<iframe name="ghost" frameborder="0" width="90%" height="0">
+		<iframe name="ghost" frameborder="0" width="90%" height="200">
 		<!-- Ghost Iframe -->
 		</iframe>
 		<div id="upload_file">

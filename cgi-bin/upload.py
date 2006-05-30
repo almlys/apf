@@ -8,7 +8,8 @@
 #
 
 #Configuración
-upload_dir="/tmp/apf_upload"
+#upload_dir="/tmp/apf_upload"
+upload_dir="/home/apf_upload"
 rpc_path="/tfc/ajaxrpc.php"
 
 
@@ -21,6 +22,12 @@ rpc_path="/tfc/ajaxrpc.php"
 #Global (idealmente tendria que ser una propiedad miembro de la clase cgiFiles
 # pero parece ser que al añadir el constructor da problemas)"
 dpath=""
+
+#Esto queda un poco mal y feo, para hacerlo bien habria que reescribir la
+# clase FieldStorage, actualmente esta intenta mantener el fichero entero en
+# memoria, y esto pues tiene consequencias grabes cuando los ficheros a subir
+# són del orden de cientos de megabytes
+file_size=0
 
 import os,time,cgi,cgitb,sys,re,urllib2
 import os.path
@@ -53,15 +60,18 @@ class slowFile:
         else:
             return self.f.read(len)
     def write(self,input):
+        global file_size
         w=len(input)
+        #print w
+        file_size=file_size + w
         self.quota=self.quota+w
         self.write_quota=self.write_quota+w
-        #flushear el buffer cada 1K
-        if self.write_quota>1024:
+        #flushear el buffer cada 16K
+        if self.write_quota>1024*16:
             self.f.flush()
             self.write_quota=0
         #Limitar la velocidad de subida
-        if self.quota>1024*1024*2:
+        if 0 and self.quota>1024*1024*10:
             #print self.quota
             #sys.stdout.flush()
             self.quota=0
@@ -122,6 +132,7 @@ def error(msg,head=True,die=True):
 
 def main():
     global dpath
+    global file_size
     print "Content-Type: text/html\n\n"
 
     uid=0
@@ -210,16 +221,23 @@ def main():
     f.write(str(filesize))
     f.close()
 
+    #La instanciación de la clase provoca la lectura del stdin
     cfile=cgiFiles()
 
-    if cfile.has_key("sourcefile"):
-        f=cfile["sourcefile"]
-        #print f.value, f.filename
-        if f.filename=="" or f.filename==None or f==None or len(f.value)==0:
-            error("No File was uploaded",False)
-    else:
-        error("No File data was uploaded",False)
-        
+    # Este código, la simple llamada has_key, proboca que la implemetación
+    # FieldStorage actual carge el fichero entero en memoria, y esto no lo
+    # podemos permitir.
+    #if cfile.has_key("sourcefile"):
+    #    f=cfile["sourcefile"]
+    #    #print f.value, f.filename
+    #    if f.filename=="" or f.filename==None or f==None or len(f.value)==0:
+    #        error("No File was uploaded",False)
+    #else:
+    #    error("No File data was uploaded",False)
+    if file_size==0:
+        error("No File data was uploaded %i" %(file_size),False)
+    elif filesize-file_size>500:
+        error("Uploaded file data seems to be incomplete",False)
 
     print """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
