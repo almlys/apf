@@ -79,6 +79,17 @@ switch($cmd) {
 			echo("-1");
 		}
 		break;
+	//Notificar al Servidor VoD que hemos subido un nuevo fichero
+	case "file_notify":
+		$xsid=$_GET["xsid"];
+		$path=$APF['upload_dir'] . "/" . $xsid . "/upload.raw";
+		if($xsid==$_SESSION["xsid"] && is_readable($path) && filesize($path)!=0) {
+			//Do It!
+			echo("OK");
+		} else {
+			echo("ERROR");
+		}
+		break;
 	//Verificar que el hash the autenticación es válido
 	case "auth_verify":
 		$hash=$_GET["hash"];

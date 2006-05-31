@@ -70,5 +70,8 @@ $APF_STRINGS["redirecting_to"]="Redirecting to: ";
 $APF_STRINGS["click_2_continue"]="Click here to continue";
 $APF_STRINGS["reset"]="Reset";
 $APF_STRINGS["delete_ctg"]="Delete category";
+$APF_STRINGS["props"]="Properties";
+$APF_STRINGS["upload_video"]="Upload Video to Server";
+$APF_STRINGS["unsuported_outdated_old_browser"]="Sorry, Your browser does not support the iframe tag, and it does not meet the minimal requirements for this application.";
 
 ?>

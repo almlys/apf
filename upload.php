@@ -14,6 +14,7 @@ class ApfUploadPage extends ApfSimplePage {
 
 	var $xsid="null"; ///< Identificador unico del fichero
 	var $resource_type="video"; ///< Indica el tipo de recurso (video, img, etc...)
+	var $end_hook=""; ///< Nombre la función (hook) a llamar al finalizar el upload
 
 	/// Constructor
 	/// @param title Título de la página
@@ -26,6 +27,9 @@ class ApfUploadPage extends ApfSimplePage {
 		}
 		$this->xsid=md5(uniqid(time() . rand()));
 		$_SESSION["xsid"]=$this->xsid;
+		if(!empty($_GET["type"])) {
+			$this->resource_type=$_GET["type"];
+		}
 	}
 
 	function dump_js() {
@@ -41,6 +45,7 @@ var starttime=0; //start time
 var fsize=0; //file size
 var csize=0; //current file size
 var count=0; //numero de veces a esperar hasta que el fichero este disponible
+var fname=""; //Nombre del fichero
 
 //Resultado de la validación del fichero a subir
 function validateFileCallback(http) {
@@ -61,7 +66,7 @@ function validateFileCallback(http) {
 				document.upload_form.sourcefile.disabled=true;
 				self.setTimeout("getFileStats()",1000);
 			} else {
-				out.innerHTML="<font color=red>File rejected by server</font>";
+				out.innerHTML="<font color=red>File rejected by server<" + "/" + "font>";
 				out.innerHTML+=http.responseText;
 				document.upload_form.sourcefile.disabled=false;
 				document.upload_form.sourcefile.value="";
@@ -81,7 +86,8 @@ function validateFile() {
 	http.onreadystatechange= function() {
 		validateFileCallback(http);
 	}
-	http.open("GET", "ajaxrpc.php?cmd=validate_file&type=<?php echo($this->resource_type); ?>&name=" + encodeURIComponent(document.upload_form.sourcefile.value), true);
+	fname=document.upload_form.sourcefile.value;
+	http.open("GET", "<?php echo($this->buildBaseURI("ajaxrpc.php?cmd=validate_file&type={$this->resource_type}")); ?>&name=" + encodeURIComponent(document.upload_form.sourcefile.value), true);
 	http.send(null);
 	//alert(document.upload_form.sourcefile.value);
 	var out=document.getElementById("progress");
@@ -110,7 +116,7 @@ function getFileStatsCallback(http) {
 					abortUpload("No partial size was recieved in the last RPC call");
 				} else {
 					if(csize==0) count=count+1;
-					else count=100;
+					else count=0;
 					updateUploadStats();
 				}
 			}
@@ -133,9 +139,9 @@ function getFileStats() {
 		getFileStatsCallback(http);
 	}
 	if(fsize==0) {
-		http.open("GET", "ajaxrpc.php?cmd=file_size&xsid=<?php echo($this->xsid); ?>", true);
+		http.open("GET", "<?php echo($this->buildBaseURI("ajaxrpc.php?cmd=file_size&xsid={$this->xsid}")); ?>", true);
 	} else {
-		http.open("GET", "ajaxrpc.php?cmd=file_status&xsid=<?php echo($this->xsid); ?>", true);
+		http.open("GET", "<?php echo($this->buildBaseURI("ajaxrpc.php?cmd=file_status&xsid={$this->xsid}")); ?>", true);
 	}
 	http.send(null);
 	//alert(document.upload_form.sourcefile.value);
@@ -172,16 +178,50 @@ function abortUpload(msg) {
 	//alert("stopped");
 	keeprunning=false;
 	var out=document.getElementById("progress");
-	out.innerHTML="<font color=red>Upload failed!</font>: " + msg;
+	out.innerHTML="<font color=red>Upload failed!<" + "/" + "font>: " + msg;
 	self.setTimeout("enableUpload()",1000);
+}
+
+//Notificar subida satisfactoria después de la llamada RPC final
+function finishUploadCallback(http) {
+	var out=document.getElementById("progress");
+	//out.innerHTML+=".";
+	//out.innerHTML+=http.readyState;
+	//out.innerHTML+="<br>";
+	if (http.readyState == 4) {
+		if (http.status==200) {
+			//out.innerHTML+=http.responseText;
+			if(http.responseText=="OK") {
+				//var out=document.getElementById("progress");
+				out.innerHTML="<font color=green>Upload Finished<" + "/" + "font>";
+				self.setTimeout("enableUpload()",1000);
+			} else {
+				abortUpload("Last RPC call failed!");
+			}
+		}
+	}
 }
 
 //Finalizar la subida
 function finishUpload() {
 	keeprunning=false;
 	var out=document.getElementById("progress");
-	out.innerHTML="<font color=green>Upload Finished</font>";
-	self.setTimeout("enableUpload()",1000);
+	out.innerHTML="Finishing upload...";
+	//out.innerHTML="<font color=green>Upload Finished<" + "/" + "font>";
+	//self.setTimeout("enableUpload()",1000);
+	//Llamada RPC final
+	var http=get_ajax();
+	http.onreadystatechange= function() {
+		finishUploadCallback(http);
+	}
+	http.open("GET", "<?php echo($this->buildBaseURI("ajaxrpc.php?cmd=file_notify&xsid={$this->xsid}&type={$this->resource_type}&name=",false)); ?>" + encodeURIComponent(fname), true);
+	http.send(null);	
+	//Parent hooks
+	<?php
+	if(!empty($this->end_hook)) {
+		echo("	" . $this->end_hook . "(fname);");
+	}
+	?>
 }
 
 //Habilitar el upload
@@ -204,12 +244,12 @@ function enableUpload() {
 		$upload_script=$APF["upload_script"];
 		$this->dump_js();
 		?>
-		<iframe name="ghost" frameborder="0" width="90%" height="200">
+		<iframe name="ghost" frameborder="0" width="90%" height="0">
 		<!-- Ghost Iframe -->
 		</iframe>
 		<div id="upload_file">
 		<form name="upload_form" target="ghost" enctype="multipart/form-data" action="<?php 
-			echo($this->buildRootURI($upload_script . "?xsid={$this->xsid}&uid={$this->uid}&type={$this->resource_type}"));
+			echo($this->buildRootURI($upload_script . "?xsid={$this->xsid}&amp;uid={$this->uid}&amp;type={$this->resource_type}"));
 		?>" method="POST">
 		<!-- <input type="hidden" name="MAX_FILE_SIZE" value="1000"> -->
 		Source file: <input type="file" name="sourcefile" onchange="validateFile()"><br>

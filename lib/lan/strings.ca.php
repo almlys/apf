@@ -70,6 +70,8 @@ $APF_STRINGS["redirecting_to"]="Redireccionant cap a: ";
 $APF_STRINGS["click_2_continue"]="Faci click aquí per continuar";
 $APF_STRINGS["reset"]="Reiniciar";
 $APF_STRINGS["delete_ctg"]="Esborrar categoria";
-
+$APF_STRINGS["props"]="Propietats";
+$APF_STRINGS["upload_video"]="Pujar Video al Servidor";
+$APF_STRINGS["unsuported_outdated_old_browser"]="El teu navegador no suporta l'etiqueta IFRAME, a consequència no cumpleix amb els requisits mínims per aquesta aplicació";
 
 ?>

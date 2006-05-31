@@ -199,11 +199,12 @@ class ApfBaseDocument {
 	/**
 		Construye una ruta relativa al directorio de la aplicación
 		@param path Url a concatenar
+		@param relative Indica si queremos la ruta relativa o absoluta
 		@return Si relative paths es falso, devuelve la dirección completa URL protocol://base_install al directorio base de la instalación, sino siempre
 		devolverá el path relativo
 	*/
-	function buildBaseURI($path="") {
-		if(!$this->UseRelativePaths) {
+	function buildBaseURI($path="",$relative=true) {
+		if(!$this->UseRelativePaths || $relative==false) {
 			$proto=$this->getProtocol();
 			$port=$this->getPort();
 			if (($proto=="http" && $port==80) || ($proto=="https" && $port==443)) {

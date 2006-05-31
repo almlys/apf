@@ -323,6 +323,8 @@ class ApfEditPage extends ApfManager {
 		$this->generateMediaTree();
 		?>
 		<form action="<?php echo($this->buildBaseUri($this->getArgs())); ?>" method="POST">
+		<fieldset>
+		<legend><?php echo($this->lan->get("props")); ?></legend>
 		<?php echo($this->lan->get("_id") . ": "); ?>
 		<INPUT type="hidden" name="id" value="<?php echo($this->id); ?>">
 		<INPUT type="text" name="id2" disabled="true" value="<?php echo($this->id); ?>">
@@ -357,7 +359,7 @@ class ApfEditPage extends ApfManager {
 		*/
 		?>
 		<textarea name="desc" rows="5" cols="50"><?php echo($this->desc); ?></textarea>
-		<hr>
+		</fieldset>
 
 		<?php
 			/*
@@ -376,6 +378,27 @@ class ApfEditPage extends ApfManager {
 			}*/
 			
 			if($this->type==1) {
+?>
+<script language="JavaScript" type="text/javascript">
+//Definir hooks del padre
+function upload_hook(file) {
+	alert(file);
+}
+</script>
+
+
+<fieldset>
+<legend><?php echo($this->lan->get("upload_video")); ?></legend>
+<iframe name="upload" src="<?php echo($this->buildBaseURI("iframe.php?page=upload&amp;type=video&amp;end_hook=upload_hook")); ?>" frameborder="0" width="100%" height="100">
+<?php /* height="300" */
+	echo($this->lan->get("unsuported_outdated_old_browser"));
+?>
+</iframe>
+</fieldset>
+<fieldset>
+<legend>Old shit (outdated)</legend>
+
+<?php
 				//Vídeo
 				echo($this->lan->get("properties") . ":<br>");
 				if(empty($this->prev)) {
@@ -383,7 +406,7 @@ class ApfEditPage extends ApfManager {
 				} else {
 					$this->image=$this->buildBaseUri("cache/" . $this->prev);
 				}
-				echo('<img src="' . $this->image . '" border=0 width="160" height="120"><br>');
+				echo('<img alt="blah" src="' . $this->image . '" border=0 width="160" height="120"><br>');
 				echo($this->lan->get("preview") . ": ");
 				echo('<input type="text" name="prev" value="' . $this->prev . '">
 				<INPUT type="checkbox" name="prev_auto" value="1"> 
@@ -393,6 +416,7 @@ class ApfEditPage extends ApfManager {
 				echo('<input type="text" name="url" value="' . $this->url . '"><br>');
 				echo($this->lan->get("lenght") . ": ");
 				echo('<input type="text" name="dur" value="' . $this->dur . '"><br>');
+				echo("</fieldset>");
 			}
 		?>
 		

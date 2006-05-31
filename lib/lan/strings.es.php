@@ -69,5 +69,8 @@ $APF_STRINGS["redirecting_to"]="Redireccionando hacia: ";
 $APF_STRINGS["click_2_continue"]="Haz click aquí para continuar";
 $APF_STRINGS["reset"]="Reiniciar";
 $APF_STRINGS["delete_ctg"]="Borrar categoría";
+$APF_STRINGS["props"]="Propiedades";
+$APF_STRINGS["upload_video"]="Subir Video al Servidor";
+$APF_STRINGS["unsuported_outdated_old_browser"]="Lo siento, Tu navegador no soporta al etiqueta IFRAME, por lo tanto no cumple con los requisitos minimos para esta aplicación";
 
 ?>
