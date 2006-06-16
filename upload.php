@@ -23,12 +23,15 @@ class ApfUploadPage extends ApfSimplePage {
 		$this->resource_type=$resource_type;
 		ApfSimplePage::ApfSimplePage($title);
 		if(!$this->authed || !$this->admin) {
-			die("TERMINATED: Not Authenticated");
+			$this->error_die("TERMINATED: Not Authenticated");
 		}
 		$this->xsid=md5(uniqid(time() . rand()));
 		$_SESSION["xsid"]=$this->xsid;
 		if(!empty($_GET["type"])) {
 			$this->resource_type=$_GET["type"];
+		}
+		if(!empty($_GET["end_hook"])) {
+			$this->end_hook=$_GET["end_hook"];
 		}
 	}
 
@@ -194,6 +197,12 @@ function finishUploadCallback(http) {
 			if(http.responseText=="OK") {
 				//var out=document.getElementById("progress");
 				out.innerHTML="<font color=green>Upload Finished<" + "/" + "font>";
+				//Parent hooks
+				<?php
+					if(!empty($this->end_hook)) {
+						echo("	parent." . $this->end_hook . "(fname);");
+					}
+				?>
 				self.setTimeout("enableUpload()",1000);
 			} else {
 				abortUpload("Last RPC call failed!");
@@ -216,12 +225,6 @@ function finishUpload() {
 	}
 	http.open("GET", "<?php echo($this->buildBaseURI("ajaxrpc.php?cmd=file_notify&xsid={$this->xsid}&type={$this->resource_type}&name=",false)); ?>" + encodeURIComponent(fname), true);
 	http.send(null);	
-	//Parent hooks
-	<?php
-	if(!empty($this->end_hook)) {
-		echo("	" . $this->end_hook . "(fname);");
-	}
-	?>
 }
 
 //Habilitar el upload

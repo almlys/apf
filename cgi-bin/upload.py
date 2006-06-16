@@ -29,7 +29,7 @@ dpath=""
 # són del orden de cientos de megabytes
 file_size=0
 
-import os,time,cgi,cgitb,sys,re,urllib2
+import os,time,cgi,cgitb,sys,re,urllib2,glob
 import os.path
 cgitb.enable()
 
@@ -94,10 +94,24 @@ class rpcClient:
     def __init__(self,rpcserver):
         self.path=rpcserver
     def request(self,petition):
+        print "Opening %s" %(self.path)
         f = urllib2.urlopen(self.path + "?" + petition)
         response = f.read()
         f.close()
         return response
+
+def cleanUpOldTempFiles():
+    cur_stamp=int(time.time())
+    for d in glob.glob(upload_dir + "/*"):
+        try:
+            mstat=os.stat(d + "/upload.raw")
+        except OSError:
+            continue
+        if mstat[8]<(cur_stamp-(5*60)): #5 minutos
+            for f in glob.glob(d + "/*"):
+                #print "removing %s" %(f)
+                os.remove(f)
+            os.rmdir(d)
 
 def deleteTempFiles():
     #Borrar los ficheros si existen
@@ -115,6 +129,7 @@ def error(msg,head=True,die=True):
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<title>Upload</title>
 </head>
 <body>
 """
@@ -214,6 +229,9 @@ def main():
     if os.path.isdir(dpath):
         error("xsid already exists")
 
+    #Borrar ficheros viejos
+    cleanUpOldTempFiles()
+
     os.makedirs(dpath)
 
     #Guardar tamaño del fichero
@@ -253,6 +271,7 @@ def main():
     time.sleep(1)
 
     #Realizar llamada RPC indicando el fichero subido al VoD handler
+    #Esta la hace el cliente
 
     print """
     <script language="JavaScript" type="text/javascript">
@@ -261,7 +280,7 @@ def main():
 </body>
 </html>
     """
-    deleteTempFiles()
+    #deleteTempFiles()
 
 log=mlog(sys.stdout,"/tmp/python_stdout.txt")
 log2=mlog(sys.stderr,"/tmp/python_stderr.txt")

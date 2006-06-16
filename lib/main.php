@@ -261,7 +261,7 @@ class ApfBaseDocument {
 			elseif($_SERVER["HTTP_CLIENT_IP"])
 				return($_SERVER["HTTP_CLIENT_IP"]);
 			else
-				return($REMOTE_ADDR);
+				return($_SERVER["REMOTE_ADDR"]);
 		} else {
 			$ret=$_SERVER["REMOTE_ADDR"];
 			$proxy="";
