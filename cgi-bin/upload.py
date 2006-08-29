@@ -10,7 +10,8 @@
 #Configuración
 #upload_dir="/tmp/apf_upload"
 upload_dir="/home/apf_upload"
-rpc_path="/tfc/ajaxrpc.php"
+###rpc_path="/tfc/ajaxrpc.php"
+rpc_server_path="http://localhost/tfc/ajaxrpc.php"
 
 
 ################################################################################
@@ -122,8 +123,9 @@ def deleteTempFiles():
             os.remove(dpath + "/upload.raw")
         os.rmdir(dpath)
 
-def error(msg,head=True,die=True):
-    deleteTempFiles()
+def error(msg,head=True,die=True,delete=False):
+    if delete:
+        deleteTempFiles()
     if head:
         print """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -168,7 +170,7 @@ def main():
     else:
         server_port=":" + str(server_port)
     server_root_path="http://" + server_name + server_port
-    rpc_server_path=server_root_path + rpc_path
+    ##rpc_server_path=server_root_path + rpc_path
 
     #Tamaño aproximado del fichero
     if not os.environ.has_key("CONTENT_LENGTH"):
@@ -253,9 +255,9 @@ def main():
     #else:
     #    error("No File data was uploaded",False)
     if file_size==0:
-        error("No File data was uploaded %i" %(file_size),False)
+        error("No File data was uploaded %i" %(file_size),False,True,True)
     elif filesize-file_size>500:
-        error("Uploaded file data seems to be incomplete",False)
+        error("Uploaded file data seems to be incomplete",False,True,True)
 
     print """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -294,7 +296,7 @@ try:
 except SystemExit:
     pass
 except:
-    error("Unhadled Exception",False,False)
+    error("Unhadled Exception",False,False,True)
     cgitb.handler()
 
 sys.stdout=old_stdout

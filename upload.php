@@ -43,7 +43,7 @@ class ApfUploadPage extends ApfSimplePage {
 		$ajax->write();
 ?>
 
-var keeprunning=true;
+var keeprunning=false;
 var starttime=0; //start time
 var fsize=0; //file size
 var csize=0; //current file size
@@ -67,6 +67,7 @@ function validateFileCallback(http) {
 				//document.upload_form.sourcefile.value="/etc/passwd";
 				document.upload_form.submit();
 				document.upload_form.sourcefile.disabled=true;
+				keeprunning=true;
 				self.setTimeout("getFileStats()",1000);
 			} else {
 				out.innerHTML="<font color=red>File rejected by server<" + "/" + "font>";
@@ -99,6 +100,7 @@ function validateFile() {
 }
 
 function getFileStatsCallback(http) {
+	if (!keeprunning) return;
 	var out=document.getElementById("progress");
 	//out.innerHTML+=".";
 	//out.innerHTML+=http.readyState;
@@ -229,7 +231,7 @@ function finishUpload() {
 
 //Habilitar el upload
 function enableUpload() {
-	keeprunning=true;
+	//keeprunning=true;
 	fsize=0;
 	csize=0;
 	count=0;
