@@ -54,10 +54,12 @@ class ApfManager extends ApfDocument {
 	/// Añadir una nueva entrada al menú.
 	/// @param title titulo de la pagina.
 	/// @param page dirección de la página.
-	function add2Menu($title,$page) {
+	/// @param link Valor diferente a 0 indica que page es un documento externo
+	function add2Menu($title,$page,$link=0) {
 		$x=count($this->menu);
 		$this->menu[$x][1]=$title;
 		$this->menu[$x][0]=$page;
+		$this->menu[$x][2]=$link;
 	}
 	
 	/// Obtener vector de argumentos del documento. (Para construir enlaces)
@@ -159,15 +161,14 @@ class ApfManager extends ApfDocument {
 	/// Crea el menú de navegación
 	function menu() {
 		?>
- <table border="0" width="97%" cellspacing="0" cellpadding="0" align="center" class="doc_body">
- <tr>
- <td align="center" width="13%" valign="top">
-  <!-- Nav -->
-  <div class="menu">
-  <table border="0" cellspacing="0" cellpadding="3" width="100%" class="fmenu">
-  <tr>
-  <td height="50">&nbsp;</td>
-  </tr>
+	<table border="0" width="97%" cellspacing="0" cellpadding="0" align="center" class="doc_body">
+		<tr>
+		<!-- Nav -->
+		<td class="menu" align="center" width="13%" valign="top">
+			<table border="0" cellspacing="0" cellpadding="3" width="100%" class="fmenu">
+			<tr>
+				<td height="50">&nbsp;</td>
+			</tr>
 <?
 		//Mostrar todas las secciones del índice
 		$i=0; $done=0;
@@ -180,7 +181,11 @@ class ApfManager extends ApfDocument {
 				echo("<div class=\"selected\"><b>&gt;" . $menu[$i][1] . "&lt;</b></div>");
 				$done=1;
 			} else {
-				echo("<div class=\"unselected\"><a href=\"?page=" . $menu[$i][0] . "&amp;lan=" . $lan . "\">" . $menu[$i][1] . "</a></div>");
+				if($menu[$i][2]==0) {
+					echo("<div class=\"unselected\"><a href=\"?page=" . $menu[$i][0] . "&amp;lan=" . $lan . "\">" . $menu[$i][1] . "</a></div>");
+				} else {
+					echo("<div class=\"unselected\"><a href=\"" . $menu[$i][0] . "\">" . $menu[$i][1] . "</a></div>");
+				}
 			}
 			echo("</td></tr>");
 			$i++;
@@ -198,27 +203,24 @@ class ApfManager extends ApfDocument {
 			echo("</td></tr>");
 		}
 ?>
-  </table>
-  </div>
- </td>
- <td align="left" valign="top">
-  <!-- document -->
-	<div class="document">
-  <table border="0" width="100%" cellspacing="3" cellpadding="3">
-  <tr><td>
-   <!-- title -->
-   <h1><? echo($this->subtitle); ?></h1>
-   <!-- body -->
-   <?php
+			</table>
+		</td>
+		<!-- document -->
+		<td class="document" align="left" valign="top">
+			<table border="0" width="100%" cellspacing="3" cellpadding="3">
+			<tr>
+				<td>
+				<!-- title -->
+				<h1><? echo($this->subtitle); ?></h1>
+				<!-- body -->
+	<?php
 		$this->body();
-	 ?>
-   </td></tr>
-   </table>
-	 </div>
-  </td>
-  </tr>
-  </table>
-
+	?>
+				</td></tr>
+			</table>
+		</td>
+	</tr>
+	</table>
 <?php
 
 	} //Final del método menú
