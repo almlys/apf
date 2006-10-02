@@ -7,7 +7,7 @@
 */
 
 //configuración del gestor
-//Mirar el fichero DefaultConfig.php como referencia
+//Mirar el fichero DefaultConfig.php como referencia (mod)
 
 $APF['db.host']="";
 $APF['db.name']="apf_test";
