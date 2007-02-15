@@ -70,7 +70,7 @@ class ApfVideoPage extends ApfManager {
 			echo($this->lan->get("lenght") . ": " . $this->dur . "<br>");
 		?>
 		</div>
-		<a href="<?php echo($this->buildBaseUri() . "videos/" . $this->url); ?>">Play HTTP</a>
+		<!-- <a href="<?php echo($this->buildBaseUri() . "videos/" . $this->url); ?>">Play HTTP</a> -->
 		
 		<br><br>
 		<embed type="application/x-vlc-plugin"

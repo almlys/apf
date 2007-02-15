@@ -835,7 +835,7 @@ COMPACT_RTF            = YES
 # programs which support those fields. 
 # Note: wordpad (write) and others do not support links.
 
-RTF_HYPERLINKS         = NO
+RTF_HYPERLINKS         = YES
 
 # Load stylesheet definitions from file. Syntax is similar to doxygen's 
 # config file, i.e. a series of assignments. You only have to provide 
