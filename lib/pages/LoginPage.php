@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2007 Alberto MontaÃ±ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -8,13 +8,13 @@
 
 include_once(dirname(__FILE__) . "/manager.php"); 
 
-///Página de autenticación
+///PÃ¡gina de autenticaciï¿½
 class ApfLoginPage extends ApfManager {
-	///Valor de la autenticación: 0=Ok, 1=Error
+	///Valor de la autenticaciÃ³nï¿½: 0=Ok, 1=Error
 	var $login_status=0;
 	///Constructor
-	///@param logout Si es verdadero cierra la sessión, en caso contrario muestra la página de entrada.
-	function ApfLoginPage($logout=0) {
+	///@param logout Si es verdadero cierra la sessiÃ³n, en caso contrario muestra la pÃ¡gina de entrada.
+	function ApfLoginPage($logout=False) {
 		$this->ApfManager("");
 		$this->setTitle($this->lan->get("login_page"));
 		
@@ -57,7 +57,7 @@ class ApfLoginPage extends ApfManager {
 		ApfManager::head();
 	}
 	
-	///Método cuerpo
+	///Mï¿½odo cuerpo
 	function body() {
 		if($this->login_status==1) {
 			?>

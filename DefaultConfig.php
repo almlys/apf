@@ -62,6 +62,12 @@ $APF['default_page']='main';
 $APF['user.pages']=array('main');
 $APF['admin.pages']=array();
 $APF['page.main']=array('pages/MainPage.php','ApfMainPage',array());
+$APF['page.categ']=array('pages/MediaPage.php','ApfMediaPage',array());
+$APF['page.videos']=array('pages/VideoPage.php','ApfVideoPage',array());
+$APF['page.login']=array('pages/LoginPage.php','ApfLoginPage',array());
+$APF['page.logout']=array('pages/LoginPage.php','ApfLoginPage',array("True"));
+$APF['page.edit']=array('pages/EditPage.php','ApfEditPage',array());
+$APF['page.admin']=array('pages/AdminPage.php','ApfAdminPage',array());
 
 // *** Base de datos ***
 ///Plugin de la base de datos
