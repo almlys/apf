@@ -1,1 +1,0 @@
-1. Fix recursive loop on query, on error, when query is placed in a constructor

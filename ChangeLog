@@ -1,4 +1,9 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-02-16 15:20  alberto
+
+	* [r62] ChangeLog, appcore.php, countLines.sh, index.php,
+	  updateChangeLog.sh: Renamed index to appcore, added simple index
+
 2007-02-16 14:34  alberto
 
 	* [r61] ChangeLog: Changelog updated
