@@ -1,50 +1,65 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2007 Alberto MontaÃ±ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
 */
 
-//configuración por defecto del gestor
+// ConfiguraciÃ³n por defecto del gestor
 // **** NO MODIFICAR ESTE FICHERO ****
-//Utilizar el fichero "LocalConfig.php" para la configuración de usuario
+// Utilizar el fichero "LocalConfig.php" para la configuraciÃ³n de usuario
 
-// *** Preferencias Generales ***
-///Idioma por defecto utilizado por la aplicación.
+/*#############################################################################
+**** Preferencias Generales ***************************************************
+#############################################################################*/
+
+// *** Errores y Excepciones ***
+
+///Mostrar Excepciones
+$APF['display_exceptions']=True;
+
+// *** LocalizaciÃ³n y CodificaciÃ³n ***
+
+///Idioma por defecto utilizado por la aplicaciÃ³n.
 $APF['default_language']="es";
-///Idiomas disponibles para la aplicación
-/// Para instalar una nueava localización, es importante hacer dos cosas.
-/// 1) Añadir el fichero strings.id.php al directorio lib/lan
+///Idiomas disponibles para la aplicaciÃ³n
+/// Para instalar una nueava localizaciÃ³n, es importante hacer dos cosas.
+/// 1) AÃ±adir el fichero strings.id.php al directorio lib/lan
 /// 2) Actualizar los campos enumerados (enum) de la base de datos para que
-/// contenplen estos nuevos valores, o simplemente cambiarlos al tipo carácter
-/// para poder añadir nuevas localizaciones en el futuro sin tener que modificar
+/// contenplen estos nuevos valores, o simplemente cambiarlos al tipo carÃ¡cter
+/// para poder aÃ±adir nuevas localizaciones en el futuro sin tener que modificar
 /// la base de datos.
 $APF['languages']=array("ca","en","es");
 $APF['language_names']=array("Catal&agrabe;","English","Espa&ntilde;ol");
-// ***
 
 // *** Directorios ***
 
 ///Ruta del directorio base del servidor (en blanco autodetectar)
 ///Nota: Si se va a llamar el script desde otros scripts en otras rutas
-/// entonces es necessario especificar una ruta fija, ya que la autodetección
-/// fallará. Si la autodetección falla, entonces es necesario fijar una ruta.
+/// entonces es necessario especificar una ruta fija, ya que la autodetecciï¿½
+/// fallarï¿½ Si la autodetecciï¿½ falla, entonces es necesario fijar una ruta.
 $APF['server.path']="";
 ///Ruta donde se encuentra instalado el script en el sistema de ficheros
 $APF['system.path']=dirname(__FILE__);
 
-///Ruta relativa a previsualizaciones, y otros datos dinámicos
+///Ruta relativa a previsualizaciones, y otros datos dinÃ¡micos
 $APF['cache']="cache";
 
 ///Ruta relativa a videos disponibles (para VoD sobre http y videolan)
 $APF['videos']="videos";
 
-///Indica si se utilizarán rutas relativas, o absolutas.
+///Indica si se utilizarï¿½ rutas relativas, o absolutas.
 ///Nota: No se pueden utilizar rutas relativas si se va a llamar al script desde
 ///otros scripts. Desactivar rutas relativas en caso de problemas de funcionamiento.
 $APF['relative_paths']=1;
-// ***
+
+// *** PÃ¡ginas y recursos ***
+///PÃ¡gina por defecto
+$APF['default_page']="main";
+
+///Todas las pÃ¡ginas
+$APF['page.main']="pages/MainPage.php"
 
 // *** Base de datos ***
 ///Plugin de la base de datos
@@ -57,27 +72,28 @@ $APF['db.name']="";
 $APF['db.user']="";
 ///Password
 $APF['db.passwd']="";
-// ***
 
-// *** Opciones de autenticación ***
+// *** Opciones de autenticaciÃ³nï¿½ ***
 
-///Selecciona el modulo de autenticación a utilizar
+///Selecciona el modulo de autenticaciÃ³n a utilizar
 $APF['auth.plug']="auth.php";
 
-///Activa/Desactiva autenticación Desafío/Respuesta
+///Activa/Desactiva autenticaciÃ³n DesafÃ­o/Respuesta
 ///(Challenge Handshake Authentication Protocol)
 ///Para que funcione el navegador debe soportar JavaScript.
 $APF['auth.chap']=1;
-// ***
 
-// *** Configuracion servidores VoD ***
-///Indica la ruta al manejador que conecta la aplicación con el servidor VoD
+
+// *** ConfiguraciÃ³n servidores VoD ***
+
+///Indica la ruta al manejador que conecta la aplicaciÃ³n con el servidor VoD
 $APF['vod.plug']="HttpVoDhandler.php";
 //$APF['vod.plug']="VideoLanVoDhandler.php";
 
-// *** Configuración especifica por servidor VoD ***
+// *** ConfiguraciÃ³n especifica por servidor VoD ***
+
 ///Videolan
-///Direccion del servidor de gestión (administración)
+///DirecciÃ³n del servidor de gestiÃ³n (administraciÃ³n)
 $APF['videolan.host']="";
 ///Puerto de telnet
 $APF['videolan.port']="";
@@ -85,19 +101,12 @@ $APF['videolan.port']="";
 
 // *** Subida de ficheros ***
 ///Script que se encarga de la subida de ficheros
-///Este script nos permite saltarnos los límites de 2MBytes a la vez que nos permite
+///Este script nos permite saltarnos los lï¿½ites de 2MBytes a la vez que nos permite
 /// enviar un feedback al usuario.
 $APF['upload_script']="cgi-bin/upload.py";
-///Directorio de ficheros subidos (debe ser idéntico al configurado en el script)
+///Directorio de ficheros subidos (debe ser idÃ©ntico al configurado en el script)
 //$APF['upload_dir']="/tmp/apf_upload";
 $APF['upload_dir']="/home/apf_upload";
 
-// Cargar configuración local si existe
-if(is_readable(dirname(__FILE__) . "/LocalConfig.php")) {
-	require_once(dirname(__FILE__) . "/LocalConfig.php");
-}
-//
-
-//Post
 
 ?>
