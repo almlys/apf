@@ -1,4 +1,8 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-02-16 15:23  alberto
+
+	* [r63] AUTHORS, ChangeLog, TODO: rm ToDo add Authors file
+
 2007-02-16 15:20  alberto
 
 	* [r62] ChangeLog, appcore.php, countLines.sh, index.php,

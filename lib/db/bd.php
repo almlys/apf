@@ -1,16 +1,18 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2007 Alberto MontaÃ±ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
 */
 
+require_once(dirname(__FILE__) . "/dbBase.php");
+
 ///Classe base de datos (MySQL)
-class ApfDB {
-	var $query_count=0;
-	var $link;
-	var $result;
+class ApfMysqlDB implements iDB {
+	private $query_count=0;
+	private $link;
+	private $result;
 
 	///Constructor
 	function ApfDB($user="",$password="",$database="",$host="") {
@@ -38,8 +40,8 @@ class ApfDB {
 		return 0;
 	} //end connect
 
-	/// Enviar petición sql a la base de datos.
-	/// @param query Petición
+	/// Enviar peticiï¿½ sql a la base de datos.
+	/// @param query Peticiï¿½
 	function query($query) {
 		if($this->link==null) $this->connect();
 		$this->query_count++;
@@ -53,12 +55,12 @@ class ApfDB {
 		return 1;
 	}
 	
-	///Obtener el último error producido en la última consulta.
+	///Obtener el ltimo error producido en la ltima consulta.
 	function getError() {
 		return mysql_error($this->link);
 	}
 
-	///Obtener el vector de datos devueltos después de la última petición.
+	///Obtener el vector de datos devueltos despuï¿½ de la ltima peticiï¿½.
 	function fetchArray() {
 		//echo($this->result . $this->link);
 		if($this->result) {
@@ -72,7 +74,7 @@ class ApfDB {
 		return(mysql_real_escape_string($what));
 	}
 	
-	///Devuelve el identificador de la última petición de inserción realizada a la base de datos.
+	///Devuelve el identificador de la ltima peticiï¿½ de inserciï¿½ realizada a la base de datos.
 	function insertId() {
 		return(mysql_insert_id());
 	}
