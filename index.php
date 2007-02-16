@@ -14,6 +14,12 @@ if(is_readable(dirname(__FILE__) . "/LocalConfig.php")) {
 	require_once(dirname(__FILE__) . "/LocalConfig.php");
 }
 
+class UnknownResourceException extends Exception {
+	public function __construct($name="None") {
+		parent::__construct("Unknown resource $name requested");
+	}
+}
+
 //Crear log
 require_once(dirname(__FILE__). "/lib/log/logger.php");
 $stdout=new Logger($APF["log.path"]);
@@ -32,19 +38,19 @@ try {
 	//Fijar main como recurso por defecto
 	if(empty($page)) $page=$APF['default_page'];
 
-	//Instanciar dinámicamente el recurso solicitado
+	//Instanciar dinámicamente el recurso solicitado si existe
 	$lookup_page='page.'.$page;
+	if(!array_key_exists($lookup_page,$APF)) {
+		$lookup_page='page.'.$APF['default_page'];
+		$_GET['page']=$APF['default_page'];
+	}
+
 	if(array_key_exists($lookup_page,$APF)) {
 		require_once(dirname(__FILE__) . "/lib/" . $APF[$lookup_page][0]);
-		$args=""; $flag=False;
-		foreach ($APF[$lookup_page][2] as $arg) {
-			if ($flag) $args=$args . ",";
-			else $flag=True;
-			$args=$args . $arg;
-		}
+		$args=implode(",",$APF[$lookup_page][2]);
 		eval("\$doc = new {$APF[$lookup_page][1]}($args);");
 	} else {
-		throw new Exception("Unknown Resource Requested");
+		throw new UnknownResourceException($page);
 	}
 
 	$doc->show();
