@@ -1,232 +1,237 @@
-Este fichero has sido automáticamente generado a partir de svn -v log
-------------------------------------------------------------------------
-r19 | alberto | 2006-05-15 15:17:19 +0200 (lun, 15 may 2006) | 1 line
-Rutas cambiadas:
-   M /apf/trunk/info.php
-   M /apf/trunk/videopage.php
+2006-10-02 10:45  alberto
 
-no much stuff was done :(
-------------------------------------------------------------------------
-r18 | alberto | 2006-03-16 16:04:06 +0100 (jue, 16 mar 2006) | 1 line
-Rutas cambiadas:
-   M /apf/trunk/lib/lan/strings.ca.php
-   M /apf/trunk/lib/lan/strings.en.php
-   M /apf/trunk/lib/lan/strings.es.php
-   M /apf/trunk/lib/lan/strings.php
+	* ., .cvsignore: svn:ignore updated
 
-Arreglo de properties
-------------------------------------------------------------------------
-r17 | alberto | 2006-03-08 17:53:52 +0100 (mié, 08 mar 2006) | 1 line
-Rutas cambiadas:
-   A /apf/trunk/defaultconfig.php (de /apf/trunk/localconfig.php:16)
-   M /apf/trunk/lib/lan/strings.ca.php
-   M /apf/trunk/lib/lan/strings.en.php
-   M /apf/trunk/lib/lan/strings.es.php
-   M /apf/trunk/lib/main.php
-   M /apf/trunk/loginpage.php
-   A /apf/trunk/rmbackups.sh
-   M /apf/trunk/styles/default.css
+2006-10-02 10:44  alberto
 
-wip
-------------------------------------------------------------------------
-r16 | alberto | 2006-03-08 16:26:00 +0100 (mié, 08 mar 2006) | 1 line
-Rutas cambiadas:
-   D /apf/trunk/config.php
-   A /apf/trunk/localconfig.php (de /apf/trunk/config.php:15)
+	* ., .cvsignore, TODO: svn:ignore updated
 
-cp config.php
-------------------------------------------------------------------------
-r15 | alberto | 2006-02-10 17:09:51 +0100 (vie, 10 feb 2006) | 1 line
-Rutas cambiadas:
-   M /apf/trunk/adminpage.php
-   M /apf/trunk/config.php
-   M /apf/trunk/editpage.php
-   M /apf/trunk/index.php
-   M /apf/trunk/info.php
-   M /apf/trunk/lib/auth.php
-   M /apf/trunk/lib/bd.php
-   M /apf/trunk/lib/folder.php
-   M /apf/trunk/lib/main.php
-   M /apf/trunk/lib/tree.php
-   M /apf/trunk/loginpage.php
-   M /apf/trunk/mainpage.php
-   M /apf/trunk/manager.php
-   M /apf/trunk/mediapage.php
-   M /apf/trunk/videopage.php
+2006-10-02 10:41  alberto
 
-id?
-------------------------------------------------------------------------
-r14 | alberto | 2006-02-10 17:05:56 +0100 (vie, 10 feb 2006) | 1 line
-Rutas cambiadas:
-   M /apf/trunk/adminpage.php
-   M /apf/trunk/config.php
-   M /apf/trunk/editpage.php
-   M /apf/trunk/index.php
-   M /apf/trunk/info.php
-   M /apf/trunk/lib/auth.php
-   M /apf/trunk/lib/bd.php
-   M /apf/trunk/lib/folder.php
-   M /apf/trunk/lib/main.php
-   M /apf/trunk/lib/tree.php
-   M /apf/trunk/loginpage.php
-   M /apf/trunk/mainpage.php
-   M /apf/trunk/manager.php
-   M /apf/trunk/mediapage.php
-   M /apf/trunk/videopage.php
+	* LocalConfig.php: Don't worry this password is not going to work
+	  anywhere
 
-propdel
-------------------------------------------------------------------------
-r13 | alberto | 2006-02-10 16:55:56 +0100 (vie, 10 feb 2006) | 1 line
-Rutas cambiadas:
-   M /apf/trunk/adminpage.php
-   M /apf/trunk/config.php
-   M /apf/trunk/editpage.php
-   M /apf/trunk/index.php
-   M /apf/trunk/info.php
-   M /apf/trunk/lib/auth.php
-   M /apf/trunk/lib/bd.php
-   M /apf/trunk/lib/folder.php
-   M /apf/trunk/lib/main.php
-   M /apf/trunk/lib/tree.php
-   M /apf/trunk/loginpage.php
-   M /apf/trunk/mainpage.php
-   M /apf/trunk/manager.php
-   M /apf/trunk/mediapage.php
-   M /apf/trunk/videopage.php
+2006-10-02 10:41  alberto
 
-propdel
-------------------------------------------------------------------------
-r12 | alberto | 2006-02-10 16:54:43 +0100 (vie, 10 feb 2006) | 1 line
-Rutas cambiadas:
-   M /apf/trunk/config.php
+	* LocalConfig.php: wtf
 
-WIP
-------------------------------------------------------------------------
-r11 | alberto | 2006-02-06 17:53:47 +0100 (lun, 06 feb 2006) | 1 line
-Rutas cambiadas:
-   M /apf/trunk/config.php
-   A /apf/trunk/js
-   A /apf/trunk/js/md5.js
-   M /apf/trunk/lib/auth.php
+2006-09-27 14:46  alberto
 
-javascript md5 function
-------------------------------------------------------------------------
-r10 | alberto | 2006-01-31 18:59:09 +0100 (mar, 31 ene 2006) | 1 line
-Rutas cambiadas:
-   M /apf/trunk/adminpage.php
-   M /apf/trunk/config.php
-   M /apf/trunk/editpage.php
-   M /apf/trunk/index.php
-   M /apf/trunk/info.php
-   M /apf/trunk/lib/auth.php
-   M /apf/trunk/lib/bd.php
-   M /apf/trunk/lib/folder.php
-   M /apf/trunk/lib/lan/strings.ca.php
-   M /apf/trunk/lib/lan/strings.en.php
-   M /apf/trunk/lib/lan/strings.es.php
-   M /apf/trunk/lib/lan/strings.php
-   M /apf/trunk/lib/main.php
-   M /apf/trunk/lib/tree.php
-   M /apf/trunk/loginpage.php
-   M /apf/trunk/mainpage.php
-   M /apf/trunk/manager.php
-   M /apf/trunk/mediapage.php
-   M /apf/trunk/videopage.php
+	* manager.php, styles/default.css: Layout fix
 
-Propiedades?
-------------------------------------------------------------------------
-r9 | alberto | 2006-01-31 18:57:27 +0100 (mar, 31 ene 2006) | 1 line
-Rutas cambiadas:
-   M /apf/trunk/adminpage.php
-   M /apf/trunk/config.php
-   M /apf/trunk/editpage.php
-   M /apf/trunk/index.php
-   M /apf/trunk/info.php
-   M /apf/trunk/lib/auth.php
-   M /apf/trunk/lib/bd.php
-   M /apf/trunk/lib/folder.php
-   M /apf/trunk/lib/lan/strings.ca.php
-   M /apf/trunk/lib/lan/strings.en.php
-   M /apf/trunk/lib/lan/strings.es.php
-   M /apf/trunk/lib/lan/strings.php
-   M /apf/trunk/lib/main.php
-   M /apf/trunk/lib/tree.php
-   M /apf/trunk/loginpage.php
-   M /apf/trunk/mainpage.php
-   M /apf/trunk/manager.php
-   M /apf/trunk/mediapage.php
-   M /apf/trunk/videopage.php
+2006-08-29 11:25  alberto
 
-Documentación y etiquetas SVN
-------------------------------------------------------------------------
-r8 | alberto | 2006-01-31 16:50:21 +0100 (mar, 31 ene 2006) | 1 line
-Rutas cambiadas:
-   M /apf/trunk
-   M /apf/trunk/.cvsignore
-   M /apf/trunk/Doxyfile
-   M /apf/trunk/adminpage.php
-   M /apf/trunk/config.php
-   M /apf/trunk/editpage.php
-   M /apf/trunk/loginpage.php
-   M /apf/trunk/mainpage.php
-   M /apf/trunk/manager.php
-   M /apf/trunk/mediapage.php
+	* cgi-bin/upload.py, upload.php: wip
 
-Documentación
-------------------------------------------------------------------------
-r7 | alberto | 2006-01-26 17:43:09 +0100 (jue, 26 ene 2006) | 1 line
-Rutas cambiadas:
-   A /apf/trunk/Doxyfile
-   A /apf/trunk/adminpage.php
-   A /apf/trunk/config.php
-   A /apf/trunk/editpage.php
-   A /apf/trunk/imgs
-   A /apf/trunk/imgs/folder.jpg
-   A /apf/trunk/imgs/valid-html401.gif
-   A /apf/trunk/imgs/vcss
-   A /apf/trunk/imgs/videoimg.jpg
-   A /apf/trunk/index.php
-   A /apf/trunk/info.php
-   A /apf/trunk/lib
-   A /apf/trunk/lib/auth.php
-   A /apf/trunk/lib/bd.php
-   A /apf/trunk/lib/folder.php
-   A /apf/trunk/lib/lan
-   A /apf/trunk/lib/lan/strings.ca.php
-   A /apf/trunk/lib/lan/strings.en.php
-   A /apf/trunk/lib/lan/strings.es.php
-   A /apf/trunk/lib/lan/strings.php
-   A /apf/trunk/lib/main.php
-   A /apf/trunk/lib/tree.php
-   A /apf/trunk/loginpage.php
-   A /apf/trunk/mainpage.php
-   A /apf/trunk/manager.php
-   A /apf/trunk/mediapage.php
-   A /apf/trunk/styles
-   A /apf/trunk/styles/default.css
-   A /apf/trunk/videopage.php
+2006-06-16 14:05  alberto
 
-Revision inicial
-------------------------------------------------------------------------
-r6 | alberto | 2006-01-26 17:32:18 +0100 (jue, 26 ene 2006) | 1 line
-Rutas cambiadas:
-   M /apf/trunk
-   A /apf/trunk/.cvsignore
+	* cgi-bin/upload.py, lib/main.php, test.php, upload.php: WIP
 
-rebuilding...
-------------------------------------------------------------------------
-r5 | alberto | 2006-01-26 16:58:34 +0100 (jue, 26 ene 2006) | 1 line
-Rutas cambiadas:
-   A /apf/trunk/LICENSE
+2006-05-31 17:01  alberto
 
-added the license
-------------------------------------------------------------------------
-r4 | alberto | 2006-01-26 16:52:13 +0100 (jue, 26 ene 2006) | 1 line
-Rutas cambiadas:
-   A /apf
-   A /apf/branches
-   A /apf/tags
-   A /apf/trunk
+	* ajaxrpc.php, editpage.php, lib/lan/strings.ca.php,
+	  lib/lan/strings.en.php, lib/lan/strings.es.php, lib/main.php,
+	  upload.php: WIP
 
-skeleton
-------------------------------------------------------------------------
+2006-05-30 10:56  alberto
+
+	* imgs/progress_point.png: Added progress point (for the progress
+	  bar)
+
+2006-05-30 10:55  alberto
+
+	* DefaultConfig.php, cgi-bin/upload.py, upload.php: Work In
+	  Progress
+
+2006-05-25 15:14  alberto
+
+	* DefaultConfig.php, HttpVoDhandler.php, VideoLanVoDhandler.php,
+	  ajax.php, ajaxrpc.php, baseVoDhandler.php, cgi-bin/upload.py,
+	  lib/auth.php, lib/authbase.php, lib/bd.php, lib/main.php,
+	  upload.php, uploadfile.php: Blah
+
+2006-05-24 14:08  alberto
+
+	* DefaultConfig.php, HttpVoDhandler.php, VideoLanVoDhandler.php,
+	  ajax.php, ajaxrpc.php, baseVoDhandler.php, cgi-bin/upload.py,
+	  iframe.php, lib/auth.php, lib/main.php, loginpage.php,
+	  simplepage.php, test.php, upload.php, uploadfile.php: WIP
+
+2006-05-23 14:58  alberto
+
+	* HttpVoDhandler.php, VideoLanVoDhandler.php: WIP
+
+2006-05-23 14:55  alberto
+
+	* baseVoDhandler.php, cgi-bin, uploadfile.php: WIP
+
+2006-05-23 13:37  alberto
+
+	* iframe.php, test.php, upload.php: WIP
+
+2006-05-22 16:07  alberto
+
+	* filesystem.php, lib/layer.php, test.php: WIP
+
+2006-05-22 15:15  alberto
+
+	* lib/template.php: template keywords
+
+2006-05-22 15:14  alberto
+
+	* lib/template.php: add template
+
+2006-05-22 15:09  alberto
+
+	* Doxyfile, editpage.php, lib/bd.php, lib/lan/strings.ca.php,
+	  lib/lan/strings.en.php, lib/lan/strings.es.php, manager.php,
+	  mediapage.php: WIP
+
+2006-05-19 12:03  alberto
+
+	* Doxyfile: update doc file
+
+2006-05-18 16:30  alberto
+
+	* editpage.php: categorias finalmente portadas
+
+2006-05-18 15:11  alberto
+
+	* editpage.php, lib/main.php: categorias finalmente portadas
+
+2006-05-16 19:27  alberto
+
+	* DefaultConfig.php, lib/bd.php, lib/folder.php,
+	  lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/main.php, lib/tree.php, manager.php,
+	  mediapage.php, videopage.php: Cambios en la DB
+
+2006-05-16 01:49  alberto
+
+	* DefaultConfig.php, LocalConfig.php, lib/bd.php,
+	  lib/lan/strings.php, lib/main.php, lib/tree.php, mediapage.php:
+	  wip
+
+2006-05-15 23:30  alberto
+
+	* DefaultConfig.php, lib/lan/strings.ca.php,
+	  lib/lan/strings.es.php, lib/lan/strings.php, lib/main.php,
+	  manager.php, mediapage.php: Arregado bug de localizaciÃ³n
+	  conversiÃ³n a nuevo layout de la base de datos
+
+2006-05-15 16:11  alberto
+
+	* DefaultConfig.php, DefaultConfing.php: fix incorrect name
+
+2006-05-15 16:10  alberto
+
+	* DefaultConfing.php, LocalConfig.php, index.php: argh
+
+2006-05-15 15:07  alberto
+
+	* ChangeLog, updateChangeLog.sh: AÃ±adido changelog
+
+2006-05-15 15:02  alberto
+
+	* DefaultConfing.php, defaultconfig.php: mv
+
+2006-05-15 15:01  alberto
+
+	* LocalConfig.php, defaultconfig.php, localconfig.php: wip2
+
+2006-05-15 13:17  alberto
+
+	* info.php, videopage.php: no much stuff was done :(
+
+2006-03-16 15:04  alberto
+
+	* lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/lan/strings.php: Arreglo de
+	  properties
+
+2006-03-08 16:53  alberto
+
+	* defaultconfig.php, lib/lan/strings.ca.php,
+	  lib/lan/strings.en.php, lib/lan/strings.es.php, lib/main.php,
+	  loginpage.php, rmbackups.sh, styles/default.css: wip
+
+2006-03-08 15:26  alberto
+
+	* config.php, localconfig.php: cp config.php
+
+2006-02-10 16:09  alberto
+
+	* adminpage.php, config.php, editpage.php, index.php, info.php,
+	  lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
+	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php, videopage.php: id?
+
+2006-02-10 16:05  alberto
+
+	* adminpage.php, config.php, editpage.php, index.php, info.php,
+	  lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
+	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php, videopage.php: propdel
+
+2006-02-10 15:55  alberto
+
+	* adminpage.php, config.php, editpage.php, index.php, info.php,
+	  lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
+	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php, videopage.php: propdel
+
+2006-02-10 15:54  alberto
+
+	* config.php: WIP
+
+2006-02-06 16:53  alberto
+
+	* config.php, js, js/md5.js, lib/auth.php: javascript md5 function
+
+2006-01-31 17:59  alberto
+
+	* adminpage.php, config.php, editpage.php, index.php, info.php,
+	  lib/auth.php, lib/bd.php, lib/folder.php, lib/lan/strings.ca.php,
+	  lib/lan/strings.en.php, lib/lan/strings.es.php,
+	  lib/lan/strings.php, lib/main.php, lib/tree.php, loginpage.php,
+	  mainpage.php, manager.php, mediapage.php, videopage.php:
+	  Propiedades?
+
+2006-01-31 17:57  alberto
+
+	* adminpage.php, config.php, editpage.php, index.php, info.php,
+	  lib/auth.php, lib/bd.php, lib/folder.php, lib/lan/strings.ca.php,
+	  lib/lan/strings.en.php, lib/lan/strings.es.php,
+	  lib/lan/strings.php, lib/main.php, lib/tree.php, loginpage.php,
+	  mainpage.php, manager.php, mediapage.php, videopage.php:
+	  DocumentaciÃ³n y etiquetas SVN
+
+2006-01-31 15:50  alberto
+
+	* ., .cvsignore, Doxyfile, adminpage.php, config.php, editpage.php,
+	  loginpage.php, mainpage.php, manager.php, mediapage.php:
+	  DocumentaciÃ³n
+
+2006-01-26 16:43  alberto
+
+	* Doxyfile, adminpage.php, config.php, editpage.php, imgs,
+	  imgs/folder.jpg, imgs/valid-html401.gif, imgs/vcss,
+	  imgs/videoimg.jpg, index.php, info.php, lib, lib/auth.php,
+	  lib/bd.php, lib/folder.php, lib/lan, lib/lan/strings.ca.php,
+	  lib/lan/strings.en.php, lib/lan/strings.es.php,
+	  lib/lan/strings.php, lib/main.php, lib/tree.php, loginpage.php,
+	  mainpage.php, manager.php, mediapage.php, styles,
+	  styles/default.css, videopage.php: Revision inicial
+
+2006-01-26 16:32  alberto
+
+	* ., .cvsignore: rebuilding...
+
+2006-01-26 15:58  alberto
+
+	* LICENSE: added the license
+
+2006-01-26 15:52  alberto
+
+	* apf, apf/branches, apf/tags, .: skeleton
+
