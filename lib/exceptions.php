@@ -38,6 +38,12 @@ set_error_handler(array("PHPError", "errorHandlerCallback"), $e_types);
 /// @param $e Excepción
 /// @param $body_tags Indica si se imprimen las etiquetas <html><head></head><body>...</body></html>
 function print_exception($e,$body_tags=False) {
+	global $APF,$stdout;
+	$stdout->writeReq("Exception " . get_class($e) . "\n"
+ . $e->getMessage() . " " . $e->getCode() . "\n"
+ . "At file: " . $e->getFile() . " line: " . $e->getLine() . "\n"
+ . $e->getTraceAsString());
+	if(!$APF['display_exceptions']) return;
 	if($body_tags) {
 	?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

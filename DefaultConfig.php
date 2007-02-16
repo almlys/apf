@@ -43,6 +43,9 @@ $APF['server.path']='';
 ///Ruta donde se encuentra instalado el script en el sistema de ficheros
 $APF['system.path']=dirname(__FILE__);
 
+///Ruta del fichero Log
+$APF['log.path']=$APF['system.path'] . "/log/stdout.log";
+
 ///Ruta relativa a previsualizaciones, y otros datos dinámicos
 $APF['cache']='cache';
 

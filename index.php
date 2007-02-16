@@ -14,6 +14,10 @@ if(is_readable(dirname(__FILE__) . "/LocalConfig.php")) {
 	require_once(dirname(__FILE__) . "/LocalConfig.php");
 }
 
+//Crear log
+require_once(dirname(__FILE__). "/lib/log/logger.php");
+$stdout=new Logger($APF["log.path"]);
+
 //Instalar handler de errores sobre excepciones
 require_once(dirname(__FILE__) . "/lib/exceptions.php");
 
