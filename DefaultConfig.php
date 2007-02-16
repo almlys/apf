@@ -8,7 +8,7 @@
 
 // Configuración por defecto del gestor
 // **** NO MODIFICAR ESTE FICHERO ****
-// Utilizar el fichero "LocalConfig.php" para la configuración de usuario
+// Utilizar el fichero 'LocalConfig.php' para la configuración de usuario
 
 /*#############################################################################
 **** Preferencias Generales ***************************************************
@@ -22,7 +22,7 @@ $APF['display_exceptions']=True;
 // *** Localización y Codificación ***
 
 ///Idioma por defecto utilizado por la aplicación.
-$APF['default_language']="es";
+$APF['default_language']='es';
 ///Idiomas disponibles para la aplicación
 /// Para instalar una nueava localización, es importante hacer dos cosas.
 /// 1) Añadir el fichero strings.id.php al directorio lib/lan
@@ -30,8 +30,8 @@ $APF['default_language']="es";
 /// contenplen estos nuevos valores, o simplemente cambiarlos al tipo carácter
 /// para poder añadir nuevas localizaciones en el futuro sin tener que modificar
 /// la base de datos.
-$APF['languages']=array("ca","en","es");
-$APF['language_names']=array("Catal&agrabe;","English","Espa&ntilde;ol");
+$APF['languages']=array('ca','en','es');
+$APF['language_names']=array('Catal&agrabe;','English','Espa&ntilde;ol');
 
 // *** Directorios ***
 
@@ -39,15 +39,15 @@ $APF['language_names']=array("Catal&agrabe;","English","Espa&ntilde;ol");
 ///Nota: Si se va a llamar el script desde otros scripts en otras rutas
 /// entonces es necessario especificar una ruta fija, ya que la autodetecci�
 /// fallar� Si la autodetecci� falla, entonces es necesario fijar una ruta.
-$APF['server.path']="";
+$APF['server.path']='';
 ///Ruta donde se encuentra instalado el script en el sistema de ficheros
 $APF['system.path']=dirname(__FILE__);
 
 ///Ruta relativa a previsualizaciones, y otros datos dinámicos
-$APF['cache']="cache";
+$APF['cache']='cache';
 
 ///Ruta relativa a videos disponibles (para VoD sobre http y videolan)
-$APF['videos']="videos";
+$APF['videos']='videos';
 
 ///Indica si se utilizar� rutas relativas, o absolutas.
 ///Nota: No se pueden utilizar rutas relativas si se va a llamar al script desde
@@ -56,27 +56,29 @@ $APF['relative_paths']=1;
 
 // *** Páginas y recursos ***
 ///Página por defecto
-$APF['default_page']="main";
+$APF['default_page']='main';
 
 ///Todas las páginas
-$APF['page.main']="pages/MainPage.php"
+$APF['user.pages']=array('main');
+$APF['admin.pages']=array();
+$APF['page.main']=array('pages/MainPage.php','ApfMainPage',array());
 
 // *** Base de datos ***
 ///Plugin de la base de datos
-$APF['db.plug']="bd.php";
+$APF['db.plug']='bd.php';
 ///Servidor y puerto (en blanco para usar el socket unix)
-$APF['db.host']="";
+$APF['db.host']='';
 ///Nombre de la base de datos
-$APF['db.name']="";
+$APF['db.name']='';
 ///Nombre de usuario
-$APF['db.user']="";
+$APF['db.user']='';
 ///Password
-$APF['db.passwd']="";
+$APF['db.passwd']='';
 
 // *** Opciones de autenticación� ***
 
 ///Selecciona el modulo de autenticación a utilizar
-$APF['auth.plug']="auth.php";
+$APF['auth.plug']='auth.php';
 
 ///Activa/Desactiva autenticación Desafío/Respuesta
 ///(Challenge Handshake Authentication Protocol)
@@ -87,26 +89,26 @@ $APF['auth.chap']=1;
 // *** Configuración servidores VoD ***
 
 ///Indica la ruta al manejador que conecta la aplicación con el servidor VoD
-$APF['vod.plug']="HttpVoDhandler.php";
-//$APF['vod.plug']="VideoLanVoDhandler.php";
+$APF['vod.plug']='HttpVoDhandler.php';
+//$APF['vod.plug']='VideoLanVoDhandler.php';
 
 // *** Configuración especifica por servidor VoD ***
 
 ///Videolan
 ///Dirección del servidor de gestión (administración)
-$APF['videolan.host']="";
+$APF['videolan.host']='';
 ///Puerto de telnet
-$APF['videolan.port']="";
-// ***
+$APF['videolan.port']='';
+
 
 // *** Subida de ficheros ***
 ///Script que se encarga de la subida de ficheros
 ///Este script nos permite saltarnos los l�ites de 2MBytes a la vez que nos permite
 /// enviar un feedback al usuario.
-$APF['upload_script']="cgi-bin/upload.py";
+$APF['upload_script']='cgi-bin/upload.py';
 ///Directorio de ficheros subidos (debe ser idéntico al configurado en el script)
-//$APF['upload_dir']="/tmp/apf_upload";
-$APF['upload_dir']="/home/apf_upload";
+//$APF['upload_dir']='/tmp/apf_upload';
+$APF['upload_dir']='/home/apf_upload';
 
 
 ?>

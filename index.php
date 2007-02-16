@@ -30,11 +30,21 @@ try {
 	if(empty($page)) $page=$APF['default_page'];
 
 	//Instanciar dinamicamente el recurso solicitado
+	$lookup_page='page.'.$page;
+	if(array_key_exists($lookup_page,$APF)) {
+		require_once(dirname(__FILE__) . "/lib/" . $APF[$lookup_page][0]);
+		$args=""; $flag=False;
+		foreach ($APF[$lookup_page][2] as $arg) {
+			if ($flag) $args=$args . ",";
+			else $flag=True;
+			$args=$args . $arg;
+		}
+		eval("\$doc = new {$APF[$lookup_page][1]}($args);");
+	} else {
+		//Run old code
+
+	//Instanciar dinamicamente el recurso solicitado
 	switch($page) {
-		case "main":
-			require_once(dirname(__FILE__) . "/mainpage.php");
-			$doc = new ApfMainPage();
-			break;
 		case "categ":
 			require_once(dirname(__FILE__) . "/mediapage.php");
 			$doc = new ApfMediaPage();
@@ -63,6 +73,7 @@ try {
 			require_once(dirname(__FILE__) . "/manager.php");
 			$doc = new ApfManager("Desconocido");
 	}
+	}//End 
 
 	$doc->show();
 

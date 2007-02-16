@@ -1,21 +1,21 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montaï¿½la Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
 */
 
-//Inicialización
-include_once(dirname(__FILE__) . "/lib/main.php"); 
+//Inicializaciï¿½
+include_once(dirname(__FILE__) . "/../main.php"); 
 
-///Clase página del gestor
+///Clase pï¿½ina del gestor
 class ApfManager extends ApfDocument {
-	var $page="main"; ///<Nombre de la página
-	var $params=""; ///<Listado de parámetros extra, empezando por &amp;key=value pairs
+	var $page="main"; ///<Nombre de la pï¿½ina
+	var $params=""; ///<Listado de parï¿½etros extra, empezando por &amp;key=value pairs
 	var $admin=0; ///<Indica si el usuario tiene privilegios administrativos
 	var $id=0; ///<Identificador de un recurso (categoria, video, etc...)
-	var $tree=null; ///<Contiene una class ApfTree con el conjunto de categorías
+	var $tree=null; ///<Contiene una class ApfTree con el conjunto de categorï¿½s
 
 	///Constructor
 	function ApfManager($title) {
@@ -51,9 +51,9 @@ class ApfManager extends ApfDocument {
 		}
 	}
 	
-	/// Añadir una nueva entrada al menú.
+	/// Aï¿½dir una nueva entrada al men.
 	/// @param title titulo de la pagina.
-	/// @param page dirección de la página.
+	/// @param page direcciï¿½ de la pï¿½ina.
 	/// @param link Valor diferente a 0 indica que page es un documento externo
 	function add2Menu($title,$page,$link=0) {
 		$x=count($this->menu);
@@ -63,8 +63,8 @@ class ApfManager extends ApfDocument {
 	}
 	
 	/// Obtener vector de argumentos del documento. (Para construir enlaces)
-	/// @param test Si se especifica, fijará nueva dirección de destino.
-	/// @param encode Si es verdadero, codificará & como &amp;
+	/// @param test Si se especifica, fijarï¿½nueva direcciï¿½ de destino.
+	/// @param encode Si es verdadero, codificarï¿½& como &amp;
 	function getArgs($test="",$encode=1) {
 		if(!empty($test)) {
 			$page=$test;
@@ -82,7 +82,7 @@ class ApfManager extends ApfDocument {
 	}
 	
 	/// Obtener vector de argumentos del documento. (Para uso en campos ocultos de un formulario)
-	/// @param test Si se especifica, fijará nueva dirección de destino.
+	/// @param test Si se especifica, fijarï¿½nueva direcciï¿½ de destino.
 	function getArgsHidden($test="") {
 		if(!empty($test)) {
 			$page=$test;
@@ -96,8 +96,8 @@ class ApfManager extends ApfDocument {
 		return $args;
 	}
 	
-	/// Fija el título del documento.
-	/// @param title El título.
+	/// Fija el tï¿½ulo del documento.
+	/// @param title El tï¿½ulo.
 	function setTitle($title) {
 		$this->subtitle=$title;
 		$this->title=$this->maintitle . " - " . $title;
@@ -158,7 +158,7 @@ class ApfManager extends ApfDocument {
 <?php
 	} //Fin del metodo head
 	
-	/// Crea el menú de navegación
+	/// Crea el men de navegaciï¿½
 	function menu() {
 		?>
 	<table border="0" width="97%" cellspacing="0" cellpadding="0" align="center" class="doc_body">
@@ -170,7 +170,7 @@ class ApfManager extends ApfDocument {
 				<td height="50">&nbsp;</td>
 			</tr>
 <?
-		//Mostrar todas las secciones del índice
+		//Mostrar todas las secciones del ï¿½dice
 		$i=0; $done=0;
 		$menu=$this->menu;
 		$page=$this->page;
@@ -223,9 +223,9 @@ class ApfManager extends ApfDocument {
 	</table>
 <?php
 
-	} //Final del método menú
+	} //Final del mï¿½odo men
 	
-	/// Pie de la página
+	/// Pie de la pï¿½ina
 	function foot() {
 		?>
  <!-- Footer -->
@@ -259,34 +259,34 @@ class ApfManager extends ApfDocument {
  </table>
 <?php
 	ApfDocument::foot();
-	} //Final del método foot
+	} //Final del mï¿½odo foot
 	
-	/// Método cuerpo, Genera el contenido de la página.
+	/// Mï¿½odo cuerpo, Genera el contenido de la pï¿½ina.
 	function body() {
 		echo($this->lan->get("no_avail"));
 	}
 	
-	/// Muestra información de debug.
+	/// Muestra informaciï¿½ de debug.
 	function debug() {
 		if(!empty($this->DB)) {
 			echo("<br>" . $this->lan->get("num_querys") . " " . $this->DB->query_count);
 		}
 	}
 	
-	/// Genera y envía la página al cliente.
+	/// Genera y envï¿½ la pï¿½ina al cliente.
 	function show() {
 		$this->head();
 		$this->menu();
 		$this->foot();
 	}
 
-	/// Genera una redirección.
-	/// @param page Página de destino
+	/// Genera una redirecciï¿½.
+	/// @param page Pï¿½ina de destino
 	function redirect2page($page) {
 		$this->redirect($this->BuildBaseUri($this->getArgs($page,0)));
 	}
 
-	/// Genera el árbol de categorías
+	/// Genera el ï¿½bol de categorï¿½s
 	function generateMediaTree() {
 		if($this->tree==null) {
 			$lan=$this->lan->getDefaultLanguage();

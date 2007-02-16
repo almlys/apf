@@ -34,6 +34,9 @@ $e_types=E_ALL & ~E_NOTICE;
 //$e_types=E_ALL | E_STRICT;
 set_error_handler(array("PHPError", "errorHandlerCallback"), $e_types);
 
+/// Imprime una excepción
+/// @param $e Excepción
+/// @param $body_tags Indica si se imprimen las etiquetas <html><head></head><body>...</body></html>
 function print_exception($e,$body_tags=False) {
 	if($body_tags) {
 	?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
