@@ -1,220 +1,265 @@
+Este fichero has sido autom醫icamente generado a partir de svn2cl
+2007-02-16 14:34  alberto
+
+	* [r61] ChangeLog: Changelog updated
+
+2007-02-16 14:04  alberto
+
+	* [r60] index.php, log/.htaccess: Done
+
+2007-02-16 03:25  alberto
+
+	* [r59] DefaultConfig.php, index.php, lib/exceptions.php, lib/log,
+	  lib/log/logger.php, lib/util.php, log: some work
+
+2007-02-16 02:34  alberto
+
+	* [r58] DefaultConfig.php, adminpage.php, editpage.php, index.php,
+	  lib/pages/AdminPage.php, lib/pages/EditPage.php,
+	  lib/pages/LoginPage.php, lib/pages/VideoPage.php, loginpage.php,
+	  videopage.php: some changes
+
+2007-02-16 02:23  alberto
+
+	* [r57] lib/pages/MediaPage.php, lib/pages/mediapage.php: some
+	  changes
+
+2007-02-16 02:23  alberto
+
+	* [r56] DefaultConfig.php, index.php, lib/auth, lib/db,
+	  lib/exceptions.php, lib/pages, lib/pages/MainPage.php,
+	  lib/pages/manager.php, lib/pages/mediapage.php, lib/widgets,
+	  mainpage.php, manager.php, mediapage.php: some changes
+
+2007-02-16 01:52  alberto
+
+	* [r55] DefaultConfig.php, index.php, lib/exceptions.php,
+	  lib/template.php: ok2
+
+2007-02-15 19:43  alberto
+
+	* [r54] Doxyfile, videopage.php: ok2
+
 2006-10-02 10:45  alberto
 
-	* ., .cvsignore: svn:ignore updated
+	* [r49] ., .cvsignore: svn:ignore updated
 
 2006-10-02 10:44  alberto
 
-	* ., .cvsignore, TODO: svn:ignore updated
+	* [r48] ., .cvsignore, TODO: svn:ignore updated
 
 2006-10-02 10:41  alberto
 
-	* LocalConfig.php: Don't worry this password is not going to work
-	  anywhere
+	* [r47] LocalConfig.php: Don't worry this password is not going to
+	  work anywhere
 
 2006-10-02 10:41  alberto
 
-	* LocalConfig.php: wtf
+	* [r46] LocalConfig.php: wtf
 
 2006-09-27 14:46  alberto
 
-	* manager.php, styles/default.css: Layout fix
+	* [r45] manager.php, styles/default.css: Layout fix
 
 2006-08-29 11:25  alberto
 
-	* cgi-bin/upload.py, upload.php: wip
+	* [r44] cgi-bin/upload.py, upload.php: wip
 
 2006-06-16 14:05  alberto
 
-	* cgi-bin/upload.py, lib/main.php, test.php, upload.php: WIP
+	* [r43] cgi-bin/upload.py, lib/main.php, test.php, upload.php: WIP
 
 2006-05-31 17:01  alberto
 
-	* ajaxrpc.php, editpage.php, lib/lan/strings.ca.php,
+	* [r42] ajaxrpc.php, editpage.php, lib/lan/strings.ca.php,
 	  lib/lan/strings.en.php, lib/lan/strings.es.php, lib/main.php,
 	  upload.php: WIP
 
 2006-05-30 10:56  alberto
 
-	* imgs/progress_point.png: Added progress point (for the progress
-	  bar)
+	* [r41] imgs/progress_point.png: Added progress point (for the
+	  progress bar)
 
 2006-05-30 10:55  alberto
 
-	* DefaultConfig.php, cgi-bin/upload.py, upload.php: Work In
+	* [r40] DefaultConfig.php, cgi-bin/upload.py, upload.php: Work In
 	  Progress
 
 2006-05-25 15:14  alberto
 
-	* DefaultConfig.php, HttpVoDhandler.php, VideoLanVoDhandler.php,
-	  ajax.php, ajaxrpc.php, baseVoDhandler.php, cgi-bin/upload.py,
-	  lib/auth.php, lib/authbase.php, lib/bd.php, lib/main.php,
-	  upload.php, uploadfile.php: Blah
+	* [r39] DefaultConfig.php, HttpVoDhandler.php,
+	  VideoLanVoDhandler.php, ajax.php, ajaxrpc.php,
+	  baseVoDhandler.php, cgi-bin/upload.py, lib/auth.php,
+	  lib/authbase.php, lib/bd.php, lib/main.php, upload.php,
+	  uploadfile.php: Blah
 
 2006-05-24 14:08  alberto
 
-	* DefaultConfig.php, HttpVoDhandler.php, VideoLanVoDhandler.php,
-	  ajax.php, ajaxrpc.php, baseVoDhandler.php, cgi-bin/upload.py,
-	  iframe.php, lib/auth.php, lib/main.php, loginpage.php,
-	  simplepage.php, test.php, upload.php, uploadfile.php: WIP
+	* [r38] DefaultConfig.php, HttpVoDhandler.php,
+	  VideoLanVoDhandler.php, ajax.php, ajaxrpc.php,
+	  baseVoDhandler.php, cgi-bin/upload.py, iframe.php, lib/auth.php,
+	  lib/main.php, loginpage.php, simplepage.php, test.php,
+	  upload.php, uploadfile.php: WIP
 
 2006-05-23 14:58  alberto
 
-	* HttpVoDhandler.php, VideoLanVoDhandler.php: WIP
+	* [r37] HttpVoDhandler.php, VideoLanVoDhandler.php: WIP
 
 2006-05-23 14:55  alberto
 
-	* baseVoDhandler.php, cgi-bin, uploadfile.php: WIP
+	* [r36] baseVoDhandler.php, cgi-bin, uploadfile.php: WIP
 
 2006-05-23 13:37  alberto
 
-	* iframe.php, test.php, upload.php: WIP
+	* [r35] iframe.php, test.php, upload.php: WIP
 
 2006-05-22 16:07  alberto
 
-	* filesystem.php, lib/layer.php, test.php: WIP
+	* [r34] filesystem.php, lib/layer.php, test.php: WIP
 
 2006-05-22 15:15  alberto
 
-	* lib/template.php: template keywords
+	* [r33] lib/template.php: template keywords
 
 2006-05-22 15:14  alberto
 
-	* lib/template.php: add template
+	* [r32] lib/template.php: add template
 
 2006-05-22 15:09  alberto
 
-	* Doxyfile, editpage.php, lib/bd.php, lib/lan/strings.ca.php,
+	* [r31] Doxyfile, editpage.php, lib/bd.php, lib/lan/strings.ca.php,
 	  lib/lan/strings.en.php, lib/lan/strings.es.php, manager.php,
 	  mediapage.php: WIP
 
 2006-05-19 12:03  alberto
 
-	* Doxyfile: update doc file
+	* [r30] Doxyfile: update doc file
 
 2006-05-18 16:30  alberto
 
-	* editpage.php: categorias finalmente portadas
+	* [r29] editpage.php: categorias finalmente portadas
 
 2006-05-18 15:11  alberto
 
-	* editpage.php, lib/main.php: categorias finalmente portadas
+	* [r28] editpage.php, lib/main.php: categorias finalmente portadas
 
 2006-05-16 19:27  alberto
 
-	* DefaultConfig.php, lib/bd.php, lib/folder.php,
+	* [r27] DefaultConfig.php, lib/bd.php, lib/folder.php,
 	  lib/lan/strings.ca.php, lib/lan/strings.en.php,
 	  lib/lan/strings.es.php, lib/main.php, lib/tree.php, manager.php,
 	  mediapage.php, videopage.php: Cambios en la DB
 
 2006-05-16 01:49  alberto
 
-	* DefaultConfig.php, LocalConfig.php, lib/bd.php,
+	* [r26] DefaultConfig.php, LocalConfig.php, lib/bd.php,
 	  lib/lan/strings.php, lib/main.php, lib/tree.php, mediapage.php:
 	  wip
 
 2006-05-15 23:30  alberto
 
-	* DefaultConfig.php, lib/lan/strings.ca.php,
+	* [r25] DefaultConfig.php, lib/lan/strings.ca.php,
 	  lib/lan/strings.es.php, lib/lan/strings.php, lib/main.php,
 	  manager.php, mediapage.php: Arregado bug de localizaci贸n
 	  conversi贸n a nuevo layout de la base de datos
 
 2006-05-15 16:11  alberto
 
-	* DefaultConfig.php, DefaultConfing.php: fix incorrect name
+	* [r24] DefaultConfig.php, DefaultConfing.php: fix incorrect name
 
 2006-05-15 16:10  alberto
 
-	* DefaultConfing.php, LocalConfig.php, index.php: argh
+	* [r23] DefaultConfing.php, LocalConfig.php, index.php: argh
 
 2006-05-15 15:07  alberto
 
-	* ChangeLog, updateChangeLog.sh: A帽adido changelog
+	* [r22] ChangeLog, updateChangeLog.sh: A帽adido changelog
 
 2006-05-15 15:02  alberto
 
-	* DefaultConfing.php, defaultconfig.php: mv
+	* [r21] DefaultConfing.php, defaultconfig.php: mv
 
 2006-05-15 15:01  alberto
 
-	* LocalConfig.php, defaultconfig.php, localconfig.php: wip2
+	* [r20] LocalConfig.php, defaultconfig.php, localconfig.php: wip2
 
 2006-05-15 13:17  alberto
 
-	* info.php, videopage.php: no much stuff was done :(
+	* [r19] info.php, videopage.php: no much stuff was done :(
 
 2006-03-16 15:04  alberto
 
-	* lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	* [r18] lib/lan/strings.ca.php, lib/lan/strings.en.php,
 	  lib/lan/strings.es.php, lib/lan/strings.php: Arreglo de
 	  properties
 
 2006-03-08 16:53  alberto
 
-	* defaultconfig.php, lib/lan/strings.ca.php,
+	* [r17] defaultconfig.php, lib/lan/strings.ca.php,
 	  lib/lan/strings.en.php, lib/lan/strings.es.php, lib/main.php,
 	  loginpage.php, rmbackups.sh, styles/default.css: wip
 
 2006-03-08 15:26  alberto
 
-	* config.php, localconfig.php: cp config.php
+	* [r16] config.php, localconfig.php: cp config.php
 
 2006-02-10 16:09  alberto
 
-	* adminpage.php, config.php, editpage.php, index.php, info.php,
-	  lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
+	* [r15] adminpage.php, config.php, editpage.php, index.php,
+	  info.php, lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
 	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
 	  mediapage.php, videopage.php: id?
 
 2006-02-10 16:05  alberto
 
-	* adminpage.php, config.php, editpage.php, index.php, info.php,
-	  lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
+	* [r14] adminpage.php, config.php, editpage.php, index.php,
+	  info.php, lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
 	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
 	  mediapage.php, videopage.php: propdel
 
 2006-02-10 15:55  alberto
 
-	* adminpage.php, config.php, editpage.php, index.php, info.php,
-	  lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
+	* [r13] adminpage.php, config.php, editpage.php, index.php,
+	  info.php, lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
 	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
 	  mediapage.php, videopage.php: propdel
 
 2006-02-10 15:54  alberto
 
-	* config.php: WIP
+	* [r12] config.php: WIP
 
 2006-02-06 16:53  alberto
 
-	* config.php, js, js/md5.js, lib/auth.php: javascript md5 function
+	* [r11] config.php, js, js/md5.js, lib/auth.php: javascript md5
+	  function
 
 2006-01-31 17:59  alberto
 
-	* adminpage.php, config.php, editpage.php, index.php, info.php,
-	  lib/auth.php, lib/bd.php, lib/folder.php, lib/lan/strings.ca.php,
-	  lib/lan/strings.en.php, lib/lan/strings.es.php,
-	  lib/lan/strings.php, lib/main.php, lib/tree.php, loginpage.php,
-	  mainpage.php, manager.php, mediapage.php, videopage.php:
-	  Propiedades?
+	* [r10] adminpage.php, config.php, editpage.php, index.php,
+	  info.php, lib/auth.php, lib/bd.php, lib/folder.php,
+	  lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/lan/strings.php, lib/main.php,
+	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php, videopage.php: Propiedades?
 
 2006-01-31 17:57  alberto
 
-	* adminpage.php, config.php, editpage.php, index.php, info.php,
-	  lib/auth.php, lib/bd.php, lib/folder.php, lib/lan/strings.ca.php,
-	  lib/lan/strings.en.php, lib/lan/strings.es.php,
-	  lib/lan/strings.php, lib/main.php, lib/tree.php, loginpage.php,
-	  mainpage.php, manager.php, mediapage.php, videopage.php:
-	  Documentaci贸n y etiquetas SVN
+	* [r9] adminpage.php, config.php, editpage.php, index.php,
+	  info.php, lib/auth.php, lib/bd.php, lib/folder.php,
+	  lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/lan/strings.php, lib/main.php,
+	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php, videopage.php: Documentaci贸n y etiquetas SVN
 
 2006-01-31 15:50  alberto
 
-	* ., .cvsignore, Doxyfile, adminpage.php, config.php, editpage.php,
-	  loginpage.php, mainpage.php, manager.php, mediapage.php:
-	  Documentaci贸n
+	* [r8] ., .cvsignore, Doxyfile, adminpage.php, config.php,
+	  editpage.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php: Documentaci贸n
 
 2006-01-26 16:43  alberto
 
-	* Doxyfile, adminpage.php, config.php, editpage.php, imgs,
+	* [r7] Doxyfile, adminpage.php, config.php, editpage.php, imgs,
 	  imgs/folder.jpg, imgs/valid-html401.gif, imgs/vcss,
 	  imgs/videoimg.jpg, index.php, info.php, lib, lib/auth.php,
 	  lib/bd.php, lib/folder.php, lib/lan, lib/lan/strings.ca.php,
@@ -225,13 +270,13 @@
 
 2006-01-26 16:32  alberto
 
-	* ., .cvsignore: rebuilding...
+	* [r6] ., .cvsignore: rebuilding...
 
 2006-01-26 15:58  alberto
 
-	* LICENSE: added the license
+	* [r5] LICENSE: added the license
 
 2006-01-26 15:52  alberto
 
-	* apf, apf/branches, apf/tags, .: skeleton
+	* [r4] apf, apf/branches, apf/tags, .: skeleton
 
