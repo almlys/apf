@@ -9,6 +9,7 @@
 //Lanzar errores como si fueran excepciones
 class PHPError extends Exception {
 	public static function errorHandlerCallback($code, $string, $file, $line, $context) {
+	if(error_reporting()==0) return;
 	$errortype = array (
                E_ERROR              => 'Error',
                E_WARNING            => 'Warning',

@@ -74,7 +74,7 @@ $APF['page.admin']=array('pages/AdminPage.php','ApfAdminPage',array());
 
 // *** Base de datos ***
 ///Plugin de la base de datos
-$APF['db.plug']='db/bd.php';
+$APF['db.plug']='db/MySQL.php';
 ///Servidor y puerto (en blanco para usar el socket unix)
 $APF['db.host']='';
 ///Nombre de la base de datos
