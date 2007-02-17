@@ -1,4 +1,14 @@
-Este fichero has sido autom·ticamente generado a partir de svn2cl
+Este fichero has sido autom√°ticamente generado a partir de svn2cl
+2007-02-17 15:53  alberto
+
+	* [r74] ChangeLog, DefaultConfig.php, lib/auth/AuthBase.php,
+	  lib/common/appcore.php, lib/common/tree.php, lib/common/util.php,
+	  lib/lan/strings.php, lib/pages/base/main.php,
+	  lib/pages/common/AdminPage.php, lib/pages/common/EditPage.php,
+	  lib/pages/common/LoginPage.php, lib/pages/common/MainPage.php,
+	  lib/pages/common/MediaPage.php, lib/pages/common/VideoPage.php:
+	  Algunos cambios de estructura
+
 2007-02-17 13:02  alberto
 
 	* [r73] HttpVoDhandler.php, VideoLanVoDhandler.php,
