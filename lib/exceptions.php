@@ -35,6 +35,8 @@ $e_types=E_ALL & ~E_NOTICE;
 //$e_types=E_ALL | E_STRICT;
 set_error_handler(array("PHPError", "errorHandlerCallback"), $e_types);
 
+class NotImplementedException extends Exception {}
+
 /// Imprime una excepción
 /// @param $e Excepción
 /// @param $body_tags Indica si se imprimen las etiquetas <html><head></head><body>...</body></html>

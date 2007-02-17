@@ -8,7 +8,7 @@
 
 include_once(dirname(__FILE__) . "/manager.php"); 
 
-///Página de autenticaci�
+///Página de autenticación
 class ApfLoginPage extends ApfManager {
 	///Valor de la autenticación�: 0=Ok, 1=Error
 	var $login_status=0;
@@ -16,7 +16,7 @@ class ApfLoginPage extends ApfManager {
 	///@param logout Si es verdadero cierra la sessión, en caso contrario muestra la página de entrada.
 	function ApfLoginPage($logout=False) {
 		$this->ApfManager("");
-		$this->setTitle($this->lan->get("login_page"));
+		$this->setTitle(_t("login_page"));
 		
 		$dest=$_GET["redirect"];
 		if(empty($dest)) {
@@ -40,11 +40,11 @@ class ApfLoginPage extends ApfManager {
 			!empty($_POST["login"]) && !empty($_POST["password"])) {
 				$login=$this->escape_string($_POST["login"]);
 				$pass=$this->escape_string($_POST["password"]);
-				if($this->auth->authenticate($login,$pass,session_id())) {
-					$_SESSION["login"]=$this->auth->login;
-					$_SESSION["AuthHash"]=$this->auth->hash;
-					$_SESSION["admin"]=$this->auth->level;
-					$_SESSION["uid"]=$this->auth->uid;
+				if($this->auth->authenticate($login,$pass,"plain",session_id())) {
+					$_SESSION["login"]=$this->auth->getLogin();
+					$_SESSION["AuthHash"]=$this->auth->getAuthHash();
+					$_SESSION["admin"]=$this->auth->getLevel();
+					$_SESSION["uid"]=$this->auth->getUID();
 					setcookie("ApfVoDAuthHash",$_SESSION["AuthHash"],time()+3600,"/");
 					$this->redirect2page($dest);
 				}
@@ -62,17 +62,17 @@ class ApfLoginPage extends ApfManager {
 		if($this->login_status==1) {
 			?>
 			<div class="error">
-			<?php echo($this->lan->get("logon_error")); ?>
+			<?php echo(_t("logon_error")); ?>
 			</div>
 			<br>
 			<?php
 		}
 		?>
-		<?php echo($this->lan->get("login_text")); ?>
+		<?php echo(_t("login_text")); ?>
 		<form action="<?php echo($this->buildBaseUri() . $this->getArgs() . "&amp;redirect=" . $this->dest); ?>" method="POST">
-		<?php echo($this->lan->get("login") . ":"); ?>
+		<?php echo(_t("login") . ":"); ?>
 		<INPUT type="text" name="login"><br>
-		<?php echo($this->lan->get("password") . ":"); ?>
+		<?php echo(_t("password") . ":"); ?>
 		<INPUT type="password" name="password"><br>
 		<INPUT type="submit" value="OK"><INPUT type="reset" value="Borrar">
 		</form>

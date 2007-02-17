@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montaï¿½la Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -56,7 +56,7 @@ class ApfFolder {
 	///Mostrar detalles.
 	function details() {
 			//if(!empty($this->count)) {
-				echo("<br>" . $this->count . " " . $this->parent->lan->get("objects")); 
+				echo("<br>" . $this->count . " " . _t("objects")); 
 			//}
 	}
 

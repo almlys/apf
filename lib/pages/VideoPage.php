@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montaï¿½la Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -8,14 +8,14 @@
 
 include_once(dirname(__FILE__) . "/manager.php"); 
 
-///Página del vídeo
+///Pï¿½ina del vï¿½eo
 class ApfVideoPage extends ApfManager {
 	var $desc;
 	var $pid=1;
 	///Constructor
 	function ApfVideoPage() {
 		$this->ApfManager("");
-		$this->setTitle($this->lan->get("untitled"));
+		$this->setTitle(_t("untitled"));
 	}
 	
 	///Cabezera
@@ -24,7 +24,7 @@ class ApfVideoPage extends ApfManager {
 		//$this->state=2;
 		//Obtener id
 		$id=$this->id;
-		$lan=$this->lan->getDefaultLanguage(); //Obtener idioma por defecto
+		$lan=ApfLocal::getDefaultLanguage(); //Obtener idioma por defecto
 
 		$name="name_" . $lan;
 		$desc="desc_" . $lan;
@@ -56,7 +56,7 @@ class ApfVideoPage extends ApfManager {
 		ApfManager::head();
 	}
 	
-	///Método cuerpo
+	///Mï¿½odo cuerpo
 	function body() {
 		$args=$this->getArgs("categ") . "&amp;id=" . $this->pid;
 		$family="<a href=\"$args\">" . $this->category . "</a>";
@@ -67,7 +67,7 @@ class ApfVideoPage extends ApfManager {
 		<div class="description"><?php echo($this->desc); ?>
 		<br>
 		<?php
-			echo($this->lan->get("lenght") . ": " . $this->dur . "<br>");
+			echo(_t("lenght") . ": " . $this->dur . "<br>");
 		?>
 		</div>
 		<!-- <a href="<?php echo($this->buildBaseUri() . "videos/" . $this->url); ?>">Play HTTP</a> -->
@@ -109,16 +109,16 @@ class ApfVideoPage extends ApfManager {
 		<?php
 	}
 	
-	///Muestra los botones de administración.
+	///Muestra los botones de administraciï¿½.
 	function showAdminButtons() {
 		?>
 		<form action="<?php echo($this->buildBaseUri() . $this->getArgs("edit")); ?>" method="POST">
-		<?php echo($this->lan->get("admin") . ": "); ?>
+		<?php echo(_t("admin") . ": "); ?>
 		<SELECT name="action">
-		<option value="edit_media"><?php echo($this->lan->get("edit_media")); ?></option>
+		<option value="edit_media"><?php echo(_t("edit_media")); ?></option>
 		</SELECT>
 		<INPUT type="hidden" name="id" value="<?php echo($this->id); ?>">
-		<INPUT type="submit" value="<?php echo($this->lan->get("go")); ?>">
+		<INPUT type="submit" value="<?php echo(_t("go")); ?>">
 		</form>
 		<?php
 	}

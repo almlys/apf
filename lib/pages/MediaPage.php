@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montaï¿½la Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -15,7 +15,7 @@ class ApfMediaPage extends ApfManager {
 	/// Constructor
 	function ApfMediaPage() {
 		$this->ApfManager("");
-		$this->setTitle($this->lan->get("videos_page"));
+		$this->setTitle(_t("videos_page"));
 	}
 	
 	///Cabezera
@@ -27,7 +27,7 @@ class ApfMediaPage extends ApfManager {
 		/*if($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["id"]) && is_numeric($_POST["id"])) {
 			$id=$this->id=$_POST["id"];
 		}*/
-/*		$lan=$this->lan->getDefaultLanguage(); //Obtener idioma por defecto
+/*		$lan=_tDefaultLanguage(); //Obtener idioma por defecto
 
 		$name="name_" . $lan;
 		$desc="desc_" . $lan;*/
@@ -38,7 +38,7 @@ class ApfMediaPage extends ApfManager {
 			/*$query="select a.parent,b.name,a.$desc
 							from  vid_categ a inner join vid_names b
 							on ja.name_id=b.id where a.id=$id and b.lan=\"$lan\"";*/
-			foreach ($this->lan->getLanguageVector() as $lan) {
+			foreach (ApfLocal::getLanguageVector() as $lan) {
 				$lan=substr($lan,0,2);
 				/*$query="select a.parent,b.name,c.desc
 								from vid_categ a, vid_names b, vid_descs c
@@ -58,7 +58,7 @@ class ApfMediaPage extends ApfManager {
 					$this->category=$vals[1];
 					$this->desc=$vals[2];
 					if($vals[3]>1) {
-						$this->desc=$this->desc . " - " . $vals[3] . " " . $this->lan->get("objects");
+						$this->desc=$this->desc . " - " . $vals[3] . " " . _t("objects");
 					}
 					break;
 				}
@@ -67,10 +67,10 @@ class ApfMediaPage extends ApfManager {
 		ApfManager::head();
 	}
 	
-	///Método cuerpo.
+	///Mï¿½odo cuerpo.
 	function body() {
 		$pid=$this->pid; //Parent id
-		$lan=$this->lan->getDefaultLanguage();
+		$lan=ApfLocal::getDefaultLanguage();
 		$this->generateMediaTree();
 		
 		$tree=&$this->tree;
@@ -104,11 +104,11 @@ class ApfMediaPage extends ApfManager {
 		echo('<td align="right">');
 		echo('<form name="jumpfrm" action="' . $this->buildBaseUri() . $this->getArgs() . '" method="GET">' . "\n");
 		echo($this->getArgsHidden());
-		echo($this->lan->get("category") . ": ");
+		echo(_t("category") . ": ");
 		echo('<SELECT name="id" onchange="document.jumpfrm.submit()">' . "\n");
 		$tree->writeOptions($this->id);
 		echo("</select>\n");
-		echo('<INPUT type="submit" value="' . $this->lan->get("go") . '">' . "\n");
+		echo('<INPUT type="submit" value="' . _t("go") . '">' . "\n");
 		echo('</form>');
 		echo("</td></tr></table>\n");
 		if($this->id!=1) {
@@ -159,26 +159,26 @@ class ApfMediaPage extends ApfManager {
 		<?php
 	}
 	
-	/// Muestra los botones de administración
+	/// Muestra los botones de administraciï¿½
 	function showAdminButtons() {
 		?>
 		<form action="<?php echo($this->buildBaseUri() . $this->getArgs("edit")); ?>" method="POST">
-		<?php echo($this->lan->get("admin") . ": "); ?>
+		<?php echo(_t("admin") . ": "); ?>
 		<SELECT name="action">
-		<option value="add_ctg"><?php echo($this->lan->get("add_ctg")); ?></option>
+		<option value="add_ctg"><?php echo(_t("add_ctg")); ?></option>
 		<?php 
 			if ($this->id!=1) {
 		?>
-		<option value="edit_ctg"><?php echo($this->lan->get("edit_ctg")); ?></option>
-		<option value="delete_ctg"><?php echo($this->lan->get("delete_ctg")); ?></option>
+		<option value="edit_ctg"><?php echo(_t("edit_ctg")); ?></option>
+		<option value="delete_ctg"><?php echo(_t("delete_ctg")); ?></option>
 		<?php
 			}
 		?>
-		<option value="add_media"><?php echo($this->lan->get("add_media")); ?></option>
+		<option value="add_media"><?php echo(_t("add_media")); ?></option>
 		</SELECT>
 		<INPUT type="hidden" name="id" value="<?php echo($this->id); ?>">
 		<INPUT type="hidden" name="pid" value="<?php echo($this->pid); ?>">
-		<INPUT type="submit" value="<?php echo($this->lan->get("go")); ?>">
+		<INPUT type="submit" value="<?php echo(_t("go")); ?>">
 		</form>
 		<?php
 	}

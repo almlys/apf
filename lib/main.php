@@ -1,16 +1,11 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2007 Alberto MontaÃ±ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
 */
 
-$APF['start_time']=microtime(); //Calcular el tiempo de generación de página
-/* Cargar contenido localizado de forma dinamica */
-require_once(dirname(__FILE__) . "/lan/strings.php");
-//require_once(dirname(__FILE__) . "/bd.php");
-//include_once(dirname(__FILE__) . "/auth.php");
 require_once(dirname(__FILE__) . "/tree.php");
 require_once(dirname(__FILE__) . "/folder.php");
 
@@ -20,9 +15,9 @@ require_once(dirname(__FILE__) . "/" . $APF['db.plug']);
 
 /// Clase del documento base
 class ApfBaseDocument {
-	///Título de la página
+	///TÃ­tulo de la pÃ¡gina
 	var $title="Untitled";
-	///Tiempo de inicio de creación del script
+	///Tiempo de inicio de creaciÃ³n del script
 	var $start_time=0;
 	///Idioma de los contenidos
 	var $lan;
@@ -30,7 +25,7 @@ class ApfBaseDocument {
                    state=1 (Etiquetas HTML enviadas)
                    state=2 (Ha ocurrido un error) */
 	///charset
-	var $charset="iso-8859-15";
+	var $charset="UTF-8";
 	///Generador
 	var $generator="ApfManager";
 	///Array de estilos disponibles
@@ -55,38 +50,6 @@ class ApfBaseDocument {
 			//echo($APF['server.path'] . "<br>");
 		}
 		$this->path=$APF['server.path'];
-		/* Obtener vector de idiomas preferidos por el cliente... */
-		if($_GET["lan"]) { 
-			$language=str_replace(",", "00",substr($_GET["lan"],0,2)) . "-nav,"; 
-		}
-		//Fijar idioma por defecto
-		$default_language=$APF['default_language'] . "-def";
-		
-		$ACCEPT_LANGUAGE=explode(",",$language . $_SERVER["HTTP_ACCEPT_LANGUAGE"] . ",$default_language");
-		$imax=count($ACCEPT_LANGUAGE);
-		if($imax>10) {
-			//Acortar el vector a un máximo de 10 idiomas
-			$ACCEPT_LANGUAGE=array_slice($ACCEPT_LANGUAGE,0,10);
-			$ACCEPT_LANGUAGE[9]=$default_language;
-		}
-		
-		//Filtrar y permitir solo estos idiomas para evitar sorpresas desagradables
-		$allow=$APF["languages"];
-		//array("es","en","ca"); //definidos en DefaultConfig.php
-		
-		$f=0;
-		$imax=count($ACCEPT_LANGUAGE);
-		$emax=count($allow);
-		for ($i=0; $i<$imax; $i++) {
-			for ($e=0; $e<$emax; $e++) {
-				if(substr($ACCEPT_LANGUAGE[$i],0,2)==$allow[$e]) {
-					$final[$f++]=$ACCEPT_LANGUAGE[$i];
-				}
-			}
-		}
-		/* Fin de construcción del vector */
-		$this->lan=new ApfLocal($final);
-
 	}
 	
 	/** Obtener el tiempo del script actual */
@@ -100,18 +63,18 @@ class ApfBaseDocument {
 			$sufix=" s.";
 			break;
 		case "seconds":
-			$sufix=" " . $this->lan->get("seconds");
+			$sufix=" " . _t("seconds");
 			break;
 		case "ms":
 			$sufix=" ms.";
 			$duration=$duration*1000;
 			break;
 		case "milliseconds":
-			$sufix=" " . $this->lan->get("milliseconds");
+			$sufix=" " . _t("milliseconds");
 			$duration=$duration*1000;
 			break;
 		case "microseconds":
-			$sufix=" " . $this->lan->get("microseconds");
+			$sufix=" " . _t("microseconds");
 			$duration=$duration*1000000;
 			break;
 		case "us":
@@ -135,7 +98,7 @@ class ApfBaseDocument {
 <?php
 		//Fijar Meta Tags
 		echo("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" . $this->charset . "\">\n");
-		echo("<meta name=\"Language\" content=\"" . substr($this->lan->language[0],0,2) . "\">\n");
+		echo("<meta name=\"Language\" content=\"" . ApfLocal::getDefaultLanguage() . "\">\n");
 		if(!empty($this->description)) {
 			echo("<meta name=\"description\" content=\"" . $this->description . "\">\n");
 		}
@@ -143,7 +106,7 @@ class ApfBaseDocument {
 			echo("<meta name=\"keywords\" content=\"" . $this->keywords . "\">\n");
 		}
 		echo("<meta name=\"Generator\" content=\"" . $this->generator . "\">\n");
-		//Fin de fijacción de información meta
+		//Fin de fijacciï¿½ de informaciï¿½ meta
 		
 		//Fijar las hojas de estilo (stylesheets)
 		$i=0;
@@ -170,10 +133,10 @@ class ApfBaseDocument {
 	
 	/** Muestra un mensaje de error */
 	function error($msg,$title="") {
-		if(empty($title)) $title=$this->lan->get("error_tit");
+		if(empty($title)) $title=_t("error_tit");
 		$this->state=2; //Fijar estado de error
 		//if($this->state==0) $this->head();
-		$this->head(); //El estado debe canviar a 1, sino protección contra llamada recursiva
+		$this->head(); //El estado debe canviar a 1, sino protecciï¿½ contra llamada recursiva
 		if($this->state==2) ApfBaseDocument::head();
 		?>
 <center>
@@ -181,8 +144,8 @@ class ApfBaseDocument {
 <TR><td bgcolor="Red"><b><font color="yellow"><?php echo($title); ?></font></b></TD></TR>
 <tr><td><font color="red"><?php 
 		echo($msg);
-		echo("<br> " . $this->lan->get("error_req") . $_SERVER["REQUEST_URI"]);
-		echo("<br> <a href=\"" . $_SERVER["HTTP_REFERER"] . "\">" . $this->lan->get("error_ret") . "</a>");
+		echo("<br> " . _t("error_req") . $_SERVER["REQUEST_URI"]);
+		echo("<br> <a href=\"" . $_SERVER["HTTP_REFERER"] . "\">" . _t("error_ret") . "</a>");
 		?></font></TD></tr>
 </table>
 </center>
@@ -197,11 +160,11 @@ class ApfBaseDocument {
 	}
 	
 	/**
-		Construye una ruta relativa al directorio de la aplicación
+		Construye una ruta relativa al directorio de la aplicaciï¿½
 		@param path Url a concatenar
 		@param relative Indica si queremos la ruta relativa o absoluta
-		@return Si relative paths es falso, devuelve la dirección completa URL protocol://base_install al directorio base de la instalación, sino siempre
-		devolverá el path relativo
+		@return Si relative paths es falso, devuelve la direcciï¿½ completa URL protocol://base_install al directorio base de la instalaciï¿½, sino siempre
+		devolverï¿½el path relativo
 	*/
 	function buildBaseURI($path="",$relative=true) {
 		if(!$this->UseRelativePaths || $relative==false) {
@@ -251,7 +214,7 @@ class ApfBaseDocument {
 	}
 
 	///Muestra la ip del cliente
-	///@param how short=solo ip, rshort=ip + x_forward, sino mostrará información completa ip+x_forward+client_ip+via
+	///@param how short=solo ip, rshort=ip + x_forward, sino mostrarï¿½informaciï¿½ completa ip+x_forward+client_ip+via
 	function getRemoteAddress($how="") {
 		if($format=="short") {
 			return($_SERVER["REMOTE_ADDR"]);
@@ -283,7 +246,7 @@ class ApfBaseDocument {
 		}
 	}
 
-	/** Devuelve la fecha de la última modificación del script en ejecución. */
+	/** Devuelve la fecha de la ltima modificaciï¿½ del script en ejecuciï¿½. */
 	function getLastMod() {
 		return filemtime($_SERVER["SCRIPT_FILENAME"]);
 	}
@@ -299,7 +262,7 @@ class ApfDocument extends ApfBaseDocument {
 	var $uid=0; ///< Identificador del usuario
 	///Objecto Base de datos
 	var $DB;
-	///Objecto de autenticación
+	///Objecto de autenticaciï¿½
 	var $auth;
 	///Constructor
 	function ApfDocument($title) {
@@ -333,22 +296,22 @@ class ApfDocument extends ApfBaseDocument {
 		setcookie("ApfVoDAuthHash","",time()-36000);
 	}
 	
-	///Genera una redirección.
-	///@param to Dirección destino
+	///Genera una redirecciï¿½.
+	///@param to Direcciï¿½ destino
 	function redirect($to) {
 		session_commit();
 		header("Location: $to");
 		?>
-		<html><head><TITLE><?php echo($this->lan->get("redirecting_to") . $to); ?></TITLE>
+		<html><head><TITLE><?php echo(_t("redirecting_to") . $to); ?></TITLE>
 		</head><body>
-		<a href="<?php echo($to); ?>"><?php echo($this->lan->get("click_2_continue")); ?></a>
+		<a href="<?php echo($to); ?>"><?php echo(_t("click_2_continue")); ?></a>
 		</body>
 		</html>
 		<?php
 		exit();
 	}
 	
-	///Comprueba la conexión con la base de datos.
+	///Comprueba la conexiï¿½ con la base de datos.
 	function checkConnection() {
 		global $APF;
 		//$this->state=2;
@@ -361,8 +324,8 @@ class ApfDocument extends ApfBaseDocument {
 		}
 	}
 
-	///Realiza una petición a la base de datos.
-	///@param what Petición SQL.
+	///Realiza una peticiï¿½ a la base de datos.
+	///@param what Peticiï¿½ SQL.
 	function query($what) {
 		$this->checkConnection();
 		//echo($what);
@@ -373,7 +336,7 @@ class ApfDocument extends ApfBaseDocument {
 		return 1;
 	}
 	
-	///Obtiene un array de los datos devueltos de la base de datos desde la última petición que devolvió datos.
+	///Obtiene un array de los datos devueltos de la base de datos desde la ltima peticiï¿½ que devolviï¿½datos.
 	function fetchArray() {
 		return($this->DB->fetchArray());
 		/*if($ret==null) { //Cazurro
@@ -398,7 +361,7 @@ class ApfDocument extends ApfBaseDocument {
 		}
 	}
 	
-	///Devuelve el identificador de la última petición de inserción realizada a la base de datos.
+	///Devuelve el identificador de la ltima peticiï¿½ de inserciï¿½ realizada a la base de datos.
 	function insertId() {
 		//return(mysql_insert_id());
 		return $this->DB->insertId();

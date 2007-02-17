@@ -30,23 +30,23 @@ class ApfManager extends ApfDocument {
 		}
 		//
 		
-		$this->maintitle=$this->lan->get("vod_viewer");
+		$this->maintitle=_t("vod_viewer");
 		$this->setTitle($title);
-		$this->stylesheets[0][0]=$this->lan->get("default_style");
+		$this->stylesheets[0][0]=_t("default_style");
 		$this->stylesheets[0][1]=$this->buildBaseUri("styles/default.css");
-		$this->add2Menu($this->lan->get("main_page"),"main");
-		$this->add2Menu($this->lan->get("videos_page"),"categ");
+		$this->add2Menu(_t("main_page"),"main");
+		$this->add2Menu(_t("videos_page"),"categ");
 		if(!empty($_GET['page'])) {
 			$this->page=$_GET['page'];
 		}
 		if($this->admin) {
-			$this->add2Menu($this->lan->get("admin_page"),"admin");
+			$this->add2Menu(_t("admin_page"),"admin");
 		}
 		//disconnect
 		if($this->authed) {
-			$this->add2Menu($this->lan->get("logout") . " " . $_SESSION["login"],"logout");
+			$this->add2Menu(_t("logout") . " " . $_SESSION["login"],"logout");
 		} else {
-			$this->add2Menu($this->lan->get("login_page"),"login");
+			$this->add2Menu(_t("login_page"),"login");
 			//$_SESSION["admin"]=0;
 		}
 	}
@@ -76,7 +76,7 @@ class ApfManager extends ApfDocument {
 		} else {
 			$amp="&";
 		}
-		$lan=$this->lan->getDefaultLanguage();
+		$lan=ApfLocal::getDefaultLanguage();
 		$args="?page=$page" . $amp . "lan=$lan";
 		return $args;
 	}
@@ -89,7 +89,7 @@ class ApfManager extends ApfDocument {
 		} else {
 			$page=$this->page;
 		}
-		$lan=$this->lan->getDefaultLanguage();
+		$lan=ApfLocal::getDefaultLanguage();
 		//$args="?page=$page" . $amp . "lan=$lan";
 		$args='<input type="hidden" name="page" value="' . $page . '">
 		<input type="hidden" name="lan" value="' . $lan . '">';
@@ -121,9 +121,9 @@ class ApfManager extends ApfDocument {
 	<table border="0" cellpadding="0" cellspacing="0" width="100%"><TR><TD align="right">
 	<div class="mini_login">
 	<form action="<?php echo($this->buildBaseUri() . $this->getArgs("login") . "&amp;redirect=" . $this->page); ?>" method="POST">
-		<?php echo($this->lan->get("login") . ":"); ?>
+		<?php echo(_t("login") . ":"); ?>
 		<INPUT type="text" name="login">
-		<?php echo($this->lan->get("password") . ":"); ?>
+		<?php echo(_t("password") . ":"); ?>
 		<INPUT type="password" name="password">
 		<INPUT type="submit" value="ok">
 		</form>
@@ -134,14 +134,14 @@ class ApfManager extends ApfDocument {
 		//Mostrar todos los idiomas disponibles
 		$page=$this->page;
 		$str_id=$this->params;
-		$CURRENT_LANGUAGE=substr($this->lan->language[0],0,2);
-		if($CURRENT_LANGUAGE!="es") {
+		$lan=ApfLocal::getDefaultLanguage();
+		if($lan!="es") {
 			echo("<a href=\"?page=$page&amp;lan=es$str_id\">Espa&ntilde;ol</a>");
 		}
-		if($CURRENT_LANGUAGE!="ca") {
+		if($lan!="ca") {
 			echo("&nbsp;&nbsp;<a href=\"?page=$page&amp;lan=ca$str_id\">Catal&agrave;</a>");
 		}
-		if($CURRENT_LANGUAGE!="en") {
+		if($lan!="en") {
 			echo("&nbsp;&nbsp;<a href=\"?page=$page&amp;lan=en$str_id\">English</a>");
 		}
 ?>
@@ -174,7 +174,7 @@ class ApfManager extends ApfDocument {
 		$i=0; $done=0;
 		$menu=$this->menu;
 		$page=$this->page;
-		$lan=substr($this->lan->language[0],0,2);
+		$lan=ApfLocal::getDefaultLanguage();
 		while(!empty($menu[$i][0])) {
 			echo("<tr><td align=\"center\" nowrap>");
 			if($page==$menu[$i][0]) {
@@ -192,9 +192,9 @@ class ApfManager extends ApfDocument {
 		}
 		if(!$done) {
 			if($page=="videos") {
-				$nampage=$this->lan->get("videos");
+				$nampage=_t("videos");
 			} elseif($page=="edit") {
-				$nampage=$this->lan->get("edit_page");
+				$nampage=_t("edit_page");
 			} else {
 				$nampage=$page;
 			}
@@ -263,13 +263,13 @@ class ApfManager extends ApfDocument {
 	
 	/// M�odo cuerpo, Genera el contenido de la p�ina.
 	function body() {
-		echo($this->lan->get("no_avail"));
+		echo(_t("no_avail"));
 	}
 	
 	/// Muestra informaci� de debug.
 	function debug() {
 		if(!empty($this->DB)) {
-			echo("<br>" . $this->lan->get("num_querys") . " " . $this->DB->query_count);
+			echo("<br>" . _t("num_querys") . " " . $this->DB->query_count);
 		}
 	}
 	
@@ -289,7 +289,7 @@ class ApfManager extends ApfDocument {
 	/// Genera el �bol de categor�s
 	function generateMediaTree() {
 		if($this->tree==null) {
-			$lan=$this->lan->getDefaultLanguage();
+			$lan=ApfLocal::getDefaultLanguage();
 			$query="select a.id,a.parent,b.name
 							from vid_categ a inner join vid_names b
 							on a.name_id=b.id

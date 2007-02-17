@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montaï¿½la Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -8,17 +8,17 @@
 
 include_once(dirname(__FILE__) . "/manager.php"); 
 
-///Página principal
+///Pï¿½ina principal
 class ApfMainPage extends ApfManager {
 	///Constructor
 	function ApfMainPage() {
 		$this->ApfManager("");
-		$this->setTitle($this->lan->get(main_page));
+		$this->setTitle(_t(main_page));
 	}
 	
-	///Método cuerpo
+	///Mï¿½odo cuerpo
 	function body() {
-		$lan=$this->lan->getDefaultLanguage();
+		$lan=ApfLocal::getDefaultLanguage();
 		$query='select value from vid_cfg where `key`="intro_' . $lan . '"';
 		//echo($query);
 		$this->query($query);

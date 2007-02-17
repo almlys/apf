@@ -1,6 +1,6 @@
 <?
 /*
-  Copyright (c) 2005-2006 Alberto MontaÒola Lacort.
+  Copyright (c) 2005-2007 Alberto Monta√±ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -8,93 +8,106 @@
 
 /*
    Fichero de cadenas, para versiones localizadas.
-   AÒadir nuevas definiciones de idioma en este fichero.
 */
-
-/* Recuros de idiomas */
-/*$APF_STR['en']="strings.en.php"; //english
-$APF_STR['es']="strings.es.php"; //EspaÒol
-$APF_STR['ca']="strings.ca.php"; //Catal‡*/
-// ^- Ya no es necessario (los autodectecta)
-/* Final del listado */
-
-//Vector de idiomas soportados
-//$APF['languages']=array("es","en","ca");
-//El vector esta en Default¢onfig.php
 
 /**
 	Gestor de idiomas, para cadenas localizadas
 */
 class ApfLocal {
-	var $language;
+	static private $language;
 	/// Constructor
 	/// @param lan Vector de idiomas
-	function ApfLocal($lan) {
-		$this->setLanguageVector($lan);
+	public function __construct($lan) {
+		//self::setLanguageVector($lan);
+		throw new Exception("This class cannot be instanciated");
 	}
+
+	/// Inizializaci√≥n del control de localizaciones
+	/// @param lan Idioma forzado
+	public static function init($lan="") {
+		global $APF;
+		/* Obtener vector de idiomas preferidos por el cliente... */
+		if($lan) { 
+			$language=str_replace(",", "00",substr($lan,0,2)) . "-nav,"; 
+		}
+		//Fijar idioma por defecto
+		$default_language=$APF['default_language'] . "-def";
+		
+		$ACCEPT_LANGUAGE=explode(",",$language . $_SERVER["HTTP_ACCEPT_LANGUAGE"] . ",$default_language");
+		$imax=count($ACCEPT_LANGUAGE);
+		if($imax>10) {
+			//Acortar el vector a un m√≠nimo de 10 idiomas
+			$ACCEPT_LANGUAGE=array_slice($ACCEPT_LANGUAGE,0,10);
+			$ACCEPT_LANGUAGE[9]=$default_language;
+		}
+
+		//Filtrar y permitir solo estos idiomas para evitar sorpresas desagradables
+		$allow=$APF["languages"];
+		$f=0;
+		$imax=count($ACCEPT_LANGUAGE);
+		$emax=count($allow);
+		for ($i=0; $i<$imax; $i++) {
+			for ($e=0; $e<$emax; $e++) {
+				if(substr($ACCEPT_LANGUAGE[$i],0,2)==$allow[$e]) {
+					$final[$f++]=$ACCEPT_LANGUAGE[$i];
+				}
+			}
+		}
+		/* Fin de construcciÔøΩ del vector */
+		self::setLanguageVector($final);
+	}
+
 	///Fijar el vector
 	/// @param lan Vector de idiomas
-	function setLanguageVector($lan) {
-		$this->language=$lan;
+	public static function setLanguageVector($lan) {
+		self::$language=$lan;
 	}
 	///Devolver el vector
 	/// @return Vector de idomas
-	function getLanguageVector() {
-		return $this->language;
+	public static function getLanguageVector() {
+		return self::$language;
 	}
 	///Obtener el idioma por defecto
 	/// @return Idioma por defecto
-	function getDefaultLanguage() {
-		return(substr($this->language[0],0,2));
+	public static function getDefaultLanguage() {
+		return(substr(self::$language[0],0,2));
 	}
 	/// Obtener una cadena traducida.
 	/// @param key Clave.
 	/// @return Cadena traducida.
 	/// @note Si la cadena no existe, buscara una alternativa si esta disponible en el vector.
-	function get($key) {
-		global $APF,$APF_STR,$APF_STRINGS;
-		$language=$this->language; //$APF['accept_language']
+	public static function get($key) {
+		global $APF,$APF_STRINGS;
+		$language=self::$language;
 		//Primero comprueba la Cache
 		$ret=$APF_STRINGS[$key];
 		$i=0;
 		$lan=substr($language[$i],0,2); $i++;
-		//echo("init-$lan-$i-$key-$ret-" . $APF_STRINGS["id"] . "<br>");
 		if(!empty($ret)) {
-			////$i--;
-			//Asegurate que el resultado obtenido corresponde a nuestro idioma
-			////if($APF_STRINGS["id"]==$lan) {
-				return $ret;
-			////}
+				return $ret; //Hit en la cache
 		}
-		//InicialiaciÛn, o fallo en la cache, volver a cargar cadenas
+		//Inicialiaci√≥n, o fallo en la cache, volver a cargar cadenas
 		while(!empty($lan)) {
 			$file=dirname(__FILE__) . "/strings.$lan.php";
 			while(!empty($lan) && !is_readable($file)) {
 				$lan=substr($language[$i],0,2); $i++;
 			}
-			/*while(!empty($lan) && empty($APF_STR[$lan])) {
-				$lan=substr($language[$i],0,2); $i++;
-			}*/
-			//echo("$lan-$i-<br>");
 			if(!empty($lan)) {
 				$file=dirname(__FILE__) . "/strings.$lan.php";
-				//echo("$file<br>");
-				//if(!empty($APF_STR[$lan]) && is_file($file)) {
-					//guardar y restaurar copia de la antigua estructura (si existe)
-					if(!empty($APF_STRINGS["id"])) {
-						$bk_copy=$APF_STRINGS;
-					}
-					require($file);
-					$ret=$APF_STRINGS[$key];
-					if(!empty($bk_copy["id"])) {
-						$APF_STRINGS=$bk_copy;
-					}
-					if(!empty($ret)) {
-						//Guardar en la cache
-						$APF_STRINGS[$key]=$ret;
-						return($ret); 
-					}
-				//}
+				//guardar y restaurar copia de la antigua estructura (si existe)
+				if(!empty($APF_STRINGS["id"])) {
+					$bk_copy=$APF_STRINGS;
+				}
+				require($file);
+				$ret=$APF_STRINGS[$key];
+				if(!empty($bk_copy["id"])) {
+					$APF_STRINGS=$bk_copy;
+				}
+				if(!empty($ret)) {
+					//Guardar en la cache
+					$APF_STRINGS[$key]=$ret;
+					return($ret); 
+				}
 				$lan="NULL";
 			}
 		}
@@ -103,5 +116,9 @@ class ApfLocal {
 
 } //End ApfLocal class
 
+//Obtiene la cadena de texto localizada correspondiente a $key
+function _t($key) {
+	return ApfLocal::get($key);
+}
 
 ?>

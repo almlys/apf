@@ -1,15 +1,15 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto Montaï¿½la Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
 */
 
-//Pagina de administración
+//Pagina de administraciï¿½
 include_once(dirname(__FILE__) . "/manager.php"); 
 
-/** Página de administración.
+/** Pï¿½ina de administraciï¿½.
 */
 class ApfAdminPage extends ApfManager {
 	///	Estado (0=lectura datos,1=datos salvados)
@@ -26,14 +26,14 @@ class ApfAdminPage extends ApfManager {
 		$lns=$APF["languages"];
 		$cnt=count($lns);
 
-		//Fijar título
-		$this->setTitle($this->lan->get("admin_page"));
+		//Fijar tï¿½ulo
+		$this->setTitle(_t("admin_page"));
 		//Verificar credenciales
 		if(!$this->authed || !$this->admin) {
 			$this->redirect2page("login");
 		}
 
-		//Obtener valores de configuración de la db.
+		//Obtener valores de configuraciï¿½ de la db.
 		$query="select value from vid_cfg where `key`='server_type'";
 		$this->query($query);
 		if($vals=$this->fetchArray()) {
@@ -74,43 +74,43 @@ class ApfAdminPage extends ApfManager {
 		$this->server_type=$server_type;
 	}
 	
-	/** Método cuerpo, redefine el método de la clase padre.
+	/** Mï¿½odo cuerpo, redefine el mï¿½odo de la clase padre.
 	*/
 	function body() {
 		global $APF;
 		$lns=$APF["languages"];
 		$cnt=count($lns);
 		if($this->status) {
-			echo($this->lan->get("data_saved"));
+			echo(_t("data_saved"));
 		}
 		$server_type=$this->server_type;
 		?>
 		<form action="<?php echo($this->buildBaseUri() . $this->getArgs()); ?>" method="POST">
 		<table border="0" width="95%" align="center" cellspacing="10" cellpadding="5"><TR><TD>
 		<div class="options">
-		<?php echo($this->lan->get("main_options")); ?>
+		<?php echo(_t("main_options")); ?>
 		</div>
 		</TD></TR>
 		<tr><TD>
-		<?php echo($this->lan->get("server_type") . ":"); ?>
+		<?php echo(_t("server_type") . ":"); ?>
 		<SELECT name="server_type">
 		<?php
 			echo('<option value="http"');
 			if($server_type=="http") {
 				echo(' selected=""');
 			}
-			echo('>' . $this->lan->get("server_type_http") . '</option>');
+			echo('>' . _t("server_type_http") . '</option>');
 			
 			echo('<option value="rtsp"');
 			if($server_type=="rtsp") {
 				echo(' selected=""');
 			}
-			echo('>' . $this->lan->get("server_type_rtsp") . '</option>'); 
+			echo('>' . _t("server_type_rtsp") . '</option>'); 
 		?>
 		</SELECT>
 		</TD></tr>
 		<tr><TD>
-		<?php echo($this->lan->get("intro_msg")); ?>:<br>
+		<?php echo(_t("intro_msg")); ?>:<br>
 		<table border="0"><TR><TD>
 		<?php
 			$from = array('<', '>');
@@ -125,7 +125,7 @@ class ApfAdminPage extends ApfManager {
 					$new=1;
 				}
 				$res = str_replace($from, $to, $vals[0]);
-				echo($this->lan->get($lns[$i]) . ":<br>");
+				echo(_t($lns[$i]) . ":<br>");
 				echo('<textarea cols=80 rows=5 name="' . $name . '">' . $res . '</textarea><br>');
 				echo("\n");
 				echo('<input type="hidden" name="new_' . $name . '" value=' . $new . '>');
@@ -135,7 +135,7 @@ class ApfAdminPage extends ApfManager {
 		</td></tr></table>
 		</TD></tr>
 		</table>
-		<INPUT type="submit" value="<?php echo($this->lan->get("go")); ?>">
+		<INPUT type="submit" value="<?php echo(_t("go")); ?>">
 		</form>
 <?php
 	}

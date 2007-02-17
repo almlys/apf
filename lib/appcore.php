@@ -6,26 +6,34 @@
   Id: $Id$
 */
 
+$APF['start_time']=microtime(); //Calcular el tiempo de generación de página
+
 //Cargar la configuración por defecto de la aplicación
-require_once(dirname(__FILE__) . "/DefaultConfig.php");
+require_once(dirname(__FILE__) . "/../DefaultConfig.php");
 
 // Cargar configuración local si existe
-if(is_readable(dirname(__FILE__) . "/LocalConfig.php")) {
-	require_once(dirname(__FILE__) . "/LocalConfig.php");
+if(is_readable(dirname(__FILE__) . "/../LocalConfig.php")) {
+	require_once(dirname(__FILE__) . "/../LocalConfig.php");
 }
+
+/* Cargar contenido localizado de forma dinamica */
+require_once(dirname(__FILE__) . "/lan/strings.php");
+
+ApfLocal::init($_GET["lan"]);
 
 class UnknownResourceException extends Exception {
 	public function __construct($name="None") {
-		parent::__construct("Unknown resource $name requested");
+		if($name=="None") $name=_t("None");
+		parent::__construct(_t("Unknown_resource") . $name . _t("requested"));
 	}
 }
 
 //Crear log
-require_once(dirname(__FILE__). "/lib/log/logger.php");
+require_once(dirname(__FILE__). "/log/logger.php");
 $stdout=new Logger($APF["log.path"]);
 
 //Instalar handler de errores sobre excepciones
-require_once(dirname(__FILE__) . "/lib/exceptions.php");
+require_once(dirname(__FILE__) . "/exceptions.php");
 
 try {
 	//Recurso solicitado
@@ -46,7 +54,7 @@ try {
 	}
 
 	if(array_key_exists($lookup_page,$APF)) {
-		require_once(dirname(__FILE__) . "/lib/" . $APF[$lookup_page][0]);
+		require_once(dirname(__FILE__) . "/" . $APF[$lookup_page][0]);
 		$args=implode(",",$APF[$lookup_page][2]);
 		eval("\$doc = new {$APF[$lookup_page][1]}($args);");
 	} else {

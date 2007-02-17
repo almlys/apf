@@ -87,7 +87,7 @@ $APF['db.passwd']='';
 // *** Opciones de autenticación� ***
 
 ///Selecciona el modulo de autenticación a utilizar
-$APF['auth.plug']='auth.php';
+$APF['auth.plug']='auth/SimpleAuth.php';
 
 ///Activa/Desactiva autenticación Desafío/Respuesta
 ///(Challenge Handshake Authentication Protocol)

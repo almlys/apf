@@ -27,6 +27,10 @@ class ApfMysqlDB implements iDB {
 		$this->link=null;
 		//$this->connect();
 	}
+
+	public function __destruct() {
+		$this->disconnect();
+	}
 	
 	/** Conectar a la base de datos */
 	public function connect() {
