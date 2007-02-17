@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto MontaÃ±ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -9,15 +9,15 @@
 require_once(dirname(__FILE__) . "/simplepage.php");
 require_once(dirname(__FILE__) . "/ajax.php");
 
-///Clase página del gestor
+///Clase pÃ¡gina del gestor
 class ApfUploadPage extends ApfSimplePage {
 
 	var $xsid="null"; ///< Identificador unico del fichero
 	var $resource_type="video"; ///< Indica el tipo de recurso (video, img, etc...)
-	var $end_hook=""; ///< Nombre la función (hook) a llamar al finalizar el upload
+	var $end_hook=""; ///< Nombre la funciÃ³n (hook) a llamar al finalizar el upload
 
 	/// Constructor
-	/// @param title Título de la página
+	/// @param title TÃ­tulo de la pÃ¡gina
 	/// @param resource_type Tipo de recurso a subir (video,imagen,etc...)
 	function ApfUploadPage($title="",$resource_type="video") {
 		$this->resource_type=$resource_type;
@@ -50,7 +50,7 @@ var csize=0; //current file size
 var count=0; //numero de veces a esperar hasta que el fichero este disponible
 var fname=""; //Nombre del fichero
 
-//Resultado de la validación del fichero a subir
+//Resultado de la validaciÃ³n del fichero a subir
 function validateFileCallback(http) {
 	var out=document.getElementById("progress");
 	out.innerHTML+=".";
@@ -187,7 +187,7 @@ function abortUpload(msg) {
 	self.setTimeout("enableUpload()",1000);
 }
 
-//Notificar subida satisfactoria después de la llamada RPC final
+//Notificar subida satisfactoria despuÃ©s de la llamada RPC final
 function finishUploadCallback(http) {
 	var out=document.getElementById("progress");
 	//out.innerHTML+=".";

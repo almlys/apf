@@ -6,7 +6,7 @@
 //Variable global contenedora del objecto
 var http=false;
 
-/** Devuelve el object XMLHttpRequest según el navegador
+/** Devuelve el object XMLHttpRequest segÃºn el navegador
     devuleve falso si no se puede crear el objeto.
 */
 function getXMLHttpRequest() {

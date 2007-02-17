@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Monta駉la Lacort.
+  Copyright (c) 2005-2006 Alberto Monta帽ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -11,10 +11,10 @@ $cmd=$_GET['cmd'];
 
 if(empty($cmd)) die("ERROR");
 
-//Cargar la configuraci髇 de la aplicaci髇
+//Cargar la configuraci贸n de la aplicaci贸n
 require_once(dirname(__FILE__) . "/DefaultConfig.php");
 
-//Asegurar que los datos s髇 salvados a lo largo de la sesi髇
+//Asegurar que los datos s贸n salvados a lo largo de la sesi贸n
 session_name("ApfVoDPHPSID");
 session_start();
 
@@ -48,7 +48,7 @@ switch($cmd) {
 				break;
 		}
 		break;
-	//Obtener tama駉 del fichero
+	//Obtener tama帽o del fichero
 	case "file_size":
 		$xsid=$_GET["xsid"];
 		if($xsid==$_SESSION["xsid"]) {
@@ -65,7 +65,7 @@ switch($cmd) {
 			echo("-1");
 		}
 		break;
-	//Obtener tama駉 subido
+	//Obtener tama帽o subido
 	case "file_status":
 		$xsid=$_GET["xsid"];
 		if($xsid==$_SESSION["xsid"]) {
@@ -90,7 +90,7 @@ switch($cmd) {
 			echo("ERROR");
 		}
 		break;
-	//Verificar que el hash the autenticaci髇 es v醠ido
+	//Verificar que el hash the autenticaci贸n es v谩lido
 	case "auth_verify":
 		$hash=$_GET["hash"];
 		$uid=$_GET["uid"];

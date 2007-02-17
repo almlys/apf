@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto MontaÃ±ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -8,13 +8,13 @@
 
 ///Clase base para AJAX (Asynchronous JavaScript And XML)
 class ApfAjax {
-	///Escribe el código base necesario para cualquier aplicación Ajax
+	///Escribe el cÃ³digo base necesario para cualquier aplicaciÃ³n Ajax
 	function write() {
 ?>
 //Variable global contenedora del objecto
 //var http=false;
 
-/** Devuelve el object XMLHttpRequest según el navegador
+/** Devuelve el object XMLHttpRequest segÃºn el navegador
     devuleve falso si no se puede crear el objeto.
 */
 function getXMLHttpRequest() {

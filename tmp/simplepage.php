@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto MontaÃ±ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -8,16 +8,16 @@
 
 require_once(dirname(__FILE__) . "/lib/main.php");
 
-///Clase base para páginas simples
+///Clase base para pÃ¡ginas simples
 class ApfSimplePage extends ApfDocument {
 
 	/// Constructor
-	/// @param title Título de la página
+	/// @param title TÃ­tulo de la pÃ¡gina
 	function ApfUploadPage($title="") {
 		ApfDocument::Apfdocument($title);
 	}
 
-	/// Método cuerpo
+	/// MÃ©todo cuerpo
 	function body() {
 		echo("Empty");
 	}
