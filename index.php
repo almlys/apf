@@ -6,6 +6,7 @@
   Id: $Id: template.php 55 2007-02-16 01:52:46Z alberto $
 */
 
-require_once(dirname(__FILE__) . "/lib/appcore.php");
+$APF['config_path']=dirname(__FILE__);
+require_once(dirname(__FILE__) . "/lib/common/appcore.php");
 
 ?>

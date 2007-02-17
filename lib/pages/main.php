@@ -6,12 +6,9 @@
   Id: $Id$
 */
 
-require_once(dirname(__FILE__) . "/widgets/tree.php");
-//require_once(dirname(__FILE__) . "/widgets/folder.php");
-
 //Plugins
-require_once(dirname(__FILE__) . "/" . $APF['auth.plug']);
-require_once(dirname(__FILE__) . "/" . $APF['db.plug']);
+require_once(dirname(__FILE__) . "/../" . $APF['auth.plug']);
+require_once(dirname(__FILE__) . "/../" . $APF['db.plug']);
 
 /// Clase del documento base
 class ApfBaseDocument {

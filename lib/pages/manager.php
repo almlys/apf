@@ -7,7 +7,7 @@
 */
 
 //Inicialización
-include_once(dirname(__FILE__) . "/../main.php"); 
+include_once(dirname(__FILE__) . "/main.php"); 
 
 ///Clase p�ina del gestor
 class ApfManager extends ApfDocument {
@@ -269,7 +269,7 @@ class ApfManager extends ApfDocument {
 	/// Muestra informaci� de debug.
 	function debug() {
 		if(!empty($this->DB)) {
-			echo("<br>" . _t("num_querys") . " " . $this->DB->query_count);
+			echo("<br>" . _t("num_querys") . " " . $this->DB->getQueryCount());
 		}
 	}
 	

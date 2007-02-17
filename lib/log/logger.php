@@ -6,7 +6,7 @@
   Id: $Id$
 */
 
-require_once(dirname(__FILE__) . "/../util.php");
+require_once(dirname(__FILE__) . "/../common/util.php");
 
 ///Interface que define un fichero Log
 interface iLogger {

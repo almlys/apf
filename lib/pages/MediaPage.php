@@ -1,12 +1,14 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Monta�la Lacort.
+  Copyright (c) 2005-2007 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
 */
 
-include_once(dirname(__FILE__) . "/manager.php"); 
+require_once(dirname(__FILE__) . "/manager.php"); 
+require_once(dirname(__FILE__) . "/../common/tree.php");
+require_once(dirname(__FILE__) . "/../widgets/folder.php");
 
 /// Navegador de la biblioteca multimedia. (Sistema virtual de ficheros)
 class ApfMediaPage extends ApfManager {
