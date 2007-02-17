@@ -10,7 +10,7 @@ require_once(dirname(__FILE__) . "/dbBase.php");
 
 ///Classe base de datos (MySQL)
 class ApfMysqlDB implements iDB {
-	private $use;
+	private $user;
 	private $password;
 	private $database;
 	private $host;
@@ -88,6 +88,11 @@ class ApfMysqlDB implements iDB {
 	function insertId() {
 		return(mysql_insert_id());
 	}
+	
+	function getQueryCount() {
+		return $this->query_count;
+	}
+
 }
 
 ///Crea el objecto de la base de datos

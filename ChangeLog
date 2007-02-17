@@ -1,4 +1,33 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-02-17 02:58  alberto
+
+	* [r68] DefaultConfig.php, appcore.php, index.php, lib/appcore.php,
+	  lib/auth.php, lib/auth/AuthBase.php, lib/auth/SimpleAuth.php,
+	  lib/authbase.php, lib/db/MySQL.php, lib/exceptions.php,
+	  lib/folder.php, lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/lan/strings.php, lib/main.php,
+	  lib/pages/AdminPage.php, lib/pages/LoginPage.php,
+	  lib/pages/MainPage.php, lib/pages/MediaPage.php,
+	  lib/pages/VideoPage.php, lib/pages/manager.php: Today's work
+
+2007-02-16 20:11  alberto
+
+	* [r67] DefaultConfig.php, Doxyfile, lib/db/MySQL.php,
+	  lib/db/dbBase.php, lib/exceptions.php: Db update
+
+2007-02-16 15:32  alberto
+
+	* [r66] lib/MySQL.php, lib/db/MySQL.php: Database changes
+
+2007-02-16 15:32  alberto
+
+	* [r65] lib/MySQL.php, lib/db/bd.php: Database changes
+
+2007-02-16 15:31  alberto
+
+	* [r64] ChangeLog, DefaultConfig.php, lib/bd.php, lib/db/bd.php,
+	  lib/db/dbBase.php: Database changes
+
 2007-02-16 15:23  alberto
 
 	* [r63] AUTHORS, ChangeLog, TODO: rm ToDo add Authors file

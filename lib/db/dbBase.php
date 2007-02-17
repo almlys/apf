@@ -22,6 +22,8 @@ interface iDB {
 	public function insertId();
 	///Escapar los datos
 	public function escape_string($data);
+	///Obtener número de peticiones
+	public function getQueryCount();
 }
 
 class DatabaseException extends Exception {}
