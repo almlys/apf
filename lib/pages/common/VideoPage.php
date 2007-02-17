@@ -1,12 +1,12 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Monta�la Lacort.
+  Copyright (c) 2005-2007 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
 */
 
-include_once(dirname(__FILE__) . "/manager.php"); 
+require_once(dirname(__FILE__) . "/../base/manager.php"); 
 
 ///P�ina del v�eo
 class ApfVideoPage extends ApfManager {

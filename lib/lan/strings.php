@@ -17,8 +17,7 @@ class ApfLocal {
 	static private $language;
 	/// Constructor
 	/// @param lan Vector de idiomas
-	public function __construct($lan) {
-		//self::setLanguageVector($lan);
+	public function __construct() {
 		throw new Exception("This class cannot be instanciated");
 	}
 

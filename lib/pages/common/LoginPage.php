@@ -6,7 +6,7 @@
   Id: $Id$
 */
 
-include_once(dirname(__FILE__) . "/manager.php"); 
+require_once(dirname(__FILE__) . "/../base/manager.php"); 
 
 ///Página de autenticación
 class ApfLoginPage extends ApfManager {

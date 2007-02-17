@@ -8,6 +8,10 @@
 
 class Request {
 
+	public function __construct() {
+		throw new Exception("This class cannot be instanciated");
+	}
+
 	///Muestra la ip del cliente
 	///@param how short=solo ip, rshort=ip + x_forward, sino mostrar�información completa ip+x_forward+client_ip+via
 	public static function getRemoteAddress($how="") {

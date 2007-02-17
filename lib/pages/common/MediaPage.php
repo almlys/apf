@@ -6,9 +6,9 @@
   Id: $Id$
 */
 
-require_once(dirname(__FILE__) . "/manager.php"); 
-require_once(dirname(__FILE__) . "/../common/tree.php");
-require_once(dirname(__FILE__) . "/../widgets/folder.php");
+require_once(dirname(__FILE__) . "/../base/manager.php"); 
+require_once(dirname(__FILE__) . "/../../common/tree.php");
+require_once(dirname(__FILE__) . "/../../widgets/folder.php");
 
 /// Navegador de la biblioteca multimedia. (Sistema virtual de ficheros)
 class ApfMediaPage extends ApfManager {

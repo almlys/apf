@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2007 Alberto MontaÃ±ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -8,11 +8,11 @@
 
 ///Crea un arbol del sistema virtual de ficheros.
 class ApfTree {
-	var $tree;
+	private $tree;
 
 	///Constructor
 	///@param vals Array de valores (id,parent,name)
-	function ApfTree($vals) {
+	function __construct($vals) {
 		
 		$cnt=count($vals);
 		
