@@ -1,4 +1,9 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-02-17 15:58  alberto
+
+	* [r75] ChangeLog, ajaxclient.php, js/ajax.js, updateChangeLog.sh:
+	  some missing files
+
 2007-02-17 15:53  alberto
 
 	* [r74] ChangeLog, DefaultConfig.php, lib/auth/AuthBase.php,
