@@ -1,4 +1,30 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-02-17 16:26  alberto
+
+	* [r79] lib/pages/base/simplepage.php, tmp/simplepage.php: wip
+
+2007-02-17 16:26  alberto
+
+	* [r78] AUTHORS, Doxyfile, tmp/simplepage.php, vod_server,
+	  vod_server/videolan: wip
+
+2007-02-17 16:19  alberto
+
+	* [r77] tmp/ajax.php, tmp/ajaxclient.php, tmp/ajaxrpc.php,
+	  tmp/filesystem.php, tmp/iframe.php, tmp/simplepage.php,
+	  tmp/upload.php, tmp/uploadfile.php: latin1 to utf-8 conversion of
+	  some files
+
+2007-02-17 16:01  alberto
+
+	* [r76] ChangeLog, ajax.php, ajaxclient.php, ajaxrpc.php,
+	  filesystem.php, iframe.php, info.php, simplepage.php, test,
+	  test.php, test/info.php, test/test.php, tmp, tmp/ajax.php,
+	  tmp/ajaxclient.php, tmp/ajaxrpc.php, tmp/filesystem.php,
+	  tmp/iframe.php, tmp/simplepage.php, tmp/upload.php,
+	  tmp/uploadfile.php, upload.php, uploadfile.php: Final de la
+	  reorganización
+
 2007-02-17 15:58  alberto
 
 	* [r75] ChangeLog, ajaxclient.php, js/ajax.js, updateChangeLog.sh:

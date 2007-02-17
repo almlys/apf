@@ -103,7 +103,7 @@ class ApfBaseDocument {
 			echo("<meta name=\"keywords\" content=\"" . $this->keywords . "\">\n");
 		}
 		echo("<meta name=\"Generator\" content=\"" . $this->generator . "\">\n");
-		//Fin de fijacci� de informaci� meta
+		//Fin de fijacción de información meta
 		
 		//Fijar las hojas de estilo (stylesheets)
 		$i=0;
@@ -133,7 +133,7 @@ class ApfBaseDocument {
 		if(empty($title)) $title=_t("error_tit");
 		$this->state=2; //Fijar estado de error
 		//if($this->state==0) $this->head();
-		$this->head(); //El estado debe canviar a 1, sino protecci� contra llamada recursiva
+		$this->head(); //El estado debe canviar a 1, sino protección contra llamada recursiva
 		if($this->state==2) ApfBaseDocument::head();
 		?>
 <center>
@@ -157,11 +157,11 @@ class ApfBaseDocument {
 	}
 	
 	/**
-		Construye una ruta relativa al directorio de la aplicaci�
+		Construye una ruta relativa al directorio de la aplicación
 		@param path Url a concatenar
 		@param relative Indica si queremos la ruta relativa o absoluta
-		@return Si relative paths es falso, devuelve la direcci� completa URL protocol://base_install al directorio base de la instalaci�, sino siempre
-		devolver�el path relativo
+		@return Si relative paths es falso, devuelve la dirección completa URL protocol://base_install al directorio base de la instalación, sino siempre
+		devolverá el path relativo
 	*/
 	function buildBaseURI($path="",$relative=true) {
 		if(!$this->UseRelativePaths || $relative==false) {
@@ -211,7 +211,7 @@ class ApfBaseDocument {
 	}
 
 	///Muestra la ip del cliente
-	///@param how short=solo ip, rshort=ip + x_forward, sino mostrar�informaci� completa ip+x_forward+client_ip+via
+	///@param how short=solo ip, rshort=ip + x_forward, sino mostrará información completa ip+x_forward+client_ip+via
 	function getRemoteAddress($how="") {
 		if($format=="short") {
 			return($_SERVER["REMOTE_ADDR"]);
@@ -243,7 +243,7 @@ class ApfBaseDocument {
 		}
 	}
 
-	/** Devuelve la fecha de la ltima modificaci� del script en ejecuci�. */
+	/** Devuelve la fecha de la última modificación del script en ejecución. */
 	function getLastMod() {
 		return filemtime($_SERVER["SCRIPT_FILENAME"]);
 	}
@@ -259,7 +259,7 @@ class ApfDocument extends ApfBaseDocument {
 	var $uid=0; ///< Identificador del usuario
 	///Objecto Base de datos
 	var $DB;
-	///Objecto de autenticaci�
+	///Objecto de autenticación
 	var $auth;
 	///Constructor
 	function ApfDocument($title) {
@@ -293,8 +293,8 @@ class ApfDocument extends ApfBaseDocument {
 		setcookie("ApfVoDAuthHash","",time()-36000);
 	}
 	
-	///Genera una redirecci�.
-	///@param to Direcci� destino
+	///Genera una redirección.
+	///@param to Dirección destino
 	function redirect($to) {
 		session_commit();
 		header("Location: $to");
@@ -308,7 +308,7 @@ class ApfDocument extends ApfBaseDocument {
 		exit();
 	}
 	
-	///Comprueba la conexi� con la base de datos.
+	///Comprueba la conexión con la base de datos.
 	function checkConnection() {
 		global $APF;
 		//$this->state=2;
@@ -321,8 +321,8 @@ class ApfDocument extends ApfBaseDocument {
 		}
 	}
 
-	///Realiza una petici� a la base de datos.
-	///@param what Petici� SQL.
+	///Realiza una petición a la base de datos.
+	///@param what Petición SQL.
 	function query($what) {
 		$this->checkConnection();
 		//echo($what);
@@ -333,7 +333,7 @@ class ApfDocument extends ApfBaseDocument {
 		return 1;
 	}
 	
-	///Obtiene un array de los datos devueltos de la base de datos desde la ltima petici� que devolvi�datos.
+	///Obtiene un array de los datos devueltos de la base de datos desde la última petición que devolvía datos.
 	function fetchArray() {
 		return($this->DB->fetchArray());
 		/*if($ret==null) { //Cazurro
@@ -358,7 +358,7 @@ class ApfDocument extends ApfBaseDocument {
 		}
 	}
 	
-	///Devuelve el identificador de la ltima petici� de inserci� realizada a la base de datos.
+	///Devuelve el identificador de la ltima petición de inserción realizada a la base de datos.
 	function insertId() {
 		//return(mysql_insert_id());
 		return $this->DB->insertId();

@@ -11,7 +11,7 @@ include_once(dirname(__FILE__) . "/main.php");
 
 ///Clase p�ina del gestor
 class ApfManager extends ApfDocument {
-	var $page="main"; ///<Nombre de la p�ina
+	var $page="main"; ///<Nombre de la página
 	var $params=""; ///<Listado de par�etros extra, empezando por &amp;key=value pairs
 	var $admin=0; ///<Indica si el usuario tiene privilegios administrativos
 	var $id=0; ///<Identificador de un recurso (categoria, video, etc...)
@@ -51,9 +51,9 @@ class ApfManager extends ApfDocument {
 		}
 	}
 	
-	/// A�dir una nueva entrada al men.
-	/// @param title titulo de la pagina.
-	/// @param page direcci� de la p�ina.
+	/// A�dir una nueva entrada al menú.
+	/// @param title titulo de la página.
+	/// @param page dirección de la página.
 	/// @param link Valor diferente a 0 indica que page es un documento externo
 	function add2Menu($title,$page,$link=0) {
 		$x=count($this->menu);
@@ -82,7 +82,7 @@ class ApfManager extends ApfDocument {
 	}
 	
 	/// Obtener vector de argumentos del documento. (Para uso en campos ocultos de un formulario)
-	/// @param test Si se especifica, fijar�nueva direcci� de destino.
+	/// @param test Si se especifica, fijar�nueva dirección de destino.
 	function getArgsHidden($test="") {
 		if(!empty($test)) {
 			$page=$test;
@@ -96,7 +96,7 @@ class ApfManager extends ApfDocument {
 		return $args;
 	}
 	
-	/// Fija el t�ulo del documento.
+	/// Fija el título del documento.
 	/// @param title El t�ulo.
 	function setTitle($title) {
 		$this->subtitle=$title;
@@ -158,7 +158,7 @@ class ApfManager extends ApfDocument {
 <?php
 	} //Fin del metodo head
 	
-	/// Crea el men de navegaci�
+	/// Crea el menú de navegación
 	function menu() {
 		?>
 	<table border="0" width="97%" cellspacing="0" cellpadding="0" align="center" class="doc_body">
@@ -225,7 +225,7 @@ class ApfManager extends ApfDocument {
 
 	} //Final del m�odo men
 	
-	/// Pie de la p�ina
+	/// Pie de la página
 	function foot() {
 		?>
  <!-- Footer -->
@@ -261,32 +261,32 @@ class ApfManager extends ApfDocument {
 	ApfDocument::foot();
 	} //Final del m�odo foot
 	
-	/// M�odo cuerpo, Genera el contenido de la p�ina.
+	/// Modo cuerpo, Genera el contenido de la página.
 	function body() {
 		echo(_t("no_avail"));
 	}
 	
-	/// Muestra informaci� de debug.
+	/// Muestra información de debug.
 	function debug() {
 		if(!empty($this->DB)) {
 			echo("<br>" . _t("num_querys") . " " . $this->DB->getQueryCount());
 		}
 	}
 	
-	/// Genera y env� la p�ina al cliente.
+	/// Genera y envía�la página al cliente.
 	function show() {
 		$this->head();
 		$this->menu();
 		$this->foot();
 	}
 
-	/// Genera una redirecci�.
-	/// @param page P�ina de destino
+	/// Genera una redirección.
+	/// @param page Página de destino
 	function redirect2page($page) {
 		$this->redirect($this->BuildBaseUri($this->getArgs($page,0)));
 	}
 
-	/// Genera el �bol de categor�s
+	/// Genera el árbol de categorías
 	function generateMediaTree() {
 		if($this->tree==null) {
 			$lan=ApfLocal::getDefaultLanguage();
