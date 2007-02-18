@@ -7,6 +7,7 @@
 */
 
 require_once(dirname(__FILE__) . "/../base/manager.php"); 
+require_once(dirname(__FILE__) . "/../../widgets/tree.php");
 
 ///Página de edición de medios/categorias
 class ApfEditPage extends ApfManager {
@@ -25,11 +26,11 @@ class ApfEditPage extends ApfManager {
 	function ApfEditPage() {
 		global $APF;
 		$this->ApfManager("");
-		$this->setTitle($this->lan->get("edit_page"));
+		$this->setTitle(_t("edit_page"));
 		$action="";
 		//$lns=$APF["languages"];
 		//$cnt=count($lns);
-		$lan=$this->lan->getDefaultLanguage();
+		$lan=ApfLocal::getDefaultLanguage();
 
 		if(!$this->authed || !$this->admin) {
 			$this->redirect2page("login");
@@ -317,20 +318,20 @@ class ApfEditPage extends ApfManager {
 //		$lns=$APF["languages"];
 //		$cnt=count($lns);
 		if($this->valid==0 && $this->edit==1) {
-			echo($this->lan->get("data_error") . "<br>");
+			echo(_t("data_error") . "<br>");
 		}
 		//Generar arbol de directorios
 		$this->generateMediaTree();
 		?>
 		<form action="<?php echo($this->buildBaseUri($this->getArgs())); ?>" method="POST">
 		<fieldset>
-		<legend><?php echo($this->lan->get("props")); ?></legend>
-		<?php echo($this->lan->get("_id") . ": "); ?>
+		<legend><?php echo(_t("props")); ?></legend>
+		<?php echo(_t("_id") . ": "); ?>
 		<INPUT type="hidden" name="id" value="<?php echo($this->id); ?>">
 		<INPUT type="text" name="id2" disabled="true" value="<?php echo($this->id); ?>">
 		<?php
 			if($this->new==0) {
-				echo("&nbsp;" . $this->lan->get("delete") . ":");
+				echo("&nbsp;" . _t("delete") . ":");
 				?>
 					<INPUT type="checkbox" name="delete" value="1">
 				<?php
@@ -338,8 +339,8 @@ class ApfEditPage extends ApfManager {
 		?>
 		<br>
 		<?php 
-			//echo($this->lan->get("parent") . ": "); 
-			echo($this->lan->get("category") . ": "); 
+			//echo(_t("parent") . ": "); 
+			echo(_t("category") . ": "); 
 		?>
 		<?php /*
 		<INPUT  type="text" name="pid" value="<?php echo($this->pid); ?>"><br>
@@ -351,9 +352,9 @@ class ApfEditPage extends ApfManager {
 		?>
 		</select>
 		<hr>
-		<?php echo($this->lan->get("_name") . ": "); ?>
+		<?php echo(_t("_name") . ": "); ?>
 		<input type="text" name="name" value="<?php echo($this->name); ?>"><br>
-		<?php echo($this->lan->get("desc") . ": "); ?><br>
+		<?php echo(_t("desc") . ": "); ?><br>
 		<?php /*
 		<input size="60" type="text" name="desc" value="<?php echo($this->desc); ?>"><br>
 		*/
@@ -370,9 +371,9 @@ class ApfEditPage extends ApfManager {
 				$desc=$this->descs[$lns[$i]];
 				
 				echo($this->lan->get($lns[$i]) . ":<br>");
-				echo($this->lan->get("_name") . ": ");
+				echo(_t("_name") . ": ");
 				echo('<input type="text" name="' . $sname . '" value="' . $name . '"><br>');
-				echo($this->lan->get("desc") . ": ");
+				echo(_t("desc") . ": ");
 				echo('<input size="60" type="text" name="' . $sdesc . '" value="' . $desc . '"><br>');
 				echo("<hr>");
 			}*/
@@ -388,10 +389,10 @@ function upload_hook(file) {
 
 
 <fieldset>
-<legend><?php echo($this->lan->get("upload_video")); ?></legend>
+<legend><?php echo(_t("upload_video")); ?></legend>
 <iframe name="upload" src="<?php echo($this->buildBaseURI("iframe.php?page=upload&amp;type=video&amp;end_hook=upload_hook")); ?>" frameborder="0" width="100%" height="100">
 <?php /* height="300" */
-	echo($this->lan->get("unsuported_outdated_old_browser"));
+	echo(_t("unsuported_outdated_old_browser"));
 ?>
 </iframe>
 </fieldset>
@@ -400,21 +401,21 @@ function upload_hook(file) {
 
 <?php
 				//Vídeo
-				echo($this->lan->get("properties") . ":<br>");
+				echo(_t("properties") . ":<br>");
 				if(empty($this->prev)) {
 					$this->image=$this->buildBaseUri("imgs/videoimg.jpg");
 				} else {
 					$this->image=$this->buildBaseUri("cache/" . $this->prev);
 				}
 				echo('<img alt="blah" src="' . $this->image . '" border=0 width="160" height="120"><br>');
-				echo($this->lan->get("preview") . ": ");
+				echo(_t("preview") . ": ");
 				echo('<input type="text" name="prev" value="' . $this->prev . '">
 				<INPUT type="checkbox" name="prev_auto" value="1"> 
-				' . $this->lan->get("automatic") . '
+				' . _t("automatic") . '
 				<br>');
-				echo($this->lan->get("url") . ": ");
+				echo(_t("url") . ": ");
 				echo('<input type="text" name="url" value="' . $this->url . '"><br>');
-				echo($this->lan->get("lenght") . ": ");
+				echo(_t("lenght") . ": ");
 				echo('<input type="text" name="dur" value="' . $this->dur . '"><br>');
 				echo("</fieldset>");
 			}
@@ -422,8 +423,8 @@ function upload_hook(file) {
 		
 		<input type="hidden" name="new" value="<?php echo($this->new); ?>">
 		<input type="hidden" name="action" value="<?php echo($this->action); ?>">
-		<INPUT type="submit" value="<?php echo($this->lan->get("go")); ?>">
-		<INPUT type="reset" value="<?php echo($this->lan->get("reset")); ?>">
+		<INPUT type="submit" value="<?php echo(_t("go")); ?>">
+		<INPUT type="reset" value="<?php echo(_t("reset")); ?>">
 		</form>
 		
 		<?php
