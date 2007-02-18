@@ -8,7 +8,7 @@
 
 require_once(dirname(__FILE__) . "/AuthBase.php");
 
-///Modulo de autenticaci�.
+///Modulo de autenticación.
 class ApfAuth extends ApfAuthBase implements iAuth {
 	var $DB; ///< Base de datos
 
@@ -63,7 +63,7 @@ class ApfAuth extends ApfAuthBase implements iAuth {
 
 } //end class
 
-//Crear instancia del modulo de autenticaci�
+//Crear instancia del modulo de autenticación
 function createAuthObject($database) {
 	return new ApfAuth($database);
 }

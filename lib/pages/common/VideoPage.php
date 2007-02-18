@@ -8,7 +8,7 @@
 
 require_once(dirname(__FILE__) . "/../base/manager.php"); 
 
-///P�ina del v�eo
+///Página del vídeo
 class ApfVideoPage extends ApfManager {
 	var $desc;
 	var $pid=1;
@@ -56,7 +56,7 @@ class ApfVideoPage extends ApfManager {
 		ApfManager::head();
 	}
 	
-	///M�odo cuerpo
+	///Método cuerpo
 	function body() {
 		$args=$this->getArgs("categ") . "&amp;id=" . $this->pid;
 		$family="<a href=\"$args\">" . $this->category . "</a>";
@@ -109,7 +109,7 @@ class ApfVideoPage extends ApfManager {
 		<?php
 	}
 	
-	///Muestra los botones de administraci�.
+	///Muestra los botones de administración.
 	function showAdminButtons() {
 		?>
 		<form action="<?php echo($this->buildBaseUri() . $this->getArgs("edit")); ?>" method="POST">

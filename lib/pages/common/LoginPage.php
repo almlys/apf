@@ -10,7 +10,7 @@ require_once(dirname(__FILE__) . "/../base/manager.php");
 
 ///Página de autenticación
 class ApfLoginPage extends ApfManager {
-	///Valor de la autenticación�: 0=Ok, 1=Error
+	///Valor de la autenticación: 0=Ok, 1=Error
 	var $login_status=0;
 	///Constructor
 	///@param logout Si es verdadero cierra la sessión, en caso contrario muestra la página de entrada.
@@ -57,7 +57,7 @@ class ApfLoginPage extends ApfManager {
 		ApfManager::head();
 	}
 	
-	///M�odo cuerpo
+	///Método cuerpo
 	function body() {
 		if($this->login_status==1) {
 			?>

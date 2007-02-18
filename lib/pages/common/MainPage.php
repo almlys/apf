@@ -16,7 +16,7 @@ class ApfMainPage extends ApfManager {
 		$this->setTitle(_t(main_page));
 	}
 	
-	///M�odo cuerpo
+	///Método cuerpo
 	function body() {
 		$lan=ApfLocal::getDefaultLanguage();
 		$query='select value from vid_cfg where `key`="intro_' . $lan . '"';

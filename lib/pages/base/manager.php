@@ -9,13 +9,13 @@
 //Inicialización
 include_once(dirname(__FILE__) . "/main.php"); 
 
-///Clase p�ina del gestor
+///Clase página del gestor
 class ApfManager extends ApfDocument {
 	var $page="main"; ///<Nombre de la página
-	var $params=""; ///<Listado de par�etros extra, empezando por &amp;key=value pairs
+	var $params=""; ///<Listado de parámetros extra, empezando por &amp;key=value pairs
 	var $admin=0; ///<Indica si el usuario tiene privilegios administrativos
 	var $id=0; ///<Identificador de un recurso (categoria, video, etc...)
-	var $tree=null; ///<Contiene una class ApfTree con el conjunto de categor�s
+	var $tree=null; ///<Contiene una class ApfTree con el conjunto de categorías
 
 	///Constructor
 	function ApfManager($title) {
@@ -51,7 +51,7 @@ class ApfManager extends ApfDocument {
 		}
 	}
 	
-	/// A�dir una nueva entrada al menú.
+	/// Añadir una nueva entrada al menú.
 	/// @param title titulo de la página.
 	/// @param page dirección de la página.
 	/// @param link Valor diferente a 0 indica que page es un documento externo
@@ -63,8 +63,8 @@ class ApfManager extends ApfDocument {
 	}
 	
 	/// Obtener vector de argumentos del documento. (Para construir enlaces)
-	/// @param test Si se especifica, fijar�nueva direcci� de destino.
-	/// @param encode Si es verdadero, codificar�& como &amp;
+	/// @param test Si se especifica, fijará nueva dirección de destino.
+	/// @param encode Si es verdadero, codificará & como &amp;
 	function getArgs($test="",$encode=1) {
 		if(!empty($test)) {
 			$page=$test;
@@ -82,7 +82,7 @@ class ApfManager extends ApfDocument {
 	}
 	
 	/// Obtener vector de argumentos del documento. (Para uso en campos ocultos de un formulario)
-	/// @param test Si se especifica, fijar�nueva dirección de destino.
+	/// @param test Si se especifica, fijará nueva dirección de destino.
 	function getArgsHidden($test="") {
 		if(!empty($test)) {
 			$page=$test;
@@ -97,7 +97,7 @@ class ApfManager extends ApfDocument {
 	}
 	
 	/// Fija el título del documento.
-	/// @param title El t�ulo.
+	/// @param title El título.
 	function setTitle($title) {
 		$this->subtitle=$title;
 		$this->title=$this->maintitle . " - " . $title;
@@ -170,7 +170,7 @@ class ApfManager extends ApfDocument {
 				<td height="50">&nbsp;</td>
 			</tr>
 <?
-		//Mostrar todas las secciones del �dice
+		//Mostrar todas las secciones del índice
 		$i=0; $done=0;
 		$menu=$this->menu;
 		$page=$this->page;
@@ -223,7 +223,7 @@ class ApfManager extends ApfDocument {
 	</table>
 <?php
 
-	} //Final del m�odo men
+	} //Final del método menú
 	
 	/// Pie de la página
 	function foot() {
@@ -259,7 +259,7 @@ class ApfManager extends ApfDocument {
  </table>
 <?php
 	ApfDocument::foot();
-	} //Final del m�odo foot
+	} //Final del método foot
 	
 	/// Modo cuerpo, Genera el contenido de la página.
 	function body() {
@@ -273,7 +273,7 @@ class ApfManager extends ApfDocument {
 		}
 	}
 	
-	/// Genera y envía�la página al cliente.
+	/// Genera y envía la página al cliente.
 	function show() {
 		$this->head();
 		$this->menu();

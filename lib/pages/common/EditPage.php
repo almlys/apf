@@ -10,15 +10,15 @@ require_once(dirname(__FILE__) . "/../base/manager.php");
 
 ///Página de edición de medios/categorias
 class ApfEditPage extends ApfManager {
-	var $action=""; ///< acci�
+	var $action=""; ///< acción
 	var $name=""; ///< Nombre del nodo
 	var $new=0; ///< 0-insert, 1-update
 	var $edit=0; ///< 0->from database, 1->to database
 	var $type=0; ///< 0->ctg, 1->media
 	var $pid=0; ///< Identificador del padre
-	var $desc=""; ///< Descripci� del nodo
+	var $desc=""; ///< Descripción del nodo
 	var $delete=0; ///< Borrar este nodo?
-	var $valid=1; ///< Validaci� de la entrada
+	var $valid=1; ///< Validación de la entrada
 	var $image=""; ///< Imagen del nodo
 
 	///Constructor
@@ -80,7 +80,7 @@ class ApfEditPage extends ApfManager {
 				$this->delete=1;
 				$this->action="update_ctg";
 				break;
-			//V�eo
+			//Vídeo
 			case "add_media":
 				$this->new=1;
 				$this->type=1;
@@ -120,7 +120,7 @@ class ApfEditPage extends ApfManager {
 			if($this->valid==1) {
 				if($this->type==0) { //Categorias
 					if($this->new==0 && $this->delete==0) { //update
-						//1o Actualizar nombre y descripci�
+						//1o Actualizar nombre y descripción
 						$query="update vid_names b, vid_descs c, vid_categ a
 										set b.name=\"" . $this->name . "\",
 												c.desc=\"" . $this->desc . "\",
@@ -137,7 +137,7 @@ class ApfEditPage extends ApfManager {
 						$query="update vid_categ set parent = " . $this->pid . $lans . "where id = " . $this->id;*/
 						$this->query($query);
 						$this->redirect($this->BuildBaseUri() . $this->getArgs("categ",0) . "&id=" . $this->id);
-						///TODO si el update falla realizar una inserci�
+						///TODO si el update falla realizar una inserción
 					} elseif($this->new==0 && $this->delete==1) { //delete
 						$query="delete from vid_categ where id=" . $this->id;
 						$this->query($query);
@@ -150,7 +150,7 @@ class ApfEditPage extends ApfManager {
 						$ret=$this->fetchArray();
 						if($ret==null) $this->error_die("Null fetchArray at line " . __LINE__);
 						$name_id=$ret[0]+1;
-						//2o obtener el id m� lato de la tabla descs
+						//2o obtener el id más alto de la tabla descs
 						$query="select max(id) from vid_descs";
 						$this->query($query);
 						$ret=$this->fetchArray();
@@ -163,7 +163,7 @@ class ApfEditPage extends ApfManager {
 							$query="insert into vid_names (id,lan,name) values($name_id,\"$xlan\",\"" . $this->name . "\")";
 							//echo($query);
 							$this->query($query);
-							//Insertar la descripci�
+							//Insertar la descripción
 							//NOTA mental, desc es una fucking reserved keyword (y es fucking despues de estar 3 horas mirando la consulta intentado localizar el maldito error)
 							$query="insert into vid_descs (id,lan,`desc`) values($desc_id,\"$xlan\",\"" . $this->desc . "\")";
 							//echo($query);
@@ -190,7 +190,7 @@ class ApfEditPage extends ApfManager {
 					}
 				} else { //Videos
 					if($this->new==0 && $this->delete==0) { //update
-						//1o Actualizar nombre y descripci�
+						//1o Actualizar nombre y descripción
 						$query="update vid_names b, vid_descs c, vid_mfs a
 										set b.name=\"" . $this->name . "\",
 												c.desc=\"" . $this->desc . "\",
@@ -207,7 +207,7 @@ class ApfEditPage extends ApfManager {
 						}
 						$query="update vid_mfs set ctg = " . $this->pid . ', prev = "' . $this->prev . '" ' . ', dur = "' . $this->dur . '" ' . ', url = "' . $this->url . '" ' . $lans . " where id = " . $this->id;
 						*/
-						///TODO si el update falla, realizar una insercci�
+						///TODO si el update falla, realizar una insercción
 						$this->query($query);
 						$this->redirect($this->BuildBaseUri() . $this->getArgs("videos",0) . "&id=" . $this->id);
 					} elseif($this->new==0 && $this->delete==1) { //delete
@@ -233,7 +233,7 @@ class ApfEditPage extends ApfManager {
 						$ret=$this->fetchArray();
 						if($ret==null) $this->error_die("Null fetchArray at line " . __LINE__);
 						$name_id=$ret[0]+1;
-						//2o obtener el id m� lato de la tabla descs
+						//2o obtener el id más alto de la tabla descs
 						$query="select max(id) from vid_descs";
 						$this->query($query);
 						$ret=$this->fetchArray();
@@ -246,7 +246,7 @@ class ApfEditPage extends ApfManager {
 							$query="insert into vid_names (id,lan,name) values($name_id,\"$xlan\",\"" . $this->name . "\")";
 							//echo($query);
 							$this->query($query);
-							//Insertar la descripci�
+							//Insertar la descripción
 							//NOTA mental, desc es una fucking reserved keyword (y es fucking despues de estar 3 horas mirando la consulta intentado localizar el maldito error)
 							$query="insert into vid_descs (id,lan,`desc`) values($desc_id,\"$xlan\",\"" . $this->desc . "\")";
 							//echo($query);
@@ -311,7 +311,7 @@ class ApfEditPage extends ApfManager {
 
 	}
 	
-	///M�odo body
+	///Método body
 	function body() {
 		global $APF;
 //		$lns=$APF["languages"];
@@ -399,7 +399,7 @@ function upload_hook(file) {
 <legend>Old shit (outdated)</legend>
 
 <?php
-				//V�eo
+				//Vídeo
 				echo($this->lan->get("properties") . ":<br>");
 				if(empty($this->prev)) {
 					$this->image=$this->buildBaseUri("imgs/videoimg.jpg");

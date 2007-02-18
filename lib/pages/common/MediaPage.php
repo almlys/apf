@@ -69,7 +69,7 @@ class ApfMediaPage extends ApfManager {
 		ApfManager::head();
 	}
 	
-	///M�odo cuerpo.
+	///Método cuerpo.
 	function body() {
 		$pid=$this->pid; //Parent id
 		$lan=ApfLocal::getDefaultLanguage();
@@ -161,7 +161,7 @@ class ApfMediaPage extends ApfManager {
 		<?php
 	}
 	
-	/// Muestra los botones de administraci�
+	/// Muestra los botones de administración
 	function showAdminButtons() {
 		?>
 		<form action="<?php echo($this->buildBaseUri() . $this->getArgs("edit")); ?>" method="POST">

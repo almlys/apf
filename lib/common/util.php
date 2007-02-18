@@ -13,7 +13,7 @@ class Request {
 	}
 
 	///Muestra la ip del cliente
-	///@param how short=solo ip, rshort=ip + x_forward, sino mostrar�información completa ip+x_forward+client_ip+via
+	///@param how short=solo ip, rshort=ip + x_forward, sino mostrará información completa ip+x_forward+client_ip+via
 	public static function getRemoteAddress($how="") {
 		if($format=="short") {
 			return($_SERVER["REMOTE_ADDR"]);

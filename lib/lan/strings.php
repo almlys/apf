@@ -52,7 +52,7 @@ class ApfLocal {
 				}
 			}
 		}
-		/* Fin de construcci� del vector */
+		/* Fin de construcción del vector */
 		self::setLanguageVector($final);
 	}
 

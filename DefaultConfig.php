@@ -37,8 +37,8 @@ $APF['language_names']=array('Catal&agrabe;','English','Espa&ntilde;ol');
 
 ///Ruta del directorio base del servidor (en blanco autodetectar)
 ///Nota: Si se va a llamar el script desde otros scripts en otras rutas
-/// entonces es necessario especificar una ruta fija, ya que la autodetecci�
-/// fallar� Si la autodetecci� falla, entonces es necesario fijar una ruta.
+/// entonces es necessario especificar una ruta fija, ya que la autodetección
+/// fallaría. Si la autodetección falla, entonces es necesario fijar una ruta.
 $APF['server.path']='';
 ///Ruta donde se encuentra instalado el script en el sistema de ficheros
 $APF['system.path']=dirname(__FILE__);
@@ -52,7 +52,7 @@ $APF['cache']='cache';
 ///Ruta relativa a videos disponibles (para VoD sobre http y videolan)
 $APF['videos']='videos';
 
-///Indica si se utilizar� rutas relativas, o absolutas.
+///Indica si se utilizarán rutas relativas, o absolutas.
 ///Nota: No se pueden utilizar rutas relativas si se va a llamar al script desde
 ///otros scripts. Desactivar rutas relativas en caso de problemas de funcionamiento.
 $APF['relative_paths']=1;
@@ -84,7 +84,7 @@ $APF['db.user']='';
 ///Password
 $APF['db.passwd']='';
 
-// *** Opciones de autenticación� ***
+// *** Opciones de autenticación ***
 
 ///Selecciona el modulo de autenticación a utilizar
 $APF['auth.plug']='auth/SimpleAuth.php';
@@ -112,7 +112,7 @@ $APF['videolan.port']='';
 
 // *** Subida de ficheros ***
 ///Script que se encarga de la subida de ficheros
-///Este script nos permite saltarnos los l�ites de 2MBytes a la vez que nos permite
+///Este script nos permite saltarnos los límites de 2MBytes a la vez que nos permite
 /// enviar un feedback al usuario.
 $APF['upload_script']='cgi-bin/upload.py';
 ///Directorio de ficheros subidos (debe ser idéntico al configurado en el script)

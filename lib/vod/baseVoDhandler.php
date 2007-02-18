@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto MontaÃ±ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
@@ -12,7 +12,7 @@ class ApfVoDFile {
 } //End Class ApfVodFile
 
 ///Clase virtual que define la interfaz base para cada tipo de servidor VoD
-///Esta clase contine los hooks que relacionan el servidor VoD con la aplicación
+///Esta clase contine los hooks que relacionan el servidor VoD con la aplicaciÃ³n
 class ApfBaseVoDHandler {
 
 	///Constructor

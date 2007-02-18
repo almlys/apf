@@ -9,7 +9,7 @@
 //Pagina de administración
 require_once(dirname(__FILE__) . "/../base/manager.php"); 
 
-/** P�ina de administraci�.
+/** Página de administración.
 */
 class ApfAdminPage extends ApfManager {
 	///	Estado (0=lectura datos,1=datos salvados)
@@ -26,14 +26,14 @@ class ApfAdminPage extends ApfManager {
 		$lns=$APF["languages"];
 		$cnt=count($lns);
 
-		//Fijar t�ulo
+		//Fijar título
 		$this->setTitle(_t("admin_page"));
 		//Verificar credenciales
 		if(!$this->authed || !$this->admin) {
 			$this->redirect2page("login");
 		}
 
-		//Obtener valores de configuraci� de la db.
+		//Obtener valores de configuración de la db.
 		$query="select value from vid_cfg where `key`='server_type'";
 		$this->query($query);
 		if($vals=$this->fetchArray()) {
@@ -74,7 +74,7 @@ class ApfAdminPage extends ApfManager {
 		$this->server_type=$server_type;
 	}
 	
-	/** M�odo cuerpo, redefine el m�odo de la clase padre.
+	/** Método cuerpo, redefine el método de la clase padre.
 	*/
 	function body() {
 		global $APF;

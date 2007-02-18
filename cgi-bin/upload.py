@@ -1,13 +1,13 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-15 -*-
 #
-#  Copyright (c) 2005-2006 Alberto Monta駉la Lacort.
+#  Copyright (c) 2005-2006 Alberto Monta帽ola Lacort.
 #  Licensed under the GNU GPL. For full terms see the file COPYING.
 #
 #  Id: $Id: test.php 35 2006-05-23 13:37:00Z alberto $
 #
 
-#Configuraci髇
+#Configuraci贸n
 #upload_dir="/tmp/apf_upload"
 upload_dir="/home/apf_upload"
 ###rpc_path="/tfc/ajaxrpc.php"
@@ -21,13 +21,13 @@ rpc_server_path="http://localhost/tfc/ajaxrpc.php"
 ################################################################################
 
 #Global (idealmente tendria que ser una propiedad miembro de la clase cgiFiles
-# pero parece ser que al a馻dir el constructor da problemas)"
+# pero parece ser que al a帽adir el constructor da problemas)"
 dpath=""
 
 #Esto queda un poco mal y feo, para hacerlo bien habria que reescribir la
 # clase FieldStorage, actualmente esta intenta mantener el fichero entero en
 # memoria, y esto pues tiene consequencias grabes cuando los ficheros a subir
-# s髇 del orden de cientos de megabytes
+# s贸n del orden de cientos de megabytes
 file_size=0
 
 import os,time,cgi,cgitb,sys,re,urllib2,glob
@@ -172,7 +172,7 @@ def main():
     server_root_path="http://" + server_name + server_port
     ##rpc_server_path=server_root_path + rpc_path
 
-    #Tama駉 aproximado del fichero
+    #Tama帽o aproximado del fichero
     if not os.environ.has_key("CONTENT_LENGTH"):
         error("Cannot get CONTENT_LENGTH")
     filesize=int(os.environ["CONTENT_LENGTH"])
@@ -220,7 +220,7 @@ def main():
     if not re.match(r"^[a-f0-9]{40}$",auth_hash):
         error("auth validation failed")
 
-    #Realizar llamada RPC al la aplicaci髇, y verificar el auth_hash
+    #Realizar llamada RPC al la aplicaci贸n, y verificar el auth_hash
     rpc=rpcClient(rpc_server_path)
     rpc_reply=rpc.request("cmd=auth_verify&hash=%s&uid=%i" % (auth_hash,uid))
     #print "<br>RPC Response:-%s-<br>" %(rpc_reply)
@@ -236,15 +236,15 @@ def main():
 
     os.makedirs(dpath)
 
-    #Guardar tama駉 del fichero
+    #Guardar tama帽o del fichero
     f=file(dpath + "/lenght.txt","w")
     f.write(str(filesize))
     f.close()
 
-    #La instanciaci髇 de la clase provoca la lectura del stdin
+    #La instanciaci贸n de la clase provoca la lectura del stdin
     cfile=cgiFiles()
 
-    # Este c骴igo, la simple llamada has_key, proboca que la implemetaci髇
+    # Este c贸digo, la simple llamada has_key, proboca que la implemetaci贸n
     # FieldStorage actual carge el fichero entero en memoria, y esto no lo
     # podemos permitir.
     #if cfile.has_key("sourcefile"):

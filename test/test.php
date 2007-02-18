@@ -1,26 +1,26 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2006 Alberto MontaÃ±ola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
 */
 
-///Clase página de un libro
+///Clase pÃ¡gina de un libro
 class ApfNoteBookTab {
 	var $name;
 	var $content;
 	///Constructor
-	///@param name Nombre de la página
-	///@param content Contenido de la página
+	///@param name Nombre de la pÃ¡gina
+	///@param content Contenido de la pÃ¡gina
 	function ApfNoteBookTab($name,$content) {
 		$this->name=$name;
 		$this->content=$content;
 	}
 }
 
-///Clase NoteBook (Un conjunto de páginas agrupadas)
+///Clase NoteBook (Un conjunto de pÃ¡ginas agrupadas)
 class ApfNoteBook {
 	var $name=""; ///<! Nombre del NoteBook
 	var $pages=array();
@@ -34,20 +34,20 @@ class ApfNoteBook {
 		$this->name=$name;
 	}
 
-	///Añade una nueva página
-	///@param name Nombre de la página
-	///@param content Contenido de la página
+	///AÃ±ade una nueva pÃ¡gina
+	///@param name Nombre de la pÃ¡gina
+	///@param content Contenido de la pÃ¡gina
 	function AddPage($name,$content) {
 		$page = new ApfNoteBookTab($name,$content);
 		$this->pages[] = &$page;
 	}
 
-	///Escribe el notebook con todos las páginas especificadas
+	///Escribe el notebook con todos las pÃ¡ginas especificadas
 	function Write() {
 ?>
 <script language="JavaScript" type="text/javascript">
 
-//Este código esta inspirado en el utilizado en MediaWiki en la página de preferencias
+//Este cÃ³digo esta inspirado en el utilizado en MediaWiki en la pÃ¡gina de preferencias
 var current_tab_<?php echo($this->name); ?>=0;
 
 function hide_tabs_<?php echo($this->name); ?>() {

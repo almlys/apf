@@ -7,7 +7,7 @@
 */
 
 /*
-   Fitxer de cadenes de text, per a versions tradu�es
+   Fitxer de cadenes de text, per a versions traduïdes
 
 */
 
@@ -66,7 +66,7 @@ $APF_STRINGS['error_tit']='Error';
 $APF_STRINGS['error_req']='Sollicitant el recurs: ';
 $APF_STRINGS['error_ret']='Tornar a la p&aacute;gina anterior';
 $APF_STRINGS['redirecting_to']='Redireccionant cap a: ';
-$APF_STRINGS['click_2_continue']='Faci click aqu�per continuar';
+$APF_STRINGS['click_2_continue']='Faci click aqu&iacute; per continuar';
 $APF_STRINGS['reset']='Reiniciar';
 $APF_STRINGS['delete_ctg']='Esborrar categoria';
 $APF_STRINGS['props']='Propietats';
