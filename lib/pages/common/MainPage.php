@@ -6,7 +6,7 @@
   Id: $Id$
 */
 
-require_once(dirname(__FILE__) . "/../base/manager.php"); 
+require_once(dirname(__FILE__) . '/../base/manager.php'); 
 
 ///Página principal
 class ApfMainPage extends ApfManager {
@@ -18,12 +18,15 @@ class ApfMainPage extends ApfManager {
 	
 	///Método cuerpo
 	function body() {
-		$lan=ApfLocal::getDefaultLanguage();
+		/*$lan=ApfLocal::getDefaultLanguage();
 		$query='select value from vid_cfg where `key`="intro_' . $lan . '"';
 		//echo($query);
 		$this->query($query);
 		$vals=$this->fetchArray();
-		echo($vals[0]);
+		echo($vals[0]);*/
+		echo(_t('main_welcome_msg'));
+		echo('<h2>' . _t('new_videos') . '</h2>');
+		echo('<h2>' . _t('most_viewed_videos') . '</h2>');
 	}
 }
 

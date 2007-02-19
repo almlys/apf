@@ -14,20 +14,22 @@ require_once(dirname(__FILE__) . "/../../" . $APF['db.plug']);
 
 ///Documento base, con acceso a la base de datos y control de sesiones.
 class ApfDocument extends ApfBaseDocument implements iDocument {
-	///Indica si estamos autenticados
-	private $authed=0;
-	///Indica si tenemos privilegios administrativos
-	private $admin=0;
-	private $uid=0; ///< Identificador del usuario
-	private $login="";
-	///Objecto Base de datos
-	private $DB;
-	///Objecto de autenticación
-	private $auth;
+	private $authed=0; ///<Indica si estamos autenticados
+	private $admin=0; ///<Indica si tenemos privilegios administrativos
+	private $uid=0; ///<Identificador del usuario
+	private $login='';
+	private $DB; ///<Objecto Base de datos
+	private $auth; ///<Objecto de autenticación
+	private $page='main'; ///<Nombre de la página
+	private $params=array(); ///<Listado de parámetros extra, empezando por &amp;key=value pairs
+	private $id=0; ///<Identificador de un recurso (categoria, video, etc...)
 	///Constructor
-	function __construct($title) {
+	/// @param $title Título del documento
+	/// @param $release_session Indica si liberamos la sessión
+	function __construct($title,$release_session=True) {
 		parent::__construct($title);
-		$this->checkLogedUser();
+		$this->checkLogedUser($release_session);
+		$this->checkPageId();
 	}
 
 	/// Empieza la sessión, solo si existe la cookie de usuario
@@ -72,7 +74,7 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 	}
 
 	/// Comprueba si el usuario ya tienen una sessión existente y valida
-	function checkLogedUser() {
+	function checkLogedUser($release_session=True) {
 		$this->auth=createAuthObject(&$this);
 		// 1o, Debe Existir la cookie de usuario
 		if(!isset($_COOKIE[$APF['cookie.name']])) return;
@@ -89,22 +91,22 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		$uid=$data[0];
 		$AuthHash=$data[1];
 		// 1o Comprovar en la session
-		if(!empty($_SESSION["AuthHash"]) && $AuthHash==$_SESSION["AuthHash"] && $uid==$_SESSION["uid"]) {
+		if(!empty($_SESSION['AuthHash']) && $AuthHash==$_SESSION['AuthHash'] && $uid==$_SESSION['uid']) {
 			// La sessión ya existe, el usuario esta autenticado y es válido
 			$this->authed=1;
-			$this->admin=$_SESSION["admin"];
-			$this->uid=$_SESSION["uid"];
-			$this->login=$_SESSION["login"];
+			$this->admin=$_SESSION['admin'];
+			$this->uid=$_SESSION['uid'];
+			$this->login=$_SESSION['login'];
 		} elseif(!empty($AuthHash) and $this->auth->verify($uid,$AuthHash)) {
 			//No existe datos de sessión validos, comprovar usuario on la DB
 			$this->authed=1;
 			$this->admin=$this->auth->getLevel();
 			$this->uid=$this->auth->getUID();
 			$this->login=$this->auth->getLogin();
-			$_SESSION["login"]=$this->auth->getLogin();
-			$_SESSION["AuthHash"]=$this->auth->getAuthHash();
-			$_SESSION["admin"]=$this->auth->getLevel();
-			$_SESSION["uid"]=$this->auth->getUID();
+			$_SESSION['login']=$this->auth->getLogin();
+			$_SESSION['AuthHash']=$this->auth->getAuthHash();
+			$_SESSION['admin']=$this->auth->getLevel();
+			$_SESSION['uid']=$this->auth->getUID();
 		} else {
 			$this->endSession();
 			return;
@@ -113,6 +115,13 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		$data=$this->CookieCryptAndSign($this->uid . " " . $_SESSION["AuthHash"]);
 		setcookie($APF['cookie.name'],$data,time()+$APF['session.expire'],$APF['cookie.path'],$APF['cookie.domain'],$APF['cookie.secure'],$APF['cookie.http']);
 		//Liberar la sessión
+		if($release_session) {
+			$this->relase_session();
+		}
+	}
+
+	/// Libera la sessión
+	function release_session() {
 		session_commit();
 	}
 	
@@ -121,16 +130,81 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		$this->authed=0;
 		setcookie($APF['cookie.name'],False);
 		if(isset($_SESSION)) {
-			unset($_SESSION["AuthHash"]);
-			unset($_SESSION["admin"]);
-			unset($_SESSION["uid"]);
-			unset($_SESSION["login"]);
+			unset($_SESSION['AuthHash']);
+			unset($_SESSION['admin']);
+			unset($_SESSION['uid']);
+			unset($_SESSION['login']);
 			session_destroy();
 			setcookie($APF['session.name'],false);
 			unset($_SESSION);
 		}
 	}
-		
+
+	///Obtener id de la página
+	function checkPageId() {
+		if(!empty($_GET['id'])) {
+			$this->id=intval($_GET['id']);
+			if($this->id<=0) {
+				$this->redirect2page("main");
+			}
+			$this->setParam('id',$this->id);
+		}
+		if(!empty($_GET['page'])) {
+			$this->page=$_GET['page'];
+		}
+	}
+
+	///Comprobar si tenemos permisos administrativos
+	function IAmAdmin() {
+		return $this->admin;
+	}
+
+	///Comprobar si estamos autenticados
+	function IAmAuthenticated() {
+		return $this->authed;
+	}
+
+	function getLogin() {
+		return $this->login;
+	}
+
+	/// Fija un parametro
+	/// @param $key Nombre del parametro
+	/// @param $val Valor del parametro
+	function setParam($key,$val) {
+		$this->params[$key]=$val;
+	}
+
+	/// Obtener vector de argumentos del documento. (Para construir enlaces)
+	/// @param page Si se especifica, fijará nueva dirección de destino.
+	/// @param encode Si es verdadero, codificará & como &amp;
+	function getArgs($page="",$encode=True) {
+		if(empty($page)) {
+			$page=$this->page;
+		}
+		if($encode) {
+			$amp="&amp;";
+		} else {
+			$amp="&";
+		}
+		$lan=ApfLocal::getDefaultLanguage();
+		$args="?page=$page" . $amp . "lan=$lan";
+		return $args;
+	}
+
+	/// Obtener vector de argumentos del documento. (Para uso en campos ocultos de un formulario)
+	/// @param $page Si se especifica, fijará nueva dirección de destino.
+	function getArgsHidden($page='') {
+		if(empty($page)) {
+			$page=$this->page;
+		}
+		$lan=ApfLocal::getDefaultLanguage();
+		//$args="?page=$page" . $amp . "lan=$lan";
+		$args='<input type="hidden" name="page" value="' . $page . '">
+		<input type="hidden" name="lan" value="' . $lan . '">';
+		return $args;
+	}
+
 	///Comprueba la conexión con la base de datos.
 	function checkConnection() {
 		global $APF;

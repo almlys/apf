@@ -6,15 +6,15 @@
   Id: $Id$
 */
 
-require_once(dirname(__FILE__) . "/lib/main.php");
+require_once(dirname(__FILE__) . "/Document.php");
 
 ///Clase base para páginas simples
 class ApfSimplePage extends ApfDocument {
 
 	/// Constructor
 	/// @param title Título de la página
-	function ApfUploadPage($title="") {
-		ApfDocument::Apfdocument($title);
+	function __construct($title="") {
+		parent::__construct($title);
 	}
 
 	/// Método cuerpo
@@ -29,7 +29,7 @@ class ApfSimplePage extends ApfDocument {
 		$this->foot();
 	}
 
-} //Enc class ApfUploadPage
+} //Enc class ApfSimplePage
 
 
 ?>

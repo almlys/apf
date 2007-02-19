@@ -11,101 +11,52 @@ include_once(dirname(__FILE__) . "/Document.php");
 
 ///Clase página del gestor
 class ApfManager extends ApfDocument {
-	private $page="main"; ///<Nombre de la página
-	private $params=""; ///<Listado de parámetros extra, empezando por &amp;key=value pairs
-	//private $admin=0; ///<Indica si el usuario tiene privilegios administrativos
-	private $id=0; ///<Identificador de un recurso (categoria, video, etc...)
 	//private $tree=null; ///<Contiene una class ApfTree con el conjunto de categorías
+	private $maintitle;
+	private $subtitle;
+	private $menu;
 
 	///Constructor
 	function __construct($title) {
-		parent::__construct("");
-		//Obtener id
-		if(!empty($_GET['id'])) {
-			$this->id=$this->escape_string($_GET['id']);
-			if($this->id!=$_GET['id']) {
-				$this->redirect2page("main");
-			}
-			$this->params = $this->params . "&amp;id=" . $this->id;
-		}
-		//
-		
-		$this->maintitle=_t("vod_viewer");
+		parent::__construct('');
+		$this->maintitle=_t('vod_viewer');
 		$this->setTitle($title);
-		$this->stylesheets[0][0]=_t("default_style");
-		$this->stylesheets[0][1]=$this->buildBaseUri("styles/default.css");
-		$this->add2Menu(_t("main_page"),"main");
-		$this->add2Menu(_t("videos_page"),"categ");
-		if(!empty($_GET['page'])) {
-			$this->page=$_GET['page'];
-		}
-		if($this->admin) {
-			$this->add2Menu(_t("admin_page"),"admin");
+		$this->addStyle(_t('default_style'),$this->buildBaseUri('styles/default.css'));
+		$this->add2Menu(_t('main_page'),'main');
+		$this->add2Menu(_t('videos_page'),"categ");
+		if($this->IAmAdmin()) {
+			$this->add2Menu(_t('admin_page'),'admin');
 		}
 		//disconnect
-		if($this->authed) {
-			$this->add2Menu(_t("logout") . " " . $_SESSION["login"],"logout");
+		if($this->IAmAuthenticated()) {
+			$this->add2Menu(_t('logout') . " " . $this->getLogin(),'logout');
 		} else {
-			$this->add2Menu(_t("login_page"),"login");
-			//$_SESSION["admin"]=0;
+			$this->add2Menu(_t('login_page'),'login');
 		}
+	}
+
+	/// Fija el título del documento.
+	/// @param title El título.
+	function setTitle($title) {
+		$this->subtitle=$title;
+		parent::setTitle($this->maintitle . ' - ' . $title);
 	}
 	
 	/// Añadir una nueva entrada al menú.
 	/// @param title titulo de la página.
 	/// @param page dirección de la página.
 	/// @param link Valor diferente a 0 indica que page es un documento externo
-	function add2Menu($title,$page,$link=0) {
+	function add2Menu($title,$page,$link=0,$image='') {
 		$x=count($this->menu);
 		$this->menu[$x][1]=$title;
 		$this->menu[$x][0]=$page;
 		$this->menu[$x][2]=$link;
-	}
-	
-	/// Obtener vector de argumentos del documento. (Para construir enlaces)
-	/// @param test Si se especifica, fijará nueva dirección de destino.
-	/// @param encode Si es verdadero, codificará & como &amp;
-	function getArgs($test="",$encode=1) {
-		if(!empty($test)) {
-			$page=$test;
-		} else {
-			$page=$this->page;
-		}
-		if($encode) {
-			$amp="&amp;";
-		} else {
-			$amp="&";
-		}
-		$lan=ApfLocal::getDefaultLanguage();
-		$args="?page=$page" . $amp . "lan=$lan";
-		return $args;
-	}
-	
-	/// Obtener vector de argumentos del documento. (Para uso en campos ocultos de un formulario)
-	/// @param test Si se especifica, fijará nueva dirección de destino.
-	function getArgsHidden($test="") {
-		if(!empty($test)) {
-			$page=$test;
-		} else {
-			$page=$this->page;
-		}
-		$lan=ApfLocal::getDefaultLanguage();
-		//$args="?page=$page" . $amp . "lan=$lan";
-		$args='<input type="hidden" name="page" value="' . $page . '">
-		<input type="hidden" name="lan" value="' . $lan . '">';
-		return $args;
-	}
-	
-	/// Fija el título del documento.
-	/// @param title El título.
-	function setTitle($title) {
-		$this->subtitle=$title;
-		$this->title=$this->maintitle . " - " . $title;
+		$this->menu[$x][2]=$image;
 	}
 	
 	/// Cabezera
 	function head() {
-		ApfDocument::head(); //Constructor de la clase base
+		parent::head(); //Constructor de la clase base
 		?>
  <table border="0" width="97%" cellpadding="0" cellspacing="0" align="center" class="header">
  <tr>
@@ -116,7 +67,7 @@ class ApfManager extends ApfDocument {
   <td>
    <div class="title"><? echo($this->maintitle); ?></div>
   </td>
-  <td align="right" valign="bottom">
+  <td align="right" valign="bottom"><?php /*
 	<!--
 	<table border="0" cellpadding="0" cellspacing="0" width="100%"><TR><TD align="right">
 	<div class="mini_login">
@@ -128,7 +79,7 @@ class ApfManager extends ApfDocument {
 		<INPUT type="submit" value="ok">
 		</form>
 	</div>
-	</TD></tr><tr><TD align="right"> -->
+	</TD></tr><tr><TD align="right"> --> */?>
    <div class="language_selector">
 <?php
 		//Mostrar todos los idiomas disponibles

@@ -71,5 +71,7 @@ $APF_STRINGS['delete_ctg']='Borrar categor&iacute;a';
 $APF_STRINGS['props']='Propiedades';
 $APF_STRINGS['upload_video']='Subir Video al Servidor';
 $APF_STRINGS['unsuported_outdated_old_browser']='Lo siento, Tu navegador no soporta al etiqueta IFRAME, por lo tanto no cumple con los requisitos m&iacute;nimos para esta aplicaci&oacute;n';
-
+$APF_STRINGS['main_welcome_msg']='<h2>Bienvenido al Gestor de Contenidos</h2>Haz click sobre "Media" para mostrar los diferentes recursos disponibles.';
+$APF_STRINGS['new_videos']='Novedades';
+$APF_STRINGS['most_viewed_videos']='Los vídeos m&aacute;s vistos';
 ?>

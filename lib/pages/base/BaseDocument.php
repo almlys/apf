@@ -17,7 +17,7 @@ interface iDocument {
 /// Clase del documento base
 class ApfBaseDocument implements iDocument {
 	///Título de la página
-	protected $title="Untitled";
+	private $title="Untitled";
 	///Tiempo de inicio de creación del script
 	private $start_time=0;
 	private $state=0; /**< state=0 (Etiquetas HTML no enviadas),
@@ -30,7 +30,7 @@ class ApfBaseDocument implements iDocument {
 	///Generador
 	private $generator="ApfManager";
 	///Array de estilos disponibles
-	protected $stylesheets;
+	private $stylesheets;
 	///Directorio base
 	private $path="";
 	private $UseRelativePaths=False;
@@ -55,8 +55,19 @@ class ApfBaseDocument implements iDocument {
 		$this->path=$APF['server.path'];
 	}
 
-	public function setTittle($title) {
+	/// Fija el título del documento
+	/// @param $title Título
+	public function setTitle($title) {
 		$this->title=$title;
+	}
+
+	/// Añade un nuevo estilo en cascada
+	/// @param $name Nombre del estilo
+	/// @param $path Ruta al estilo
+	public function addStyle($name,$path) {
+		$x=count($this->stylesheets);
+		$this->stylesheets[$x][0]=$name;
+		$this->stylesheets[$x][1]=$path;
 	}
 	
 	/// Obtener el tiempo del script actual

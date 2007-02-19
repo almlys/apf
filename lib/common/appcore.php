@@ -44,7 +44,10 @@ try {
 	}
 
 	//Fijar main como recurso por defecto
-	if(empty($page)) $page=$APF['default_page'];
+	if(empty($page)) {
+		$page=$APF['default_page'];
+		$_GET['page']=$page;
+	}
 
 	//Instanciar dinámicamente el recurso solicitado si existe
 	$lookup_page='page.'.$page;
