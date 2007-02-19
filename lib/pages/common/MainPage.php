@@ -11,8 +11,8 @@ require_once(dirname(__FILE__) . "/../base/manager.php");
 ///Página principal
 class ApfMainPage extends ApfManager {
 	///Constructor
-	function ApfMainPage() {
-		$this->ApfManager("");
+	function __construct() {
+		parent::__construct("");
 		$this->setTitle(_t(main_page));
 	}
 	

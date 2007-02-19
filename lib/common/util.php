@@ -44,6 +44,35 @@ class Request {
 			return($ret);
 		}
 	}
+
+	///Obtiene el protocolo
+	public static function getProtocol() {
+		return ($HTTP_SERVER_VARS["HTTPS"]=="on" ? "https" : "http");
+	}
+	
+	///Obtiene el puerto
+	public static function getPort() {
+		return $_SERVER["SERVER_PORT"];
+	}
+
+	/// Construye una ruta relativa a la raiz
+	/// @param path Ruta
+	/// @return Ruta completa
+	public static function buildRootURI($path="") {
+		$proto=self::getProtocol();
+		$port=self::getPort();
+		if (($proto=="http" && $port==80) || ($proto=="https" && $port==443)) {
+			$port="";
+		} else {
+			$port=":" . $port;
+		}
+		$url=$proto . "://"  . $_SERVER['SERVER_NAME'] . $port;
+		$path="/" . $path;
+		$path=str_replace("//","/",$path);
+		$url=$url . $path;
+		return $url;
+	}
+
 }
 
 

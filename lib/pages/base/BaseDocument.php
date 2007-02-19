@@ -6,32 +6,38 @@
   Id: $Id$
 */
 
-//Plugins
-require_once(dirname(__FILE__) . "/../../" . $APF['auth.plug']);
-require_once(dirname(__FILE__) . "/../../" . $APF['db.plug']);
+///Interfaz Documento
+interface iDocument {
+	public function show();
+	public function head();
+	public function body();
+	public function foot();
+}
 
 /// Clase del documento base
-class ApfBaseDocument {
+class ApfBaseDocument implements iDocument {
 	///Título de la página
-	var $title="Untitled";
+	protected $title="Untitled";
 	///Tiempo de inicio de creación del script
-	var $start_time=0;
-	///Idioma de los contenidos
-	var $lan;
-	var $state=0; /**< state=0 (Etiquetas HTML no enviadas),
-                   state=1 (Etiquetas HTML enviadas)
-                   state=2 (Ha ocurrido un error) */
+	private $start_time=0;
+	private $state=0; /**< state=0 (Etiquetas HTML no enviadas),
+                   state=1 (Se estan enviando las etiquetas),
+                   state=2 (Etiquetas HTML enviadas),
+                   state=3 (Ha ocurrido un error (head))
+                   state=4 (Enviando error (foot)) */
 	///charset
-	var $charset="UTF-8";
+	private $charset="UTF-8";
 	///Generador
-	var $generator="ApfManager";
+	private $generator="ApfManager";
 	///Array de estilos disponibles
-	var $stylesheets;
+	protected $stylesheets;
 	///Directorio base
-	var $path="";
+	private $path="";
+	private $UseRelativePaths=False;
 	
 	/// Constructor
-	function ApfBaseDocument($title="Untitled") {
+	/// @param $title Título del documento
+	public function __construct($title="Untitled") {
 		global $APF;
 		$this->start_time=$APF['start_time'];
 		$this->title=$title;
@@ -48,9 +54,14 @@ class ApfBaseDocument {
 		}
 		$this->path=$APF['server.path'];
 	}
+
+	public function setTittle($title) {
+		$this->title=$title;
+	}
 	
-	/** Obtener el tiempo del script actual */
-	function getTime($how="") {
+	/// Obtener el tiempo del script actual
+	/// @param $how Especifica la medida (s,seconds,ms,milliseconds,us,microseconds
+	public function getTime($how="") {
 		$START_TIME=$this->start_time; //Fijar el tiempo de inicio
 		$end_time=microtime();
 		$parcial_calc=explode(' ',$START_TIME . ' ' . $end_time);
@@ -86,40 +97,48 @@ class ApfBaseDocument {
 	
 	/** Genera y imprime la cabezera del documento */
 	function head() {
-		if($this->state==1) return;
-		$this->state=1;
-		?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head>
-<title><?php echo($this->title); ?></title>
+		try {
+			if($this->state!=0 and $this->state!=3) return; //Ya ha sido enviada
+			$this->state=1;
+			?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
 <?php
-		//Fijar Meta Tags
-		echo("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" . $this->charset . "\">\n");
-		echo("<meta name=\"Language\" content=\"" . ApfLocal::getDefaultLanguage() . "\">\n");
-		if(!empty($this->description)) {
-			echo("<meta name=\"description\" content=\"" . $this->description . "\">\n");
-		}
-		if(!empty($this->keywords)) {
-			echo("<meta name=\"keywords\" content=\"" . $this->keywords . "\">\n");
-		}
-		echo("<meta name=\"Generator\" content=\"" . $this->generator . "\">\n");
-		//Fin de fijacción de información meta
-		
-		//Fijar las hojas de estilo (stylesheets)
-		$i=0;
-		$styles=$this->stylesheets;
-		while(!empty($styles[$i][0])) {
-			//Principal
-			echo('<link rel="');
-			if($i!=0) echo("alternate ");
-			echo('stylesheet" title="' . $styles[$i][0] .'" href="' . $styles[$i++][1] . '" type="text/css">');
-		}
-		?>
+			//Fijar Meta Tags
+			echo("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" . $this->charset . "\" />\n");
+			echo("<meta name=\"Language\" content=\"" . ApfLocal::getDefaultLanguage() . "\" />\n");
+			if(!empty($this->description)) {
+				echo("<meta name=\"description\" content=\"" . $this->description . "\" />\n");
+			}
+			if(!empty($this->keywords)) {
+				echo("<meta name=\"keywords\" content=\"" . $this->keywords . "\" />\n");
+			}
+			echo("<meta name=\"Generator\" content=\"" . $this->generator . "\" />\n");
+			//Fin de fijacción de información meta
+			//Fijar título
+			echo("<title>{$this->title}</title>");
+			
+			//Fijar las hojas de estilo (stylesheets)
+			$i=0;
+			$styles=$this->stylesheets;
+			while(!empty($styles[$i][0])) {
+				//Principal
+				echo('<link rel="');
+				if($i!=0) echo("alternate ");
+				echo('stylesheet" title="' . $styles[$i][0] .'" href="' . $styles[$i++][1] . '" type="text/css" />');
+			}
+			?>
 </head>
 <body>
 <?php
+		$this->state=2;
+		} catch(Exception $e) {
+			$this->print_exception($e,True);
+		}
 	}
-	
+
+	function body() {}
+
 	/** Genera e imprime el pie del documento */
 	function foot() {
 		?>
@@ -127,14 +146,30 @@ class ApfBaseDocument {
 </html>
 <?php
 	}
+
+	function print_exception($e,$die=True) {
+		if(empty($this->title)) $this->title=_t("error_tit");
+		if($this->state==0) {
+			$this->state=3; //Fijar estado de error head
+			$this->head();
+		}
+		echo("<center>");
+		print_exception($e,False);
+		echo("</center>");
+		if($die and $this->state!=4) {
+			$this->state=4; //Fijar estado de error foot
+			$this->foot();
+			exit();
+		}
+	}
 	
 	/** Muestra un mensaje de error */
-	function error($msg,$title="") {
-		if(empty($title)) $title=_t("error_tit");
-		$this->state=2; //Fijar estado de error
-		//if($this->state==0) $this->head();
-		$this->head(); //El estado debe canviar a 1, sino protección contra llamada recursiva
-		if($this->state==2) ApfBaseDocument::head();
+	function error($msg,$title="",$die=False) {
+		if(empty($this->title)) $this->title=_t("error_tit");
+		if($this->state==0) {
+			$this->state=2; //Fijar estado de error
+			$this->head();
+		}
 		?>
 <center>
 <table bgcolor="Yellow">
@@ -147,13 +182,21 @@ class ApfBaseDocument {
 </table>
 </center>
 <?php
+		if($die) {
+			$this->foot();
+			exit();
+		}
 	}
 
-	///Muestra un mensaje de error y termina de forma immediata
-	function error_die($msg,$title="") {
-		$this->error($msg,$title);
-		$this->foot();
-		exit();
+	/// Genera y envía la página al cliente.
+	function show() {
+		try {
+			$this->head();
+			$this->body();
+			$this->foot();
+		} catch (Exception $e) {
+			$this->print_exception($e,True);
+		}
 	}
 	
 	/**
@@ -165,81 +208,9 @@ class ApfBaseDocument {
 	*/
 	function buildBaseURI($path="",$relative=true) {
 		if(!$this->UseRelativePaths || $relative==false) {
-			$proto=$this->getProtocol();
-			$port=$this->getPort();
-			if (($proto=="http" && $port==80) || ($proto=="https" && $port==443)) {
-				$port="";
-			} else {
-				$port=":" . $port;
-			}
-			$url=$proto . "://"  . $_SERVER['SERVER_NAME'] . $port;
-			$path="/" . $this->path . "/" . $path;
-			$path=str_replace("//","/",$path);
-			$url=$url . $path;
-			return $url;
+			return Request::buildRootURI($this->path . "/" . $path);
 		} else {
 			return $path;
-		}
-	}
-	
-	/// Construye una ruta relativa a la raiz
-	/// @param path Ruta
-	/// @return Ruta completa
-	function buildRootURI($path="") {
-		$proto=$this->getProtocol();
-		$port=$this->getPort();
-		if (($proto=="http" && $port==80) || ($proto=="https" && $port==443)) {
-			$port="";
-		} else {
-			$port=":" . $port;
-		}
-		$url=$proto . "://"  . $_SERVER['SERVER_NAME'] . $port;
-		$path="/" . $path;
-		$path=str_replace("//","/",$path);
-		$url=$url . $path;
-		return $url;
-	}
-	
-	///Obtiene el protocolo
-	function getProtocol() {
-		return ($HTTP_SERVER_VARS["HTTPS"]=="on" ? "https" : "http");
-	}
-	
-	///Obtiene el puerto
-	function getPort() {
-		return $_SERVER["SERVER_PORT"];
-	}
-
-	///Muestra la ip del cliente
-	///@param how short=solo ip, rshort=ip + x_forward, sino mostrará información completa ip+x_forward+client_ip+via
-	function getRemoteAddress($how="") {
-		if($format=="short") {
-			return($_SERVER["REMOTE_ADDR"]);
-		} elseif($format=="rshort") {
-			if($_SERVER["HTTP_X_FORWARDED_FOR"])
-				return($_SERVER["HTTP_X_FORWARDED_FOR"]);
-			elseif($_SERVER["HTTP_CLIENT_IP"])
-				return($_SERVER["HTTP_CLIENT_IP"]);
-			else
-				return($_SERVER["REMOTE_ADDR"]);
-		} else {
-			$ret=$_SERVER["REMOTE_ADDR"];
-			$proxy="";
-			$extra="";
-			if ($_SERVER["HTTP_X_FORWARDED_FOR"]) {
-				$proxy=" (proxy)";
-				$extra=$extra . " x-forwarded-for: <b>" . $_SERVER["HTTP_X_FORWARDED_FOR"] . "</b>";
-			}
-			if ($_SERVER["HTTP_CLIENT_IP"]) {
-				$proxy=" (proxy)";
-				$extra=$extra . " client-ip: <b>" . $_SERVER["HTTP_CLIENT_IP"] . "</b>";
-			}
-			if ($_SERVER["HTTP_VIA"]){
-				$proxy=" (proxy)";
-				$extra=$extra . " via: <b>" . $_SERVER["HTTP_VIA"] . "</b>";
-			}
-			$ret=$ret . $proxy . $extra;
-			return($ret);
 		}
 	}
 
@@ -248,55 +219,9 @@ class ApfBaseDocument {
 		return filemtime($_SERVER["SCRIPT_FILENAME"]);
 	}
 
-} //End ApfBaseDocument Class
-
-///Documento base
-class ApfDocument extends ApfBaseDocument {
-	///Indica si estamos autenticados
-	var $authed=0;
-	///Indica si tenemos privilegios administrativos
-	var $admin=0;
-	var $uid=0; ///< Identificador del usuario
-	///Objecto Base de datos
-	var $DB;
-	///Objecto de autenticación
-	var $auth;
-	///Constructor
-	function ApfDocument($title) {
-		$this->ApfBaseDocument($title);
-		//$this->auth=new ApfAuth($this);
-		$this->auth=createAuthObject(&$this);
-		//sessions
-		session_name("ApfVoDPHPSID");
-		session_start();
-		if(!empty($_SESSION["AuthHash"]) && $_COOKIE["ApfVoDAuthHash"]==$_SESSION["AuthHash"]) {
-			//echo("authed!");
-			//$this->authed=1;
-			if($this->auth->verify($_SESSION["uid"],$_SESSION["AuthHash"])) {
-				$this->authed=1;
-				$this->admin=$_SESSION["admin"];
-				$this->uid=$_SESSION["uid"];
-			} else {
-				$this->endSession();
-			}
-		} else {
-			$this->endSession();
-		}
-	}
-	
-	///Finaliza la session
-	function endSession() {
-		$_SESSION["AuthHash"]="";
-		$_SESSION["admin"]=0;
-		$_SESSION["uid"]=0;
-		$_SESSION["login"]="";
-		setcookie("ApfVoDAuthHash","",time()-36000);
-	}
-	
 	///Genera una redirección.
 	///@param to Dirección destino
 	function redirect($to) {
-		session_commit();
 		header("Location: $to");
 		?>
 		<html><head><TITLE><?php echo(_t("redirecting_to") . $to); ?></TITLE>
@@ -307,63 +232,7 @@ class ApfDocument extends ApfBaseDocument {
 		<?php
 		exit();
 	}
-	
-	///Comprueba la conexión con la base de datos.
-	function checkConnection() {
-		global $APF;
-		//$this->state=2;
-		if(empty($this->DB)) {
-			//$this->DB=new ApfDB($APF['db.user'],$APF['db.passwd'],$APF['db.name'],$APF['db.host']);
-			$this->DB=createDBObject($APF['db.user'],$APF['db.passwd'],$APF['db.name'],$APF['db.host']);
-			if($this->DB->connect()) {
-				$this->error($this->DB->getError());
-			}
-		}
-	}
 
-	///Realiza una petición a la base de datos.
-	///@param what Petición SQL.
-	function query($what) {
-		$this->checkConnection();
-		//echo($what);
-		if(!$this->DB->query($what)) {
-			//echo("<br><font color=red>Error</font><br>");
-			$this->error_die($this->DB->getError());
-		}
-		return 1;
-	}
-	
-	///Obtiene un array de los datos devueltos de la base de datos desde la última petición que devolvía datos.
-	function fetchArray() {
-		return($this->DB->fetchArray());
-		/*if($ret==null) { //Cazurro
-			$this->error_die("fetchArray() " . $this->DB->getError());
-		} else {
-			return $ret;
-		}*/
-	}
-
-	///Escapa caracteres especiales como "'".
-	function escape_string($what) {
-		$this->checkConnection();
-		if(get_magic_quotes_gpc()) {
-			//Si magic quotes esta activado
-			// los datos ya estan escapados
-			return $what;
-		} else {
-			//los datos no estan escapados, evitar
-			// inyecciones SQL
-			return $this->DB->escape_string($what);
-			//return(mysql_real_escape_string($what));
-		}
-	}
-	
-	///Devuelve el identificador de la ltima petición de inserción realizada a la base de datos.
-	function insertId() {
-		//return(mysql_insert_id());
-		return $this->DB->insertId();
-	}
-
-}
+} //End ApfBaseDocument Class
 
 ?>

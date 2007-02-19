@@ -7,19 +7,19 @@
 */
 
 //Inicialización
-include_once(dirname(__FILE__) . "/main.php"); 
+include_once(dirname(__FILE__) . "/Document.php"); 
 
 ///Clase página del gestor
 class ApfManager extends ApfDocument {
-	var $page="main"; ///<Nombre de la página
-	var $params=""; ///<Listado de parámetros extra, empezando por &amp;key=value pairs
-	var $admin=0; ///<Indica si el usuario tiene privilegios administrativos
-	var $id=0; ///<Identificador de un recurso (categoria, video, etc...)
-	var $tree=null; ///<Contiene una class ApfTree con el conjunto de categorías
+	private $page="main"; ///<Nombre de la página
+	private $params=""; ///<Listado de parámetros extra, empezando por &amp;key=value pairs
+	//private $admin=0; ///<Indica si el usuario tiene privilegios administrativos
+	private $id=0; ///<Identificador de un recurso (categoria, video, etc...)
+	//private $tree=null; ///<Contiene una class ApfTree con el conjunto de categorías
 
 	///Constructor
-	function ApfManager($title) {
-		$this->ApfDocument("");
+	function __construct($title) {
+		parent::__construct("");
 		//Obtener id
 		if(!empty($_GET['id'])) {
 			$this->id=$this->escape_string($_GET['id']);
@@ -272,18 +272,22 @@ class ApfManager extends ApfDocument {
 			echo("<br>" . _t("num_querys") . " " . $this->DB->getQueryCount());
 		}
 	}
-	
-	/// Genera y envía la página al cliente.
-	function show() {
-		$this->head();
-		$this->menu();
-		$this->foot();
-	}
 
 	/// Genera una redirección.
 	/// @param page Página de destino
 	function redirect2page($page) {
 		$this->redirect($this->BuildBaseUri($this->getArgs($page,0)));
+	}
+
+	/// Genera y envía la página al cliente.
+	function show() {
+		try {
+			$this->head();
+			$this->menu();
+			$this->foot();
+		} catch (Exception $e) {
+			$this->print_exception($e,True);
+		}
 	}
 
 	/// Genera el árbol de categorías

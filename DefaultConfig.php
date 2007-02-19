@@ -119,5 +119,16 @@ $APF['upload_script']='cgi-bin/upload.py';
 //$APF['upload_dir']='/tmp/apf_upload';
 $APF['upload_dir']='/home/apf_upload';
 
+// *** Configuración de la sessión y Cookies ***
+$APF['session.expire']=3600;
+$APF['cookie.path']="/";
+$APF['cookie.domain']='';
+$APF['cookie.secure']=False;
+$APF['cookie.name']='ApfVoDAuthData';
+$APF['session.name']='ApfVoDPHPSID';
+$APF['cookie.crypt']=True;
+$APF['cookie.http']=True;
+$APF['crypt.signkey']='Ppj6DAHbzES98rxMT0pEAHyzVNi2i7p0DI8HyUhmyiTMrQHA9tSmfFgn33o1Lhb2';
+$APF['crypt.key']='uEoKwxbLJoVD673euFWNYui6g0w22mIf';
 
 ?>

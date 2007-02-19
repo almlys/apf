@@ -1,4 +1,31 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-02-18 16:58  alberto
+
+	* [r82] lib/pages/base/BaseDocument.php, lib/pages/base/main.php,
+	  lib/pages/common/EditPage.php: ren basedocument
+
+2007-02-18 16:41  alberto
+
+	* [r81] DefaultConfig.php, cgi-bin/upload.py, generatedocs.sh,
+	  lib/auth/SimpleAuth.php, lib/common/util.php,
+	  lib/lan/strings.ca.php, lib/lan/strings.es.php,
+	  lib/lan/strings.php, lib/pages/base/manager.php,
+	  lib/pages/common/AdminPage.php, lib/pages/common/EditPage.php,
+	  lib/pages/common/LoginPage.php, lib/pages/common/MainPage.php,
+	  lib/pages/common/MediaPage.php, lib/pages/common/VideoPage.php,
+	  lib/vod/HttpVoDhandler.php, lib/vod/VideoLanVoDhandler.php,
+	  lib/vod/baseVoDhandler.php, lib/widgets/folder.php,
+	  lib/widgets/layer.php, test/test.php, utf2latin.sh: Gendocs and
+	  final utf-8 conversion
+
+2007-02-17 16:58  alberto
+
+	* [r80] ChangeLog, latin2utf.sh, lib/common/tree.php,
+	  lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/pages/base/main.php,
+	  lib/pages/base/manager.php, lib/pages/common/MediaPage.php,
+	  lib/widgets/tree.php: vale
+
 2007-02-17 16:26  alberto
 
 	* [r79] lib/pages/base/simplepage.php, tmp/simplepage.php: wip

@@ -62,7 +62,6 @@ class ApfMysqlDB implements iDB {
 		if(!$this->result) {
 			throw new DBQueryException($query,$this->getError());
 		}
-		return 1;
 	}
 	
 	///Obtener el último error producido en la última consulta.

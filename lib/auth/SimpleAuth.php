@@ -23,14 +23,14 @@ class ApfAuth extends ApfAuthBase implements iAuth {
 	///@param hash Hash de comprovación.
 	///@return Verdadero si los datos fueron correctos, falso en caso de fallar
 	function verify($uid,$hash) {
-		$query="select hash,admin from vid_users where uid=$uid";
+		$query="select hash,admin,name from vid_users where uid=$uid";
 		$this->DB->query($query);
 		$vals=$this->DB->fetchArray();
 		if($vals[0]==$hash) {
 			$this->level=$vals[1];
 			$this->uid=$uid;
 			$this->hash=$hash;
-			$this->login=$login;
+			$this->login=$vals[2];
 			$this->authed=True;
 			return true;
 		} else {
