@@ -1,0 +1,29 @@
+	font-family: "Arial" , serif;
+	font-family: "Arial Black" , serif;
+	font-family: "Charter" , serif; /*no (Opera only)*/
+	font-family: "Chicago" , serif; /*no*/
+	font-family: "Clean" , serif; /*no (Opera only)*/
+	font-family: "Comic Sans MS" , serif;
+	font-family: "Courier" , serif;
+	font-family: "Courier New" , serif;
+	font-family: "Courier Regular" , serif; /*no*/
+	font-family: "Fixed" , serif; /*no (Opera only)*/
+	font-family: "Geneva" , serif; /*no*/
+	font-family: "Helvetica" , serif;
+	font-family: "Monaco" , serif; /*no*/
+	font-family: "New York" , serif;/*no*/
+	font-family: "Palatino" , serif;/*no*/
+	font-family: "Impact" , serif;
+	font-family: "Lucida" , serif;/*no*/
+	font-family: "Lucida Bright" , serif;
+	font-family: "Lucidatypewriter" , serif; /*no (Opera only)*/
+	font-family: "Lucida Sans" , serif;
+	font-family: "Lucida Console" , serif; /*no*/
+	font-family: "New Century Schoolbook" , serif; /*no*/
+	font-family: "Symbol" , serif; /*no*/
+	font-family: "Times" , serif;
+	font-family: "Times New Roman" , serif;
+	font-family: "Utopia" , serif; /*no*/
+	font-family: "Verdana" , serif;
+	font-family: "Webdings" , serif;
+	font-family: "Windings" , serif; /*no*/
