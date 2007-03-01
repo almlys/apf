@@ -44,6 +44,8 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		}
 	}
 
+	/// Firma y cifra la Cookie
+	/// @param $data Datos de entrada
 	function CookieCryptAndSign($data) {
 		global $APF;
 		$data=substr(md5(uniqid() . time()),0,8).$data;
@@ -57,6 +59,8 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		return $signed;
 	}
 
+	/// Descifra y verifica la Cookie
+	/// @param $data Datos de entrada
 	function CookieDecryptAndCheck($data) {
 		global $APF;
 		if($APF['cookie.crypt']) {
@@ -152,6 +156,8 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		if(!empty($_GET['page'])) {
 			$this->page=$_GET['page'];
 		}
+		$this->setParam('page',$this->page);
+		$this->setParam('lan',ApfLocal::getDefaultLanguage());
 	}
 
 	///Comprobar si tenemos permisos administrativos
@@ -175,34 +181,53 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		$this->params[$key]=$val;
 	}
 
+	/// Obtiene un parametro
+	/// @param $key Nombre del parametro
+	function getParam($key) {
+		return $this->params[$key];
+	}
+
 	/// Obtener vector de argumentos del documento. (Para construir enlaces)
-	/// @param page Si se especifica, fijará nueva dirección de destino.
+	/// @param override Marca valores a substituir
+	/// @param mask Indicar que parámetros seran incluidos, array vacio implica todos.
 	/// @param encode Si es verdadero, codificará & como &amp;
-	function getArgs($page="",$encode=True) {
-		if(empty($page)) {
-			$page=$this->page;
+	function getArgs($override=array(),$mask=array(),$encode=True) {
+		$args=array_merge($this->params,$override);
+		if(!empty($mask)) {
+			$args=array_intersect_key($args,array_fill_keys($mask,''));
 		}
+		ksort($args);
 		if($encode) {
 			$amp="&amp;";
 		} else {
 			$amp="&";
 		}
-		$lan=ApfLocal::getDefaultLanguage();
-		$args="?page=$page" . $amp . "lan=$lan";
-		return $args;
+		$result="?";
+		$first=True;
+		foreach ($args as $key => $val) {
+			if(!$first) {
+				$result.=$amp;
+			}
+			$result.="$key=$val";
+			$first=False;
+		}
+		return $result;
 	}
 
 	/// Obtener vector de argumentos del documento. (Para uso en campos ocultos de un formulario)
-	/// @param $page Si se especifica, fijará nueva dirección de destino.
-	function getArgsHidden($page='') {
-		if(empty($page)) {
-			$page=$this->page;
+	/// @param override Marca valores a substituir
+	/// @param mask Indicar que parámetros seran incluidos, array vacio implica todos.
+	function getArgsHidden($override=array(),$mask=array()) {
+		$args=array_merge($this->params,$override);
+		if(!empty($mask)) {
+			$args=array_intersect_key($args,array_fill_keys($mask,''));
 		}
-		$lan=ApfLocal::getDefaultLanguage();
-		//$args="?page=$page" . $amp . "lan=$lan";
-		$args='<input type="hidden" name="page" value="' . $page . '">
-		<input type="hidden" name="lan" value="' . $lan . '">';
-		return $args;
+		ksort($args);
+		$result="";
+		foreach ($args as $key => $val) {
+			$result.="<input type=\"hidden\" name=\"$key\" value=\"$val\" />";
+		}
+		return $result;
 	}
 
 	///Comprueba la conexión con la base de datos.

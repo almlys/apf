@@ -21,17 +21,19 @@ class ApfManager extends ApfDocument {
 		parent::__construct('');
 		$this->maintitle=_t('vod_viewer');
 		$this->setTitle($title);
+		// Estilos
 		$this->addStyle(_t('default_style'),$this->buildBaseUri('styles/default.css'));
-		$this->add2Menu(_t('main_page'),'main');
-		$this->add2Menu(_t('videos_page'),"categ");
+		// Menu
+		$this->add2Menu(_t('main_page'),'main','','imgs/config.png');
+		$this->add2Menu(_t('videos_page'),"categ",'','imgs/video.png');
 		if($this->IAmAdmin()) {
-			$this->add2Menu(_t('admin_page'),'admin');
+			$this->add2Menu(_t('admin_page'),'admin','imgs/config.png','');
 		}
 		//disconnect
 		if($this->IAmAuthenticated()) {
-			$this->add2Menu(_t('logout') . " " . $this->getLogin(),'logout');
+			$this->add2Menu(_t('logout') . " " . $this->getLogin(),'logout','','imgs/logout.png');
 		} else {
-			$this->add2Menu(_t('login_page'),'login');
+			$this->add2Menu(_t('login_page'),'login','','imgs/login.png');
 		}
 	}
 
@@ -45,13 +47,14 @@ class ApfManager extends ApfDocument {
 	/// Añadir una nueva entrada al menú.
 	/// @param title titulo de la página.
 	/// @param page dirección de la página.
-	/// @param link Valor diferente a 0 indica que page es un documento externo
-	function add2Menu($title,$page,$link=0,$image='') {
+	/// @param link Valor diferente a '' indica que page es un documento externo
+	/// @param image Valor diferente a '' indica ruta a un icono
+	function add2Menu($title,$page,$link='',$image='') {
 		$x=count($this->menu);
 		$this->menu[$x][1]=$title;
 		$this->menu[$x][0]=$page;
 		$this->menu[$x][2]=$link;
-		$this->menu[$x][2]=$image;
+		$this->menu[$x][3]=$image;
 	}
 	
 	/// Cabezera
@@ -83,17 +86,18 @@ class ApfManager extends ApfDocument {
    <div class="language_selector">
 <?php
 		//Mostrar todos los idiomas disponibles
-		$page=$this->page;
-		$str_id=$this->params;
 		$lan=ApfLocal::getDefaultLanguage();
 		if($lan!="es") {
-			echo("<a href=\"?page=$page&amp;lan=es$str_id\">Espa&ntilde;ol</a>");
+			$str_id=$this->getArgs(array('lan' => 'es'));
+			echo("<a href=\"$str_id\">Espa&ntilde;ol</a>");
 		}
+		$str_id=$this->getArgs(array('lan' => 'ca'));
 		if($lan!="ca") {
-			echo("&nbsp;&nbsp;<a href=\"?page=$page&amp;lan=ca$str_id\">Catal&agrave;</a>");
+			echo("&nbsp;&nbsp;<a href=\"$str_id\">Catal&agrave;</a>");
 		}
+		$str_id=$this->getArgs(array('lan' => 'en'));
 		if($lan!="en") {
-			echo("&nbsp;&nbsp;<a href=\"?page=$page&amp;lan=en$str_id\">English</a>");
+			echo("&nbsp;&nbsp;<a href=\"$str_id\">English</a>");
 		}
 ?>
    </div> <!--
@@ -124,18 +128,24 @@ class ApfManager extends ApfDocument {
 		//Mostrar todas las secciones del índice
 		$i=0; $done=0;
 		$menu=$this->menu;
-		$page=$this->page;
-		$lan=ApfLocal::getDefaultLanguage();
+		$page=$this->getParam('page');
+		$mask=array('lan','page');
 		while(!empty($menu[$i][0])) {
-			echo("<tr><td align=\"center\" nowrap>");
+			if(!empty($menu[$i][3])) {
+				$img="<img border='0' src=\"" . $this->buildBaseURI($menu[$i][3]) ."\" alt=\"{$menu[$i][1]}\" />";
+			} else {
+				$img='';
+			}
+			echo("<tr><td align=\"center\" nowrap='nowrap'>");
 			if($page==$menu[$i][0]) {
-				echo("<div class=\"selected\"><b>&gt;" . $menu[$i][1] . "&lt;</b></div>");
+				echo("<div class=\"selected\">$img<br /><b>&gt;{$menu[$i][1]}&lt;</b></div>");
 				$done=1;
 			} else {
-				if($menu[$i][2]==0) {
-					echo("<div class=\"unselected\"><a href=\"?page=" . $menu[$i][0] . "&amp;lan=" . $lan . "\">" . $menu[$i][1] . "</a></div>");
-				} else {
-					echo("<div class=\"unselected\"><a href=\"" . $menu[$i][0] . "\">" . $menu[$i][1] . "</a></div>");
+				if(empty($menu[$i][2])) { //Link interno
+					$str_id=$this->getArgs(array('page' => $menu[$i][0]),$mask);
+					echo("<div class=\"unselected\"><a href=\"$str_id\">$img<br />{$menu[$i][1]}</a></div>");
+				} else { //Link externo
+					echo("<div class=\"unselected\"><a href=\"{$menu[$i][0]}\">$img<br />{$menu[$i][1]}</a></div>");
 				}
 			}
 			echo("</td></tr>");
@@ -149,7 +159,7 @@ class ApfManager extends ApfDocument {
 			} else {
 				$nampage=$page;
 			}
-			echo("<tr><td align=\"center\" nowrap>");
+			echo("<tr><td align=\"center\" nowrap='nowrap'>");
 			echo("<div class=\"selected\"><b>&gt;" . $nampage . "&lt;</b></div>");
 			echo("</td></tr>");
 		}

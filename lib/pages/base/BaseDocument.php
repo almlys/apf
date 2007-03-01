@@ -111,7 +111,7 @@ class ApfBaseDocument implements iDocument {
 		try {
 			if($this->state!=0 and $this->state!=3) return; //Ya ha sido enviada
 			$this->state=1;
-			?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+			?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <?php
