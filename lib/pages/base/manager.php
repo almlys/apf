@@ -245,25 +245,78 @@ class ApfManager extends ApfDocument implements iDocument {
 		}
 	}
 
-	///Widgets (TEMP)
+	//Widgets
+
+	/// Obtener Gestor del catálogo
+	function getMediaMGR() {
+		if(empty($this->mediaMGR)) {
+			require_once(dirname(__FILE__) . '/../../mediamgr/MediaMGR.php');
+			$this->mediaMGR=new MediaMGR($this);
+		}
+		return $this->mediaMGR;
+	}
 
 	/// Genera el árbol de categorías
-	function generateMediaTree() {
-		if($this->tree==null) {
-			$lan=ApfLocal::getDefaultLanguage();
-			$query="select a.id,a.parent,b.name
-							from vid_categ a inner join vid_names b
-							on a.name_id=b.id
-							where b.lan=\"$lan\"";
-			$this->query($query);
-			$i=0;
-			while($vals[$i++]=$this->fetchArray()) {
-				//echo($i-1 . " " . $vals[$i-1][0] . $vals[$i-1][2] . "<br>\n");
-			}
-			//echo("<hr>");
-			$this->tree=new ApfTree($vals);
+	function getMediaTree() {
+		return $this->getMediaMGR()->getMediaTree();
+	}
+
+	/// Escribe el árbol de categorias
+	function writeCategoryListControl($id=-1) {
+		if($id==-1) $id=$this->id;
+		//Quick navigation
+		echo('<form name="jumpfrm" action="' . $this->buildBaseUri() . '" method="get">' . "\n");
+		echo(_t("category") . ": ");
+		echo('<SELECT name="id" onchange="document.jumpfrm.submit()">' . "\n");
+		$this->getMediaTree()->writeOptions($id);
+		echo("</select>\n");
+		echo($this->getArgsHidden(array('page' => 'categ'),'',array('id')));
+		echo('<INPUT type="submit" value="' . _t("go") . '" />' . "\n");
+		echo('</form>');
+	}
+
+	/// Escribe todas las carpetas
+	/// @param id Identificador
+	function printFolders($id) {
+		$lan=ApfLocal::getDefaultLanguage();
+		//$query="select id,$name,$desc,count from vid_categ where parent=" . $this->id;
+		$query="select a.id,b.name,c.desc,a.count
+						from vid_categ a inner join (vid_names b, vid_descs c)
+						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+						where b.lan=\"$lan\" and a.parent=" . $id;
+		$this->query($query);
+		while($vals=$this->fetchArray()) {
+			$folder=new ApfFolder($this,$vals[0],$vals[1],$vals[2],$vals[3]);
+			$folder->show();
 		}
 	}
+
+	/// Escribe recursos multimedia
+	/// @param id Identificador
+	function printMedia($id) {
+		$lan=ApfLocal::getDefaultLanguage();
+		//$query="select id,$name,$desc,prev,dur from vid_mfs where ctg=" . $this->id;
+		$query="select a.id,b.name,c.desc,a.prev,a.dur
+						from vid_mfs a inner join (vid_names b, vid_descs c)
+						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+						where b.lan=\"$lan\" and a.ctg=" . $id;
+		$this->query($query);
+		while($vals=$this->fetchArray()) {
+			$folder=new ApfVideo($this,$vals[0],$vals[1],$vals[2],$vals[3],$vals[4]);
+			$folder->show();
+		}
+	}
+
+	/// Escribe las ultimas novedades multimedia
+	/// @param cut Limite
+	function printNewMedia($cut=4) {
+	}
+
+	/// Escribe los recuros más visitados
+	/// @param cut Limite
+	function printTopMedia($cut=4) {
+	}
+
 
 } //End Class
 

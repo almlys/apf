@@ -283,14 +283,23 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 	/// Obtener vector de argumentos del documento. (Para uso en campos ocultos de un formulario)
 	/// @param override Marca valores a substituir
 	/// @param mask Indicar que parámetros seran incluidos, array vacio implica todos.
-	function getArgsHidden($override=array(),$mask=array()) {
-		$args=array_merge($this->params,$override);
+	/// @param imask Mascar inversa
+	function getArgsHidden($override='',$mask='',$imask='') {
+		if(!empty($override)) {
+			$args=array_merge($this->params,$override);
+		} else {
+			$args=$this->params;
+		}
 		if(!empty($mask)) {
 			$args=array_intersect_key($args,array_fill_keys($mask,''));
+		}
+		if(empty($imask)) {
+			$imask=array();
 		}
 		ksort($args);
 		$result="";
 		foreach ($args as $key => $val) {
+			if(in_array($key,$imask)) continue;
 			$result.="<input type=\"hidden\" name=\"$key\" value=\"$val\" />";
 		}
 		return $result;

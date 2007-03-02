@@ -24,8 +24,13 @@ class ApfMainPage extends ApfManager implements iDocument {
 		$vals=$this->fetchArray();
 		echo($vals[0]);*/
 		echo(_t('main_welcome_msg'));
+		echo('<br /><br /><div>');
+		$this->writeCategoryListControl();
+		echo('</div>');
 		echo('<h2>' . _t('new_videos') . '</h2>');
+		$this->printNewMedia(4);
 		echo('<h2>' . _t('most_viewed_videos') . '</h2>');
+		$this->printTopMedia(4);
 	}
 }
 
