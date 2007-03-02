@@ -12,29 +12,26 @@ require_once(dirname(__FILE__) . "/../../widgets/folder.php");
 
 /// Navegador de la biblioteca multimedia. (Sistema virtual de ficheros)
 class ApfMediaPage extends ApfManager {
-	var $desc;
-	var $pid=1;
+	private $desc; ///<! Descripción
+	private $pid=1; ///<! Id del padre
+
 	/// Constructor
-	function ApfMediaPage() {
+	function __construct() {
 		parent::__construct(_t('videos_page'));
 	}
 	
 	///Cabezera
 	function head() {
-		if($this->state!=0) return;
 		//Obtener id (del recurso soliciatdo)
-		$id=$this->id;
-		if($id==0) $id=$this->id=1;
+		$id=$this->getId();
+		if($id==0) $id=$this->setId(1);
+		$this->id=$id;
 		/*if($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["id"]) && is_numeric($_POST["id"])) {
 			$id=$this->id=$_POST["id"];
 		}*/
-/*		$lan=_tDefaultLanguage(); //Obtener idioma por defecto
-
-		$name="name_" . $lan;
-		$desc="desc_" . $lan;*/
 		
 		if($id!=1) {
-			//1ra peticion
+			//1a peticion
 			//$query="select parent,$name,$desc,count from vid_categ where id=$id;";
 			/*$query="select a.parent,b.name,a.$desc
 							from  vid_categ a inner join vid_names b

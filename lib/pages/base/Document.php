@@ -230,6 +230,16 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		return $this->login;
 	}
 
+	function getId() {
+		return $this->id;
+	}
+
+	function setId($id) {
+		$this->id=$id;
+		$this->setParam('id',$id);
+		return $id;
+	}
+
 	/// Fija un parametro
 	/// @param $key Nombre del parametro
 	/// @param $val Valor del parametro
