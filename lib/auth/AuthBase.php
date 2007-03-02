@@ -108,13 +108,13 @@ abstract class ApfAuthBase implements iAuth {
 	///@param enc Codificación del password (plain: Password en texto plano, md5 hash MD5 del password)
 	///@param sid Session del usuario
 	///@return Verdadero si los datos fueron correctos, falso en caso de fallar
-	function authenticate($login,$pass,$enc="plain",$sid=0) {
+	function authenticate($login,$pass,$enc='plain',$sid=0) {
 		$this->authed=False;
 		switch ($enc) {
-			case "md5":
+			case 'md5':
 				$hash=$pass;
 				break;
-			case "plain":
+			case 'plain':
 				$hash=md5($pass);
 				break;
 			default:
@@ -132,15 +132,15 @@ abstract class ApfAuthBase implements iAuth {
 	}
 
 	public function challenge() {
-		return $this->getHash(md5(time() . "kkFFWdfe3iTa3vuusya5_r43b9z45_70tfFREG3kAD"));
+		return $this->getHash(md5(time()));
 	}
 
-	public function hashme($login,$pass,$challenge,$alg="md5") {
-		if ($enc!="md5") throw new NotImplementedException($enc);
+	public function hashme($login,$pass,$challenge,$alg='md5') {
+		if ($alg!='md5') throw new NotImplementedException($enc);
 		return md5($login . $pass . $challenge);
 	}
 
-	public function validate($login,$challenge,$client_hash,$alg="md5") {
+	public function validate($login,$challenge,$client_hash,$alg='md5') {
 		$this->authed=False;
 		$cpass=$this->getPassword($login);
 		$hash_check=$this->hashme($login,$cpass,$challenge,$alg);

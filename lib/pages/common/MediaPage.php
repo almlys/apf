@@ -16,8 +16,7 @@ class ApfMediaPage extends ApfManager {
 	var $pid=1;
 	/// Constructor
 	function ApfMediaPage() {
-		$this->ApfManager("");
-		$this->setTitle(_t("videos_page"));
+		parent::__construct(_t('videos_page'));
 	}
 	
 	///Cabezera

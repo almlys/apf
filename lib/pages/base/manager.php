@@ -10,24 +10,24 @@
 include_once(dirname(__FILE__) . "/Document.php"); 
 
 ///Clase página del gestor
-class ApfManager extends ApfDocument {
+class ApfManager extends ApfDocument implements iDocument {
 	//private $tree=null; ///<Contiene una class ApfTree con el conjunto de categorías
 	private $maintitle;
 	private $subtitle;
 	private $menu;
 
 	///Constructor
-	function __construct($title) {
-		parent::__construct('');
+	function __construct($title='',$release_session=True) {
+		parent::__construct('',$release_session);
 		$this->maintitle=_t('vod_viewer');
 		$this->setTitle($title);
 		// Estilos
 		$this->addStyle(_t('default_style'),$this->buildBaseUri('styles/default.css'));
 		// Menu
-		$this->add2Menu(_t('main_page'),'main','','imgs/config.png');
+		$this->add2Menu(_t('main_page'),'main','','imgs/home.png');
 		$this->add2Menu(_t('videos_page'),"categ",'','imgs/video.png');
 		if($this->IAmAdmin()) {
-			$this->add2Menu(_t('admin_page'),'admin','imgs/config.png','');
+			$this->add2Menu(_t('admin_page'),'admin','','imgs/config.png');
 		}
 		//disconnect
 		if($this->IAmAuthenticated()) {
@@ -145,7 +145,7 @@ class ApfManager extends ApfDocument {
 					$str_id=$this->getArgs(array('page' => $menu[$i][0]),$mask);
 					echo("<div class=\"unselected\"><a href=\"$str_id\">$img<br />{$menu[$i][1]}</a></div>");
 				} else { //Link externo
-					echo("<div class=\"unselected\"><a href=\"{$menu[$i][0]}\">$img<br />{$menu[$i][1]}</a></div>");
+					echo("<div class=\"unselected\"><a href=\"{$menu[$i][2]}\">$img<br />{$menu[$i][1]}</a></div>");
 				}
 			}
 			echo("</td></tr>");
@@ -234,12 +234,6 @@ class ApfManager extends ApfDocument {
 		}
 	}
 
-	/// Genera una redirección.
-	/// @param page Página de destino
-	function redirect2page($page) {
-		$this->redirect($this->BuildBaseUri($this->getArgs($page,0)));
-	}
-
 	/// Genera y envía la página al cliente.
 	function show() {
 		try {
@@ -250,6 +244,8 @@ class ApfManager extends ApfDocument {
 			$this->print_exception($e,True);
 		}
 	}
+
+	///Widgets (TEMP)
 
 	/// Genera el árbol de categorías
 	function generateMediaTree() {

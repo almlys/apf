@@ -92,7 +92,7 @@ $APF['auth.plug']='auth/SimpleAuth.php';
 ///Activa/Desactiva autenticación Desafío/Respuesta
 ///(Challenge Handshake Authentication Protocol)
 ///Para que funcione el navegador debe soportar JavaScript.
-$APF['auth.chap']=1;
+$APF['auth.chap']=False;
 
 
 // *** Configuración servidores VoD ***

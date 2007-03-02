@@ -1,4 +1,22 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-01 03:22  alberto
+
+	* [r86] styles/fonts.txt: kk
+
+2007-03-01 03:21  alberto
+
+	* [r85] imgs/config.png, imgs/login.png, imgs/logout.png,
+	  imgs/video.png, lib/pages/base/BaseDocument.php,
+	  lib/pages/base/Document.php, lib/pages/base/manager.php,
+	  styles/default.css: wip
+
+2007-02-19 15:27  alberto
+
+	* [r84] ChangeLog, lib/common/appcore.php, lib/lan/strings.es.php,
+	  lib/pages/base/BaseDocument.php, lib/pages/base/Document.php,
+	  lib/pages/base/manager.php, lib/pages/base/simplepage.php,
+	  lib/pages/common/MainPage.php: more code
+
 2007-02-19 13:39  alberto
 
 	* [r83] ChangeLog, DefaultConfig.php, lib/auth/SimpleAuth.php,

@@ -16,7 +16,7 @@ require_once(dirname(__FILE__) . "/../../" . $APF['db.plug']);
 class ApfDocument extends ApfBaseDocument implements iDocument {
 	private $authed=0; ///<Indica si estamos autenticados
 	private $admin=0; ///<Indica si tenemos privilegios administrativos
-	private $uid=0; ///<Identificador del usuario
+	private $uid=''; ///<Identificador del usuario
 	private $login='';
 	private $DB; ///<Objecto Base de datos
 	private $auth; ///<Objecto de autenticación
@@ -26,7 +26,7 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 	///Constructor
 	/// @param $title Título del documento
 	/// @param $release_session Indica si liberamos la sessión
-	function __construct($title,$release_session=True) {
+	function __construct($title='',$release_session=True) {
 		parent::__construct($title);
 		$this->checkLogedUser($release_session);
 		$this->checkPageId();
@@ -37,7 +37,7 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 	function startSession($force=False) {
 		global $APF;
 		//sessions
-		if(isset($_COOKIE[$APF['cookie.name']]) or $force) {
+		if(!isset($_SESSION) and (isset($_COOKIE[$APF['cookie.name']]) or $force)) {
 			session_set_cookie_params(0,$APF['cookie.path'],$APF['cookie.domain'],$APF['cookie.secure'],$APF['cookie.http']);
 			session_name($APF['session.name']);
 			session_start();
@@ -77,8 +77,15 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		return substr($data,8);
 	}
 
+	/// Debuelve el Desafio para el método de authenticación Desafio-Respuesta
+	function getAuthChallenge() {
+		return $this->auth->challenge();
+	}
+
 	/// Comprueba si el usuario ya tienen una sessión existente y valida
+	/// @param release_session Indica si debemos liberar la sessión, para qu pueda ser utilizada
 	function checkLogedUser($release_session=True) {
+		global $APF;
 		$this->auth=createAuthObject(&$this);
 		// 1o, Debe Existir la cookie de usuario
 		if(!isset($_COOKIE[$APF['cookie.name']])) return;
@@ -87,15 +94,25 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 			$this->endSession();
 			return;
 		}
+		$data=explode(" ",$data);
+		$uid=$data[0];
+		$AuthHash=$data[1];
+		$expire=intval($data[2]);
+		$refresh_session=False;
+		// Comprovación de expiración de sessión
+		if($expire-time()<=0) {
+			// Ha expirado
+			$this->endSession();
+			return;
+		} elseif($expire-time()<$APF['session.expire']-($APF['session.expire']/4)) {
+			$refresh_session=True;
+		}
 		// Check for session and Start it if it is missing
 		if(!isset($_SESSION)) {
 			$this->startSession(True);
 		}
-		$data=explode(" ",$data);
-		$uid=$data[0];
-		$AuthHash=$data[1];
 		// 1o Comprovar en la session
-		if(!empty($_SESSION['AuthHash']) && $AuthHash==$_SESSION['AuthHash'] && $uid==$_SESSION['uid']) {
+		if(!$refresh_session && !empty($_SESSION['AuthHash']) && $AuthHash==$_SESSION['AuthHash'] && $uid==$_SESSION['uid']) {
 			// La sessión ya existe, el usuario esta autenticado y es válido
 			$this->authed=1;
 			$this->admin=$_SESSION['admin'];
@@ -103,43 +120,82 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 			$this->login=$_SESSION['login'];
 		} elseif(!empty($AuthHash) and $this->auth->verify($uid,$AuthHash)) {
 			//No existe datos de sessión validos, comprovar usuario on la DB
-			$this->authed=1;
-			$this->admin=$this->auth->getLevel();
-			$this->uid=$this->auth->getUID();
-			$this->login=$this->auth->getLogin();
-			$_SESSION['login']=$this->auth->getLogin();
-			$_SESSION['AuthHash']=$this->auth->getAuthHash();
-			$_SESSION['admin']=$this->auth->getLevel();
-			$_SESSION['uid']=$this->auth->getUID();
+			$this->setAuthVars();
 		} else {
 			$this->endSession();
 			return;
 		}
-		//Refrescar la cookie
-		$data=$this->CookieCryptAndSign($this->uid . " " . $_SESSION["AuthHash"]);
-		setcookie($APF['cookie.name'],$data,time()+$APF['session.expire'],$APF['cookie.path'],$APF['cookie.domain'],$APF['cookie.secure'],$APF['cookie.http']);
+		if($refresh_session) {
+			//Refrescar la cookie
+			session_regenerate_id();
+			$this->sendAuthCookie();
+		}
+
 		//Liberar la sessión
 		if($release_session) {
-			$this->relase_session();
+			$this->release_session();
 		}
 	}
 
+	private function sendAuthCookie() {
+		global $APF;
+		$data=$this->CookieCryptAndSign($this->uid . " " . $_SESSION["AuthHash"] . " " . intval(time()+$APF['session.expire']));
+		setcookie($APF['cookie.name'],$data,time()+$APF['session.expire'],$APF['cookie.path'],$APF['cookie.domain'],$APF['cookie.secure'],$APF['cookie.http']);
+	}
+
+	private function setAuthVars() {
+		$this->authed=1;
+		$this->admin=$this->auth->getLevel();
+		$this->uid=$this->auth->getUID();
+		$this->login=$this->auth->getLogin();
+		$_SESSION['login']=$this->auth->getLogin();
+		$_SESSION['AuthHash']=$this->auth->getAuthHash();
+		$_SESSION['admin']=$this->auth->getLevel();
+		$_SESSION['uid']=$this->auth->getUID();
+	}
+
+	public function authenticate($login,$pass,$enc='plain',$sid=0) {
+		if($this->auth->authenticate($login,$pass,$enc,$sid)) {
+			$this->setAuthVars();
+			$this->sendAuthCookie();
+			return True;
+		}
+		return False;
+	}
+
+	public function authValidate($login,$challenge,$client_hash,$alg="md5") {
+		if($this->auth->validate($login,$challenge,$client_hash,$alg)) {
+			$this->setAuthVars();
+			$this->sendAuthCookie();
+			return True;
+		}
+		return False;
+	}
+
+
 	/// Libera la sessión
 	function release_session() {
-		session_commit();
+		if(isset($_SESSION)) {
+			session_commit();
+			unset($_SESSION);
+		}
 	}
 	
 	///Finaliza la session
 	function endSession() {
+		global $APF;
 		$this->authed=0;
-		setcookie($APF['cookie.name'],False);
+		$this->admin=0;
+		$this->login='';
+		$this->uid='';
+		setcookie($APF['cookie.name'],False,0,$APF['cookie.path'],$APF['cookie.domain'],$APF['cookie.secure'],$APF['cookie.http']);
 		if(isset($_SESSION)) {
 			unset($_SESSION['AuthHash']);
 			unset($_SESSION['admin']);
 			unset($_SESSION['uid']);
 			unset($_SESSION['login']);
 			session_destroy();
-			setcookie($APF['session.name'],false);
+			setcookie($APF['session.name'],False,0,$APF['cookie.path'],$APF['cookie.domain'],$APF['cookie.secure'],$APF['cookie.http']);
 			unset($_SESSION);
 		}
 	}
@@ -270,6 +326,12 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 	function insertId() {
 		//return(mysql_insert_id());
 		return $this->DB->insertId();
+	}
+
+	/// Genera una redirección.
+	/// @param page Página de destino
+	function redirect2page($page) {
+		$this->redirect($this->BuildBaseUri($this->getArgs(array('page' => $page),'',False)));
 	}
 
 }

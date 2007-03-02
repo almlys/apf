@@ -9,11 +9,10 @@
 require_once(dirname(__FILE__) . '/../base/manager.php'); 
 
 ///Página principal
-class ApfMainPage extends ApfManager {
+class ApfMainPage extends ApfManager implements iDocument {
 	///Constructor
 	function __construct() {
-		parent::__construct("");
-		$this->setTitle(_t(main_page));
+		parent::__construct(_t(main_page));
 	}
 	
 	///Método cuerpo
