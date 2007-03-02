@@ -26,9 +26,9 @@ class ApfManager extends ApfDocument implements iDocument {
 		// Menu
 		$this->add2Menu(_t('main_page'),'main','','imgs/home.png');
 		$this->add2Menu(_t('videos_page'),"categ",'','imgs/video.png');
-		if($this->IAmAdmin()) {
+		/*if($this->IAmAdmin()) {
 			$this->add2Menu(_t('admin_page'),'admin','','imgs/config.png');
-		}
+		}*/
 		//disconnect
 		if($this->IAmAuthenticated()) {
 			$this->add2Menu(_t('logout') . " " . $this->getLogin(),'logout','','imgs/logout.png');

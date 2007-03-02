@@ -144,8 +144,10 @@ abstract class ApfAuthBase implements iAuth {
 		$this->authed=False;
 		$cpass=$this->getPassword($login);
 		$hash_check=$this->hashme($login,$cpass,$challenge,$alg);
-		if($hash_check==$challenge) {
+		if($hash_check==$client_hash) {
+			$this->hash=$this->getHash($challenge . $client_hash . $login . $cpass);
 			$this->authed=True;
+			$this->authSuccesfull();
 			return True;
 		}
 		return False;

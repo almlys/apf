@@ -1,4 +1,12 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-02 16:24  alberto
+
+	* [r87] ChangeLog, DefaultConfig.php, imgs/home.png,
+	  lib/auth/AuthBase.php, lib/pages/base/Document.php,
+	  lib/pages/base/manager.php, lib/pages/common/LoginPage.php,
+	  lib/pages/common/MainPage.php, lib/pages/common/MediaPage.php:
+	  Plain Auth finished, tested and submitted
+
 2007-03-01 03:22  alberto
 
 	* [r86] styles/fonts.txt: kk

@@ -74,4 +74,9 @@ $APF_STRINGS['unsuported_outdated_old_browser']='Lo siento, Tu navegador no sopo
 $APF_STRINGS['main_welcome_msg']='<h2>Bienvenido al Gestor de Contenidos</h2>Haz click sobre "Media" para mostrar los diferentes recursos disponibles.';
 $APF_STRINGS['new_videos']='Novedades';
 $APF_STRINGS['most_viewed_videos']='Los vídeos m&aacute;s vistos';
+$APF_STRINGS['OK']='Acceptar';
+$APF_STRINGS['Delete']='Borrar';
+$APF_STRINGS['login_field_empty']='El campo nombre esta vacio';
+$APF_STRINGS['authenticating']='Autenticando...';
+
 ?>
