@@ -7,7 +7,6 @@
 */
 
 require_once(dirname(__FILE__) . "/../base/manager.php"); 
-require_once(dirname(__FILE__) . "/../../widgets/folder.php");
 
 /// Navegador de la biblioteca multimedia. (Sistema virtual de ficheros)
 class ApfMediaPage extends ApfManager {
@@ -34,8 +33,8 @@ class ApfMediaPage extends ApfManager {
 				$this->setTitle($ctg['name']);
 				$this->category=$ctg['name'];
 				$this->desc=$ctg['desc'];
-				if($ctg['vals']>1) {
-					$this->desc=$this->desc . ' - ' . $ctg['desc'] . ' ' . _t('_objects');
+				if($ctg['count']>1) {
+					$this->desc=$this->desc . ' - ' . $ctg['count'] . ' ' . _t('objects');
 				}
 			}
 		}
@@ -100,7 +99,7 @@ class ApfMediaPage extends ApfManager {
 			echo('</div>');
 		}*/
 		?>
-		<table width="100%" border="0" cellpadding="0" cellspacing="0"><TR><TD>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td>
 		<?php
 		//Mostrar todas las carpetas
 		$this->printFolders($id);
@@ -109,24 +108,25 @@ class ApfMediaPage extends ApfManager {
 		//Mostrar botones administrativos si admin
 		if($this->IAmAdmin()) {
 			?>
-			</TD></TR>
-			<tr><TD>
+			</td></tr>
+			<tr><td>
 			<hr />
 			<?php
 			$this->showAdminButtons();
 		}
 		
 		?>
-		</TD></tr></table>
+		</td></tr></table>
 		<?php
 	}
 	
 	/// Muestra los botones de administración
 	function showAdminButtons() {
 		?>
+		<fieldset class="setjumpfrm">
 		<form action="<?php echo($this->buildBaseUri($this->getArgs(array('page' => 'edit')))); ?>" method='post'>
 		<?php echo(_t("admin") . ": "); ?>
-		<SELECT name="action">
+		<select name="action">
 		<option value="add_ctg"><?php echo(_t("add_ctg")); ?></option>
 		<?php 
 			if ($this->getId()!=1) {
@@ -137,11 +137,12 @@ class ApfMediaPage extends ApfManager {
 			}
 		?>
 		<option value="add_media"><?php echo(_t("add_media")); ?></option>
-		</SELECT>
-		<INPUT type="hidden" name="id" value="<?php echo($this->getId()); ?>" />
-		<INPUT type="hidden" name="pid" value="<?php echo($this->pid); ?>" />
-		<INPUT type="submit" value="<?php echo(_t("go")); ?>" />
+		</select>
+		<input type="hidden" name="id" value="<?php echo($this->getId()); ?>" />
+		<input type="hidden" name="pid" value="<?php echo($this->pid); ?>" />
+		<input type="submit" value="<?php echo(_t("go")); ?>" />
 		</form>
+		</fieldset>
 		<?php
 	}
 

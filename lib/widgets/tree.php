@@ -128,7 +128,7 @@ class ApfTree {
 	function writeNode($id,$name,$level,$sel_id,$close) {
 		echo('<option value="' . $id . '"');
 		if($id==$sel_id) {
-			echo(' selected');
+			echo(' selected="selected"');
 		}
 		echo('>');
 		if($level==0) {

@@ -67,6 +67,96 @@ class MediaMGR {
 		return $this->tree;
 	}
 
+	/// Obtener todas las carpetas
+	/// @param id Identificador
+	function getFolders($id) {
+		$lan=ApfLocal::getDefaultLanguage();
+		//$query="select id,$name,$desc,count from vid_categ where parent=" . $this->id;
+		$query="select a.id,b.name,c.desc,a.count
+						from vid_categ a inner join (vid_names b, vid_descs c)
+						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+						where b.lan=\"$lan\" and a.parent=" . $id;
+		$this->DB->query($query);
+		$r=array();
+		$i=0;
+		while($vals=$this->DB->fetchArray()) {
+			$r[$i]['id']=$vals[0];
+			$r[$i]['name']=$vals[1];
+			$r[$i]['desc']=$vals[2];
+			$r[$i]['count']=$vals[3];
+			$i++;
+		}
+		return $r;
+	}
+
+	/// Obtener todas las vídeos
+	/// @param id Identificador
+	function getMedia($id) {
+		$lan=ApfLocal::getDefaultLanguage();
+		//$query="select id,$name,$desc,prev,dur from vid_mfs where ctg=" . $this->id;
+		$query="select a.id,b.name,c.desc,a.prev,a.dur
+						from vid_mfs a inner join (vid_names b, vid_descs c)
+						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+						where b.lan=\"$lan\" and a.ctg=" . $id;
+		$this->DB->query($query);
+		$r=array();
+		$i=0;
+		while($vals=$this->DB->fetchArray()) {
+			$r[$i]['id']=$vals[0];
+			$r[$i]['name']=$vals[1];
+			$r[$i]['desc']=$vals[2];
+			$r[$i]['prev']=$vals[3];
+			$r[$i]['dur']=$vals[4];
+			$i++;
+		}
+		return $r;
+	}
+
+	/// Obtener vídeos nuevos
+	/// @param cut Corte overflow
+	function getNewMedia($cut) {
+		$lan=ApfLocal::getDefaultLanguage();
+		//$query="select id,$name,$desc,prev,dur from vid_mfs where ctg=" . $this->id;
+		$query="select a.id,b.name,c.desc,a.prev,a.dur
+						from vid_mfs a inner join (vid_names b, vid_descs c)
+						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+						where b.lan=\"$lan\" order by a.created desc limit $cut";
+		$this->DB->query($query);
+		$r=array();
+		$i=0;
+		while($vals=$this->DB->fetchArray()) {
+			$r[$i]['id']=$vals[0];
+			$r[$i]['name']=$vals[1];
+			$r[$i]['desc']=$vals[2];
+			$r[$i]['prev']=$vals[3];
+			$r[$i]['dur']=$vals[4];
+			$i++;
+		}
+		return $r;
+	}
+
+	/// Obtener vídeos nuevos
+	/// @param cut Corte overflow
+	function getTopMedia($cut) {
+		$lan=ApfLocal::getDefaultLanguage();
+		//$query="select id,$name,$desc,prev,dur from vid_mfs where ctg=" . $this->id;
+		$query="select a.id,b.name,c.desc,a.prev,a.dur
+						from vid_mfs a inner join (vid_names b, vid_descs c)
+						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+						where b.lan=\"$lan\" order by a.hits desc limit $cut";
+		$this->DB->query($query);
+		$r=array();
+		$i=0;
+		while($vals=$this->DB->fetchArray()) {
+			$r[$i]['id']=$vals[0];
+			$r[$i]['name']=$vals[1];
+			$r[$i]['desc']=$vals[2];
+			$r[$i]['prev']=$vals[3];
+			$r[$i]['dur']=$vals[4];
+			$i++;
+		}
+		return $r;
+	}
 
 
 }

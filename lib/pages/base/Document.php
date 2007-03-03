@@ -353,6 +353,14 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		$this->redirect($this->BuildBaseUri($this->getArgs(array('page' => $page),'',False)));
 	}
 
+	/// Obtiene el número de peticiones
+	function getQueryCount() {
+		if(!empty($this->DB)) {
+			return $this->DB->getQueryCount();
+		}
+		return 0;
+	}
+
 }
 
 ?>

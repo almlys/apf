@@ -8,44 +8,55 @@
 
 ///Carpeta o directorio (Nodo) del sistema virtual de ficheros.
 class ApfFolder {
-	var $id;
-	var $name;
-	var $desc;
-	var $count;
-	var $parent;
-	var $image;
+	protected $id;
+	protected $name;
+	protected $desc;
+	protected $count;
+	protected $parent;
+	protected $image;
 
-	///Constructor.
-	function ApfFolder(&$parent,$id=0,$name="unnamed",$desc="no available desc",$count=0) {
+	/// Constructor
+	/// @param parent Página padre
+	/// @param vals Array con las claves id, name, desc, count, etc...
+	function __construct(&$parent,$vals) {
 		$this->parent=&$parent;
-		$this->id=$id;
-		$this->name=$name;
-		$this->desc=$desc;
-		$this->count=$count;
-		$this->image=$parent->buildBaseUri("imgs/folder.jpg");
+		$this->id=$vals['id'];
+		$this->name=$vals['name'];
+		$this->desc=$vals['desc'];
+		$this->count=$vals['count'];
+		$this->image=$parent->buildBaseUri("imgs/folder.png");
 	}
 
 	///Obtener URL carpeta.
 	function getFinalUrl() {
-		return $this->parent->getArgs() . "&amp;id=" . $this->id;
+		return $this->parent->getArgs(array('id' => $this->id));
 	}
+
+	function getShortName($input,$max) {
+		if(strlen($input)>$max) {
+			$shortname=substr($input,0,$max-3) . "...";
+		} else {
+			$shortname=$input;
+		}
+		return $shortname;
+	}
+
 
 	///Mostrar la carpeta.
 	function show() {
-		$max=12;
-		if(strlen($this->name)>$max) {
-			$shortname=substr($this->name,0,$max-3) . "...";
-		} else {
-			$shortname=$this->name;
-		}
+		$shortname=$this->getShortName($this->name,12);
 		?>
-		<div class="folder">
-		<h2><a title="<?php echo($this->name); ?>" href="<?php echo($this->getFinalUrl()); ?>"><?php echo($shortname); ?></a></h2>
+		<div class="folder" onclick='javascript:document.location="<?php echo($this->getFinalUrl()); ?>"'>
+		<div class="folder_title">
+		<a title="<?php echo($this->name); ?>" href="<?php echo($this->getFinalUrl()); ?>">
+		<?php echo($shortname); ?>
+		</a>
+		</div>
 		<a href="<?php echo($this->getFinalUrl()); ?>">
-		<img title="<?php echo($this->name); ?>" alt="<?php echo($this->name); ?>" border="0" src="<?php echo($this->image); ?>" width="160" height="120"></a>
+		<img title="<?php echo($this->name); ?>" alt="<?php echo($this->name); ?>" border="0" src="<?php echo($this->image); ?>" width="160" height="120" /></a>
 		<div class="description">
 		<?php 
-			echo($this->desc);
+			echo($this->getShortName($this->desc,30));
 			$this->details();
 		?>
 		</div>
@@ -55,34 +66,33 @@ class ApfFolder {
 	
 	///Mostrar detalles.
 	function details() {
-			//if(!empty($this->count)) {
-				echo("<br>" . $this->count . " " . _t("objects")); 
-			//}
+			if($this->count>1) {
+				echo("<br />" . $this->count . " " . _t("objects")); 
+			}
 	}
 
 }
 
 ///Clase representativa de un video.
 class ApfVideo extends ApfFolder {
-	var $dur=0;
+	protected $dur=0;
+
 	///Constructor
-	function ApfVideo(&$parent,$id=0,$name="unnamed",$desc="no available desc",$prev="",$dur=0) {
-		$this->parent=&$parent;
-		$this->id=$id;
-		$this->name=$name;
-		$this->desc=$desc;
-		if(empty($prev)) {
-			$this->image=$parent->buildBaseUri("imgs/videoimg.jpg");
+	/// @param parent Página padre
+	/// @param vals Array con las claves id, name, desc, count, etc...
+	function __construct(&$parent,$vals) {
+		parent::__construct($parent,$vals);
+		if(empty($vals['prev'])) {
+			$this->image=$parent->buildBaseUri("imgs/video_big.png");
 		} else {
-			$this->image=$parent->buildBaseUri("cache/" . $prev);
+			$this->image=$parent->buildBaseUri("cache/" . $vals['prev']);
 		}
-		$this->dur=$dur;
-		$this->count="";
+		$this->dur=$vals['dur'];
 	}
 	
 	///Obtener URL
 	function getFinalUrl() {
-		return $this->parent->getArgs("videos") . "&amp;id=" . $this->id;
+		return $this->parent->getArgs(array('page' => 'videos','id' => $this->id));
 	}
 	
 	///Mostrar detalles.

@@ -97,6 +97,8 @@ body {
 .document {
 	background:#efefef;
 	color:inherit;
+	font-family: "Times", serif;
+	font-size: large;
 	/*padding:15px;*/
 	height:100%;
 }
@@ -104,17 +106,18 @@ body {
 .document h1 {
 	font-family: "Helvetica" , serif;
 	font-size:xx-large;
-	color: #ff3300;
+	color: #705718; /*#9c6500;*/ /*#ff3300; */
 	background:inherit;
 	text-transform:capitalize;
 	letter-spacing:  2px;
 }
 
-/*
 .document h2 {
-	text-decoration:underline;
-	color: #00ff00;
-}*/
+	/* text-decoration:underline; */
+	font-size:x-large;
+	color: #1f2f1F;
+	font-family: "Arial" , serif;
+}
 
 .document h3 {
 	color:aqua;
@@ -131,7 +134,7 @@ body {
 	background:inherit;
 	font-size:x-small;
 	font-variant:small-caps;
-	font-family: "Arial" , serif , "Verdana" , fantasy ;
+	font-family: "Arial" , fantasy;
 	padding:10px;
 }
 
@@ -141,52 +144,82 @@ body {
 	font-size:small;
 	position:relative;
 	top:-5px;
-	font-family: "Monaco" , monospace  , "Courier" , sans-serif ;
+	font-family: "Courier New" , monospace;
 	border-bottom: 1px Green;
 	border-top:0px;
 	border-left:0px;
 	border-right:0px;
 	border-style:Solid;
+	display: inline;
+}
+
+.family a {
+	color:Green;
+	background:inherit;
+	text-decoration:none;
 }
 
 .family a:hover {
-	color:Green;
+	color:Red;
 	background:inherit;
+}
+
+.folder {
+	float:left;
+	padding-top:6px;
+	padding-left:6px;
+	padding-right:6px;
+	border-style:Solid;
+	margin:5px 5px 5px 5px;
+	border:2px solid;
+	/*border-color:#eeeeee #000000 #000000 #eeeeee;*/
+	border-color:#101030;
+	background-color:#ddddd6;
+	color:inherit;
+	text-align:center;
+	cursor: pointer;
+	width:160px;
+	height:190px;
+	/*width:20%;
+	height:40%;*/
+	overflow:hidden;
+}
+
+.folder:hover {
+	background-color:#ccccc6;
+	color:inherit;
+	outline-style: groove;
+	/*border-color: #000000 #eeeeee #eeeeee #000000;*/
+	border-color:#efefcf;
+}
+
+.folder a {
+	text-decoration:none;
+	color:inherit;
+}
+
+.folder_title {
+	font-family: "Arial Black" , cursive;
+	font-size:large;
 }
 
 .description {
 	font-family: "Helvetica" , sans-serif ;
 	padding-bottom:10px;
+	font-size:small;
 }
 
-.folder {
-	float:left;
-	padding-left:10px;
-	padding-right:10px;
-	border-style:Solid;
-	margin:5px 10px 10px 5px;
-	/*border:2px solid;*/
-	/*border-color:#eeeeee #000000 #000000 #eeeeee;*/
-	background-color:#dddddd;
-	color:inherit;
-	text-align:center;
-}
-
-.folder:hover {
-	background-color:#cccccc;
-	color:inherit;
-	/*border-color: #000000 #eeeeee #eeeeee #000000;*/
-}
-
-.folder a {
-	text-decoration:none;
-}
 
 .options {
 	background-color:#59a0ed;
 	color:inherit;
 	font-weight:bold;
 	padding:2px;
+}
+
+.setjumpfrm {
+	border-style: none;
+	padding: 0;
 }
 
 /*

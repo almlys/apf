@@ -1,4 +1,11 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-02 21:51  alberto
+
+	* [r91] ChangeLog, lib/mediamgr/MediaMGR.php,
+	  lib/pages/base/Document.php, lib/pages/base/manager.php,
+	  lib/pages/common/MainPage.php, lib/pages/common/MediaPage.php:
+	  wip
+
 2007-03-02 19:18  alberto
 
 	* [r90] lib/mediamgr, lib/mediamgr/MediaMGR.php: added media

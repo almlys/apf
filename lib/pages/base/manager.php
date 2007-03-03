@@ -229,8 +229,9 @@ class ApfManager extends ApfDocument implements iDocument {
 	
 	/// Muestra información de debug.
 	function debug() {
-		if(!empty($this->DB)) {
-			echo("<br>" . _t("num_querys") . " " . $this->DB->getQueryCount());
+		$qc=$this->getQueryCount();
+		if($qc>0) {
+			echo("<br />" . _t("num_querys") . " " . $qc);
 		}
 	}
 
@@ -265,28 +266,25 @@ class ApfManager extends ApfDocument implements iDocument {
 	function writeCategoryListControl($id=-1) {
 		if($id==-1) $id=$this->id;
 		//Quick navigation
+		echo('<fieldset class="setjumpfrm">');
 		echo('<form name="jumpfrm" action="' . $this->buildBaseUri() . '" method="get">' . "\n");
 		echo(_t("category") . ": ");
-		echo('<SELECT name="id" onchange="document.jumpfrm.submit()">' . "\n");
+		echo('<select name="id" onchange="document.jumpfrm.submit()">' . "\n");
 		$this->getMediaTree()->writeOptions($id);
 		echo("</select>\n");
 		echo($this->getArgsHidden(array('page' => 'categ'),'',array('id')));
-		echo('<INPUT type="submit" value="' . _t("go") . '" />' . "\n");
+		echo('<input type="submit" value="' . _t("go") . '" />' . "\n");
 		echo('</form>');
+		echo('</fieldset>');
 	}
 
 	/// Escribe todas las carpetas
 	/// @param id Identificador
 	function printFolders($id) {
-		$lan=ApfLocal::getDefaultLanguage();
-		//$query="select id,$name,$desc,count from vid_categ where parent=" . $this->id;
-		$query="select a.id,b.name,c.desc,a.count
-						from vid_categ a inner join (vid_names b, vid_descs c)
-						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
-						where b.lan=\"$lan\" and a.parent=" . $id;
-		$this->query($query);
-		while($vals=$this->fetchArray()) {
-			$folder=new ApfFolder($this,$vals[0],$vals[1],$vals[2],$vals[3]);
+		require_once(dirname(__FILE__) . "/../../widgets/folder.php");
+		$r=$this->getMediaMGR()->getFolders($id);
+		foreach($r as $i) {
+			$folder=new ApfFolder($this,$i);
 			$folder->show();
 		}
 	}
@@ -294,15 +292,10 @@ class ApfManager extends ApfDocument implements iDocument {
 	/// Escribe recursos multimedia
 	/// @param id Identificador
 	function printMedia($id) {
-		$lan=ApfLocal::getDefaultLanguage();
-		//$query="select id,$name,$desc,prev,dur from vid_mfs where ctg=" . $this->id;
-		$query="select a.id,b.name,c.desc,a.prev,a.dur
-						from vid_mfs a inner join (vid_names b, vid_descs c)
-						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
-						where b.lan=\"$lan\" and a.ctg=" . $id;
-		$this->query($query);
-		while($vals=$this->fetchArray()) {
-			$folder=new ApfVideo($this,$vals[0],$vals[1],$vals[2],$vals[3],$vals[4]);
+		require_once(dirname(__FILE__) . "/../../widgets/folder.php");
+		$r=$this->getMediaMGR()->getMedia($id);
+		foreach($r as $i) {
+			$folder=new ApfVideo($this,$i);
 			$folder->show();
 		}
 	}
@@ -310,11 +303,23 @@ class ApfManager extends ApfDocument implements iDocument {
 	/// Escribe las ultimas novedades multimedia
 	/// @param cut Limite
 	function printNewMedia($cut=4) {
+		require_once(dirname(__FILE__) . "/../../widgets/folder.php");
+		$r=$this->getMediaMGR()->getNewMedia($cut);
+		foreach($r as $i) {
+			$folder=new ApfVideo($this,$i);
+			$folder->show();
+		}
 	}
 
 	/// Escribe los recuros más visitados
 	/// @param cut Limite
 	function printTopMedia($cut=4) {
+		require_once(dirname(__FILE__) . "/../../widgets/folder.php");
+		$r=$this->getMediaMGR()->getTopMedia($cut);
+		foreach($r as $i) {
+			$folder=new ApfVideo($this,$i);
+			$folder->show();
+		}
 	}
 
 
