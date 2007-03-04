@@ -257,10 +257,17 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 	/// @param override Marca valores a substituir
 	/// @param mask Indicar que parámetros seran incluidos, array vacio implica todos.
 	/// @param encode Si es verdadero, codificará & como &amp;
-	function getArgs($override=array(),$mask=array(),$encode=True) {
-		$args=array_merge($this->params,$override);
+	function getArgs($override='',$mask='',$imask='',$encode=True) {
+		if(!empty($override)) {
+			$args=array_merge($this->params,$override);
+		} else {
+			$args=$this->params;
+		}
 		if(!empty($mask)) {
 			$args=array_intersect_key($args,array_fill_keys($mask,''));
+		}
+		if(empty($imask)) {
+			$imask=array();
 		}
 		ksort($args);
 		if($encode) {
@@ -271,6 +278,7 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		$result="?";
 		$first=True;
 		foreach ($args as $key => $val) {
+			if(in_array($key,$imask)) continue;
 			if(!$first) {
 				$result.=$amp;
 			}
@@ -349,8 +357,13 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 
 	/// Genera una redirección.
 	/// @param page Página de destino
-	function redirect2page($page) {
-		$this->redirect($this->BuildBaseUri($this->getArgs(array('page' => $page),'',False)));
+	/// @param redirect Pasar pagina actual como redirect
+	function redirect2page($page,$redirect=False) {
+		$args['page']=$page;
+		if($redirect) {
+			$args['redirect']=$this->getParam('page');
+		}
+		$this->redirect($this->BuildBaseUri($this->getArgs($args,'','',False)));
 	}
 
 	/// Obtiene el número de peticiones

@@ -31,6 +31,14 @@ class ApfLoginPage extends ApfManager implements iDocument {
 		}
 		$this->dest=$dest;
 
+		//Fix some vars
+		if(isset($_GET['pid'])) {
+			$this->setParam('pid',$_GET['pid']);
+		}
+		if(isset($_GET['action'])) {
+			$this->setParam('action',$_GET['action']);
+		}
+
 		//Logout?
 		if($logout) {
 			$this->endSession();

@@ -189,6 +189,50 @@ class MediaMGR {
 		return $r;
 	}
 
+	//Edit Stuff
+
+	/// Filtrar variables
+	/// @param rv Array de entrada
+	/// @returns Array filtrado y limpio
+	function filterVars($rv) {
+		$out=array();
+		if(!isset($rv['action'])) {
+			$out['action']='none';
+			return $out;
+		} else {
+			$out['action']=$this->DB->escape_string($rv['action']);
+		}
+		$chk['id']=array('type' => 'int', 'def' => 0);
+		$chk['name']=array('type' => 'str', 'def' => '');
+		$chk['pid']=array('type' => 'int', 'def' => 0);
+		//$chk['ctg']=array('type' => 'int', 'def' => 'none');
+		$chk['prev']=array('type' => 'str', 'def' => '');
+		$chk['dur']=array('type' => 'str', 'def' => '');
+		$chk['url']=array('type' => 'str', 'def' => '');
+		$chk['desc']=array('type' => 'str', 'def' => '');
+		//True -> Insert, False -> Update
+		$chk['new']=array('type' => 'int', 'def' => False);
+		$chk['delete']=array('type' => 'int', 'def' => False);
+		//ctg,media
+		$chk['type']=array('type' => 'str', 'def' => 'none');
+		//True -> Insert/Update, False -> Select
+		$chk['edit']=array('type' => 'int', 'def' => False);
+		$chk['valid']=array('type' => 'int', 'def' => False, 'ing' => True);
+		foreach ($chk as $key => $c) {
+			if(isset($rv[$key]) && !$c['ing']) {
+				if($c['type']=='int') {
+					$out[$key]=intval($rv[$key]);
+				} else { //str
+					$out[$key]=$this->DB->escape_string($rv[$key]);
+				}
+			} else {
+				$out[$key]=$c['def'];
+			}
+		}
+		return $out;
+	}
+
+
 }
 
 

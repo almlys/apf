@@ -7,114 +7,163 @@
 */
 
 require_once(dirname(__FILE__) . "/../base/manager.php"); 
-require_once(dirname(__FILE__) . "/../../widgets/tree.php");
 
 ///Página de edición de medios/categorias
-class ApfEditPage extends ApfManager {
-	var $action=""; ///< acción
-	var $name=""; ///< Nombre del nodo
-	var $new=0; ///< 0-insert, 1-update
-	var $edit=0; ///< 0->from database, 1->to database
-	var $type=0; ///< 0->ctg, 1->media
-	var $pid=0; ///< Identificador del padre
-	var $desc=""; ///< Descripción del nodo
-	var $delete=0; ///< Borrar este nodo?
-	var $valid=1; ///< Validación de la entrada
-	var $image=""; ///< Imagen del nodo
+class ApfEditPage extends ApfManager implements iDocument {
+	private $action=''; ///< acción
+	private $name=''; ///< Nombre del nodo
+	private $pid=0; ///< Identificador del padre
+	private $desc=''; ///< Descripción del nodo
+	private $valid=1; ///< Validación de la entrada
+	private $image=''; ///< Imagen del nodo
 
-	///Constructor
-	function ApfEditPage() {
-		global $APF;
-		$this->ApfManager("");
-		$this->setTitle(_t("edit_page"));
-		$action="";
-		//$lns=$APF["languages"];
-		//$cnt=count($lns);
-		$lan=ApfLocal::getDefaultLanguage();
-
-		if(!$this->authed || !$this->admin) {
-			$this->redirect2page("login");
-		} elseif($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["action"])) {
-			$this->action=$action=$this->escape_string($_POST["action"]);
-			$this->id=$id=intval($_POST["id"]);
-			$this->name=$this->escape_string($_POST["name"]);
-			$this->pid=intval($_POST["pid"]);
-			$this->ctg=intval($_POST["ctg"]);
-			$this->prev=$this->escape_string($_POST["prev"]);
-			$this->dur=$this->escape_string($_POST["dur"]);
-			$this->url=$this->escape_string($_POST["url"]);
-			$this->desc=$this->escape_string($_POST["desc"]);
-			$this->new=intval($_POST["new"]);
-			$this->delete=intval($_POST["delete"]);
-		} else {
-			$this->action=$action=$this->escape_string($_GET["action"]);
-			$id=$this->id;
-		}
-		$this->params = "&amp;id=$id&amp;action=$action";
-		
-		switch($this->action) {
+	/// Expandir acción
+	/// @param rv Array de props
+	/// @returns Array
+	function expandAction($rv) {
+		switch($rv['action']) {
 			//Categoria
-			case "add_ctg":
-				$this->new=1;
-				$this->type=0;
-				$this->pid=$this->id;
-				$this->id=0;
-				$this->action="update_ctg";
+			case 'add_ctg':
+				$rv['new']=True; //Insert
+				$rv['type']='ctg';
+				$rv['pid']=$rv['id'];
+				$rv['id']=0;
+				$rv['action']='update_ctg';
 				break;
-			case "edit_ctg":
-				$this->new=0;
-				$this->type=0;
-				$this->action="update_ctg";
+			case 'edit_ctg':
+				$rv['new']=False; //Update
+				$rv['type']='ctg';
+				$rv['action']='update_ctg';
 				break;
-			case "update_ctg":
-				$this->edit=1;
-				$this->type=0;
-				$this->action="update_ctg";
+			case 'update_ctg':
+				$rv['edit']=True; //Insert/Update
+				$rv['type']='ctg';
+				$rv['action']='update_ctg';
 				break;
-			case "delete_ctg":
-				$this->new=0;
-				if(empty($this->id) || $this->id==0) {
-					$this->id=$this->pid;
+			case 'delete_ctg':
+				$rv['new']=False;
+				$rv['delete']=True; //Delete
+				if(empty($rv['id']) || $rv['id']==0) {
+					$rv['id']=$rv['pid'];
 				}
-				$this->edit=1;
-				$this->type=0;
-				$this->delete=1;
-				$this->action="update_ctg";
+				$rv['edit']=True;
+				$rv['type']='ctg';
+				$rv['action']='update_ctg';
 				break;
 			//Vídeo
-			case "add_media":
-				$this->new=1;
-				$this->type=1;
-				$this->pid=$this->id;
-				$this->id=0;
-				$this->action="update_media";
+			case 'add_media':
+				$rv['new']=True; //Insert
+				$rv['type']='media';
+				$rv['pid']=$rv['id'];
+				$rv['id']=0;
+				$rv['action']='update_media';
 				break;
-			case "edit_media":
-				$this->new=0;
-				$this->type=1;
-				$this->action="update_media";
+			case 'edit_media':
+				$rv['new']=False; //Update
+				$rv['type']='media';
+				$rv['action']='update_media';
 				break;
-			case "update_media":
-				$this->edit=1;
-				$this->type=1;
-				$this->action="update_media";
+			case 'update_media':
+				$rv['edit']=True; //Insert/Update
+				$rv['type']='media';
+				$rv['action']='update_media';
 				break;
-			case "delete_media":
-				$this->new=0;
-				$this->edit=1;
-				$this->type=1;
-				$this->delete=1;
-				$this->action="update_media";
+			case 'delete_media':
+				$rv['new']=False;
+				$rv['delete']=True; //Delete
+				$rv['edit']=True;
+				$rv['type']='media';
+				$rv['action']='update_media';
 				break;
 			default:
-				$this->redirect2page("main");
+				$rv['action']='none';
 		}
+		return $rv;
+	}
+
+	/// Comprovar consistencia de la acción
+	/// @param rv Array de props
+	/// @returns Array
+	function checkActionConsistency($rv) {
+		$rv['valid']=True;
+		if($rv['delete']) {
+			if(empty($rv['id']) || $rv['id']==0) {
+				$rv['valid']=False;
+			}
+		} else {
+			$req=array('name','desc','type','pid');
+			foreach ($req as $ck) {
+				if(empty($rv[$ck])) {
+					$rv['valid']=False;
+					return $rv;
+				}
+			}
+			if($rv['type']!='ctg' && $rv['type']!='media') {
+				$rv['valid']=False;
+				return $rv;
+			}
+			if(!$rv['new'] && empty($rv['id']) || $rv['id']==0) {
+				$rv['valid']=False;
+				return $rv;
+			}
+			if($rv['type']=='ctg' && $rv['id']==$rv['pid']) {
+				$rv['valid']=False;
+				return $rv;
+			}
+		}
+		return $rv;
+	}
+
+	/// Actualiza el titulo de la página en funcion de la acción
+	/// @param action Acción
+	function updateTitle($action) {
+		switch($action) {
+			case 'add_ctg':
+				$this->setTitle(_t('add_ctg'));
+				break;
+			case 'edit_ctg':
+			case 'update_ctg':
+				$this->setTitle(_t('edit_ctg'));
+				break;
+			case 'add_media':
+				$this->setTitle(_t('add_media'));
+				break;
+			case 'edit_media':
+			case 'update_media':
+				$this->setTitle(_t('edit_media'));
+				break;
+		}
+	}
+
+	///Constructor
+	function __construct() {
+		parent::__construct(_t('edit_page'));
+		if($_SERVER['REQUEST_METHOD']=='POST') {
+			$rv=$_POST;
+		} else {
+			$rv=$_GET;
+		}
+		//Limpiar y filtrar variables
+		$rv=$this->getMediaMGR()->filterVars($rv);
+		$this->updateTitle($rv['action']);
+		$this->setParam('id',$rv['id']);
+		$this->setParam('action',$rv['action']);
+		$this->setParam('pid',$rv['pid']);
+
+		if(!$this->IAmAuthenticated() || !$this->IAmAdmin()) {
+			$this->redirect2page('login',True);
+		}
+
+		print_r($rv); echo('<br />');
+		$rv=$this->expandAction($rv);
+		print_r($rv); echo('<br />');
+		$rv=$this->checkActionConsistency($rv);
+		print_r($rv); echo('<br />');
 		
-		if(((empty($this->name) || empty($this->desc) || empty($this->pid) || ((empty($this->id) || $this->id==0) && $this->new==0) || $this->pid==0 || ($this->type==0 && $this->id==$this->pid)) && $this->delete==0) || ($this->delete==1 && (empty($this->id) || $this->id==0))) {
-			$this->valid=0;
-			//echo("invalid");
-			//echo("id: " . $this->id . " - pid: " . $this->pid . "- name: " . $this->name . "- desc: " . $this->desc . " - new:" . $this->new . " - delete:" . $this->delete);
-		}
+		
+		//END
+		$this->rv=&$rv;
+		return;
 
 		if($this->edit==1) {
 			//insert/update database
@@ -321,7 +370,7 @@ class ApfEditPage extends ApfManager {
 			echo(_t("data_error") . "<br>");
 		}
 		//Generar arbol de directorios
-		$this->generateMediaTree();
+		$tree=$this->getMediaTree();
 		?>
 		<form action="<?php echo($this->buildBaseUri($this->getArgs())); ?>" method="POST">
 		<fieldset>
@@ -348,7 +397,7 @@ class ApfEditPage extends ApfManager {
 
 		<SELECT name="pid">
 		<?php
-		$this->tree->writeOptions($this->pid);
+		$tree->writeOptions($this->pid);
 		?>
 		</select>
 		<hr>
