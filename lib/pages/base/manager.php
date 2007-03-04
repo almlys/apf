@@ -25,15 +25,17 @@ class ApfManager extends ApfDocument implements iDocument {
 		$this->addStyle(_t('default_style'),$this->buildBaseUri('styles/default.css'));
 		// Menu
 		$this->add2Menu(_t('main_page'),'main','','imgs/home.png');
-		$this->add2Menu(_t('videos_page'),"categ",'','imgs/video.png');
+		$this->add2Menu(_t('videos_page'),'categ','','imgs/video.png');
+		$this->add2Menu(_t('videos'),'videos','','imgs/videoclap.png',True);
+		$this->add2Menu(_t('edit_page'),'edit','','imgs/config.png',True);
 		/*if($this->IAmAdmin()) {
 			$this->add2Menu(_t('admin_page'),'admin','','imgs/config.png');
 		}*/
 		//disconnect
 		if($this->IAmAuthenticated()) {
-			$this->add2Menu(_t('logout') . " " . $this->getLogin(),'logout','','imgs/logout.png');
+			$this->add2Menu(_t('logout') . " " . $this->getLogin(),'logout','','imgs/logout.png',False,True);
 		} else {
-			$this->add2Menu(_t('login_page'),'login','','imgs/login.png');
+			$this->add2Menu(_t('login_page'),'login','','imgs/login.png',False,True);
 		}
 	}
 
@@ -49,12 +51,16 @@ class ApfManager extends ApfDocument implements iDocument {
 	/// @param page dirección de la página.
 	/// @param link Valor diferente a '' indica que page es un documento externo
 	/// @param image Valor diferente a '' indica ruta a un icono
-	function add2Menu($title,$page,$link='',$image='') {
+	/// @param hidden Indica si la entrada estara oculta
+	/// @param redirect Indica si se debe redireccionar a la página anterior
+	function add2Menu($title,$page,$link='',$image='',$hidden=False,$redirect=False) {
 		$x=count($this->menu);
-		$this->menu[$x][1]=$title;
-		$this->menu[$x][0]=$page;
-		$this->menu[$x][2]=$link;
-		$this->menu[$x][3]=$image;
+		$this->menu[$x]['title']=$title;
+		$this->menu[$x]['page']=$page;
+		$this->menu[$x]['link']=$link;
+		$this->menu[$x]['image']=$image;
+		$this->menu[$x]['hidden']=$hidden;
+		$this->menu[$x]['redirect']=$redirect;
 	}
 	
 	/// Cabezera
@@ -126,39 +132,36 @@ class ApfManager extends ApfDocument implements iDocument {
 			</tr>
 <?
 		//Mostrar todas las secciones del índice
-		$i=0; $done=0;
-		$menu=$this->menu;
+		$done=False;
 		$page=$this->getParam('page');
 		$mask=array('lan','page');
-		while(!empty($menu[$i][0])) {
-			if(!empty($menu[$i][3])) {
-				$img="<img border='0' src=\"" . $this->buildBaseURI($menu[$i][3]) ."\" alt=\"{$menu[$i][1]}\" />";
+		foreach($this->menu as $me) {
+			//Determinar si tiene icono
+			if(!empty($me['image'])) {
+				$img="<img border='0' src=\"" . $this->buildBaseURI($me['image']) ."\" alt=\"{$me['title']}\" /><br />";
 			} else {
 				$img='';
 			}
 			echo("<tr><td align=\"center\" nowrap='nowrap'>");
-			if($page==$menu[$i][0]) {
-				echo("<div class=\"selected\">$img<br /><b>&gt;{$menu[$i][1]}&lt;</b></div>");
-				$done=1;
-			} else {
-				if(empty($menu[$i][2])) { //Link interno
-					$str_id=$this->getArgs(array('page' => $menu[$i][0]),$mask);
-					echo("<div class=\"unselected\"><a href=\"$str_id\">$img<br />{$menu[$i][1]}</a></div>");
+			if($page==$me['page']) {
+				echo("<div class=\"selected\">$img<b>&gt;{$me['title']}&lt;</b></div>");
+				$done=True;
+			} elseif(!$me['hidden']) {
+				if(empty($me['link'])) { //Link interno
+					if(!$me['redirect']) {
+						$str_id=$this->getArgs(array('page' => $me['page']),$mask);
+					} else {
+						$str_id=$this->getArgs(array('page' => $me['page'], 'redirect' => $page));
+					}
+					echo("<div class=\"unselected\"><a href=\"$str_id\">$img{$me['title']}</a></div>");
 				} else { //Link externo
-					echo("<div class=\"unselected\"><a href=\"{$menu[$i][2]}\">$img<br />{$menu[$i][1]}</a></div>");
+					echo("<div class=\"unselected\"><a href=\"{$me['link']}\">$img{$me['title']}</a></div>");
 				}
 			}
 			echo("</td></tr>");
-			$i++;
 		}
 		if(!$done) {
-			if($page=="videos") {
-				$nampage=_t("videos");
-			} elseif($page=="edit") {
-				$nampage=_t("edit_page");
-			} else {
-				$nampage=$page;
-			}
+			$nampage=$page;
 			echo("<tr><td align=\"center\" nowrap='nowrap'>");
 			echo("<div class=\"selected\"><b>&gt;" . $nampage . "&lt;</b></div>");
 			echo("</td></tr>");

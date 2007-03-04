@@ -9,117 +9,113 @@
 require_once(dirname(__FILE__) . "/../base/manager.php"); 
 
 ///Página del vídeo
-class ApfVideoPage extends ApfManager {
-	var $desc;
-	var $pid=1;
+class ApfVideoPage extends ApfManager implements iDocument {
+	private $desc;
+	private $pid=1;
+	private $vid;
+
 	///Constructor
-	function ApfVideoPage() {
-		$this->ApfManager("");
-		$this->setTitle(_t("untitled"));
+	function __construct() {
+		parent::__construct(_t("untitled"));
 	}
 	
 	///Cabezera
 	function head() {
-		if($this->state!=0) return;
-		//$this->state=2;
-		//Obtener id
-		$id=$this->id;
-		$lan=ApfLocal::getDefaultLanguage(); //Obtener idioma por defecto
-
-		$name="name_" . $lan;
-		$desc="desc_" . $lan;
-		
-		//1ra peticion
-		//$query="select ctg,$name,$desc,prev,dur,url from vid_mfs where id=$id;";
-		$query="select a.ctg,b.name,c.desc,a.prev,a.dur,a.url
-						from vid_mfs a inner join (vid_names b, vid_descs c)
-						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
-						where b.lan=\"$lan\" and a.id=$id";
-		$this->query($query);
-		$vals=$this->fetchArray();
-		$this->pid=$vals[0];
-		$this->setTitle($vals[1]);
-		$this->desc=$vals[2];
-		$this->prev=$vals[3];
-		$this->dur=$vals[4];
-		$this->url=$vals[5];
-		
-		//$query="select $name from vid_categ where id=" . $this->pid;
-		$query="select b.name
-						from vid_categ a inner join vid_names b
-						on a.name_id=b.id
-						where b.lan=\"$lan\" and a.id=" . $this->pid;
-		$this->query($query);
-		$vals=$this->fetchArray();
-		$this->category=$vals[0];
-
-		ApfManager::head();
+		$vid=$this->getMediaMGR()->getVideo($this->getId());
+		$this->vid=$vid;
+		$this->pid=$vid['pid'];
+		$this->setTitle($vid['name']);
+		$this->desc=$vid['desc'];
+		$this->prev=$vid['prev'];
+		$this->dur=$vid['dur'];
+		$this->url=$vid['url'];
+		$this->category=$vid['category'];
+		parent::head();
 	}
 	
 	///Método cuerpo
 	function body() {
-		$args=$this->getArgs("categ") . "&amp;id=" . $this->pid;
+		$args=$this->getArgs(array('page' => 'categ','id' => $this->pid));
 		$family="<a href=\"$args\">" . $this->category . "</a>";
-		echo('<div>' . $family . "</div>");
+		echo('<div class="family">' . $family . "</div>");
 		?>
 		<table width="100%" border="0" cellpadding="0" cellspacing="0"><TR><TD>
 
 		<div class="description"><?php echo($this->desc); ?>
-		<br>
+		<br />
 		<?php
-			echo(_t("lenght") . ": " . $this->dur . "<br>");
+			echo(_t("lenght") . ": " . $this->dur . "<br />");
 		?>
-		</div>
-		<!-- <a href="<?php echo($this->buildBaseUri() . "videos/" . $this->url); ?>">Play HTTP</a> -->
+		</div><?php /*
+		<!-- <a href="<?php echo($this->buildBaseUri() . "videos/" . $this->url); ?>">Play HTTP</a> -->*/?>
 		
-		<br><br>
-		<embed type="application/x-vlc-plugin"
-       name="video1"
-			 autoplay="true" hidden="no" loop="yes" width="400" height="300"
-			 target="rtsp://<?php echo($_SERVER["SERVER_NAME"]); ?>:5000/<?php echo($this->url); ?>" />
-		<br/>
+		<br /><br />
+		<embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org" 
+			version="VideoLAN.VLCPlugin.2"
+			name="video1"
+			autoplay="true" hidden="no" loop="no" width="400" height="300" id="vlc"
+			target="rtsp://<?php echo($_SERVER["SERVER_NAME"]); ?>:5000/<?php echo($this->url); ?>" />
+		<br />
 
-		<a href="javascript:;" onclick="document.video1.play()">Play RTSP</a>
-		<a href="javascript:;" onclick="document.video1.pause()">Pause RTSP</a>
-		<a href="javascript:;" onclick="document.video1.stop()">Stop RTSP</a>
-		<a href="javascript:;" onclick="document.video1.fullscreen()">Fullscreen RTSP</a>
-		<a href="javascript:;" onclick="document.video1.seek(10,1)">Seek</a>
+		<a href="javascript:;" onclick="document.video1.playlist.play()">Play RTSP</a>
+		<a href="javascript:;" onclick="document.video1.playlist.togglePause()">Pause RTSP</a>
+		<a href="javascript:;" onclick="document.video1.playlist.stop()">Stop RTSP</a>
+		<a href="javascript:;" onclick="document.video1.video.fullscreen=true">Fullscreen RTSP</a>
+		<a href="javascript:;" onclick="document.video1.input.position=0.5">Seek</a>
 		
-		
+		<hr />
+		<div id="debug">
+		</div>
+		<script type='text/javascript'>
+			function log_write(text) {
+				var out=document.getElementById("debug");
+				out.innerHTML+=text+"<br />";
+			}
+			log_write("Initializing...");
+			try {
+				var vlc=document.getElementById("vlc");
+				var version=vlc.versionInfo();
+				log_write("VideoLAN version: " + version);
+			} catch(e) {
+				log_write("VideoLAN not found, or unsuported browser");
+			}
+		</script>
+
+		<?php /*
 		<!--
 		<embed src="<?php echo($this->buildBaseUri() . "videos/" . $this->url); ?>" width="1200" height="800"> -->
 		<!-- <object width="640" height="480"> 
 		<param name="src" value="<?php echo($this->buildBaseUri() . "videos/" . $this->url); ?>">
-		</object> -->
+		</object> --> */ ?>
 		<?php
 
 		//Mostrar botones administrativos si admin
-		if($this->admin) {
+		if($this->IAmAdmin()) {
 			?>
-			</TD></TR>
-			<tr><TD>
-			<hr>
+			</td></tr>
+			<tr><td>
+			<hr />
 			<?php
-
 			$this->showAdminButtons();
 		}
-		
 		?>
-		</TD></tr></table>
+		</td></tr></table>
 		<?php
 	}
 	
 	///Muestra los botones de administración.
 	function showAdminButtons() {
 		?>
-		<form action="<?php echo($this->buildBaseUri() . $this->getArgs("edit")); ?>" method="POST">
-		<?php echo(_t("admin") . ": "); ?>
-		<SELECT name="action">
-		<option value="edit_media"><?php echo(_t("edit_media")); ?></option>
-		</SELECT>
-		<INPUT type="hidden" name="id" value="<?php echo($this->id); ?>">
-		<INPUT type="submit" value="<?php echo(_t("go")); ?>">
+		<fieldset class="setjumpfrm">
+		<form action="<?php echo($this->buildBaseUri($this->getArgs(array('page' => 'edit')))); ?>" method="post">
+		<?php echo(_t('admin') . ': '); ?>
+		<select name="action">
+		<option value="edit_media"><?php echo(_t('edit_media')); ?></option>
+		</select>
+		<input type="hidden" name="id" value="<?php echo($this->getId()); ?>" />
+		<input type="submit" value="<?php echo(_t('go')); ?>" />
 		</form>
+		</fieldset>
 		<?php
 	}
 

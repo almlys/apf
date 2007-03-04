@@ -9,7 +9,7 @@
 require_once(dirname(__FILE__) . "/../base/manager.php"); 
 
 /// Navegador de la biblioteca multimedia. (Sistema virtual de ficheros)
-class ApfMediaPage extends ApfManager {
+class ApfMediaPage extends ApfManager implements iDocument {
 	private $desc; ///<! Descripción
 	private $pid=1; ///<! Id del padre
 

@@ -158,6 +158,36 @@ class MediaMGR {
 		return $r;
 	}
 
+	/// Debuelve un array con datos del vídeo solicitado
+	/// @param id Identificador
+	/// @returns array
+	function getVideo($id) {
+		$lan=ApfLocal::getDefaultLanguage(); //Obtener idioma por defecto
+		//$query="select ctg,$name,$desc,prev,dur,url from vid_mfs where id=$id;";
+		$query="select a.ctg,b.name,c.desc,a.prev,a.dur,a.url
+						from vid_mfs a inner join (vid_names b, vid_descs c)
+						on (a.name_id=b.id and a.desc_id=c.id and b.lan=c.lan)
+						where b.lan=\"$lan\" and a.id=$id";
+		$this->DB->query($query);
+		$vals=$this->DB->fetchArray();
+		if($vals==null) return null;
+		$r['pid']=$vals[0];
+		$r['name']=$vals[1];
+		$r['desc']=$vals[2];
+		$r['prev']=$vals[3];
+		$r['dur']=$vals[4];
+		$r['url']=$vals[5];
+		
+		//$query="select $name from vid_categ where id=" . $this->pid;
+		$query="select b.name
+						from vid_categ a inner join vid_names b
+						on a.name_id=b.id
+						where b.lan=\"$lan\" and a.id=" . $r['pid'];
+		$this->DB->query($query);
+		$vals=$this->DB->fetchArray();
+		$r['category']=$vals[0];
+		return $r;
+	}
 
 }
 
