@@ -71,6 +71,7 @@ $APF['page.login']=array('common/LoginPage.php','ApfLoginPage',array());
 $APF['page.logout']=array('common/LoginPage.php','ApfLoginPage',array("True"));
 $APF['page.edit']=array('common/EditPage.php','ApfEditPage',array());
 $APF['page.admin']=array('common/AdminPage.php','ApfAdminPage',array());
+$APF['page.iupload']=array('simple/UploadPage.php','ApfUploadPage',array());
 
 // *** Base de datos ***
 ///Plugin de la base de datos

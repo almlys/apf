@@ -1,4 +1,11 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-05 00:21  alberto
+
+	* [r96] ChangeLog, lib/pages/common/EditPage.php,
+	  lib/pages/common/VideoPage.php, lib/widgets/notebook.php,
+	  lib/widgets/tree.php, styles/default.css, test/test.php: edit
+	  page updated
+
 2007-03-04 19:51  alberto
 
 	* [r95] ChangeLog, lib/mediamgr/MediaMGR.php,

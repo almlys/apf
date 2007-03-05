@@ -24,7 +24,14 @@ ApfLocal::init($_GET["lan"]);
 class UnknownResourceException extends Exception {
 	public function __construct($name="None") {
 		if($name=="None") $name=_t("None");
-		parent::__construct(_t("Unknown_resource") . $name . _t("requested"));
+		parent::__construct(_t("Unknown_resource") . " " . $name . _t("requested"));
+	}
+}
+
+class ModuleNotFoundException extends Exception {
+	public function __construct($name="None") {
+		if($name=="None") $name=_t("None");
+		parent::__construct(_t("NotFoundModule") . " " . $name);
 	}
 }
 
@@ -57,7 +64,9 @@ try {
 	}
 
 	if(array_key_exists($lookup_page,$APF)) {
-		require_once(dirname(__FILE__) . "/../pages/" . $APF[$lookup_page][0]);
+		$ipath=dirname(__FILE__) . "/../pages/" . $APF[$lookup_page][0];
+		if(!is_readable($ipath)) throw new ModuleNotFoundException($ipath);
+		require_once($ipath);
 		$args=implode(",",$APF[$lookup_page][2]);
 		eval("\$doc = new {$APF[$lookup_page][1]}($args);");
 	} else {
