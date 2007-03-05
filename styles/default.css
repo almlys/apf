@@ -222,30 +222,33 @@ body {
 	padding: 0;
 }
 
-/*
-.tail {
-	font-size:small;
-	color: #fff800;
+.notebook_tabname {
+	background-color: #9dc8d6;
+	text-decoration:none;
+	color:Black;
+	padding:2px;
+	font-family: "Times" , serif;
+	border-width: 1px;
+	border-style: solid;
 }
 
-.lastmod {
-	font-style:oblique;
-	font-size:small;
-	color: #ffffff;
+.notebook_tabname:hover {
+	background-color:#623729;
+	color:White;
 }
 
-.text {
-	color: #ffffff;
-
+.notebook_tabname_selected {
+	background-color: #bde8f6;
+	text-decoration:none;
+	color:Black;
+	padding:2px;
+	font-weight: bold;
+	font-family: "Times" , serif;
+	border-width: 1px;
+	border-style: solid;
 }
 
-.legal {
-	color: #e47b0d;
-	font-size:small;		
+.notebook_tabname_selected:hover {
+	background-color:#421709;
+	color:White;
 }
-
-.docs {
-	background-color: #0F0F0F;
-}
-*/
-

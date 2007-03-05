@@ -10,12 +10,7 @@ require_once(dirname(__FILE__) . "/../base/manager.php");
 
 ///Página de edición de medios/categorias
 class ApfEditPage extends ApfManager implements iDocument {
-	private $action=''; ///< acción
-	private $name=''; ///< Nombre del nodo
-	private $pid=0; ///< Identificador del padre
-	private $desc=''; ///< Descripción del nodo
-	private $valid=1; ///< Validación de la entrada
-	private $image=''; ///< Imagen del nodo
+	private $rv;
 
 	/// Expandir acción
 	/// @param rv Array de props
@@ -363,70 +358,55 @@ class ApfEditPage extends ApfManager implements iDocument {
 	
 	///Método body
 	function body() {
-		global $APF;
-//		$lns=$APF["languages"];
-//		$cnt=count($lns);
-		if($this->valid==0 && $this->edit==1) {
-			echo(_t("data_error") . "<br>");
+		require_once(dirname(__FILE__) . '/../../widgets/notebook.php');
+		$rv=$this->rv;
+
+		if(!$rv['valid'] && $rv['edit']) {
+			echo('<div class="error">' . _t('data_error') . '</div><br />');
 		}
+
+		//Start Content
+		echo('<fieldset class="setjumpfrm">');
+		echo('<form action="' . $this->buildBaseUri($this->getArgs()) . '" method="post">');
+
+		$book=new ApfNoteBook();
+
+		// ** Página de propiedades **
+		$content=_t('_id') . ":
+		<input type='text' name='id' value='{$rv['id']}' disabled='true' />
+";
+		if(!$rv['new']) {
+			$content.='&nbsp;' . _t('delete') . ":
+			<input type='checkbox' name='delete' />
+";
+		}
+
 		//Generar arbol de directorios
 		$tree=$this->getMediaTree();
-		?>
-		<form action="<?php echo($this->buildBaseUri($this->getArgs())); ?>" method="POST">
-		<fieldset>
-		<legend><?php echo(_t("props")); ?></legend>
-		<?php echo(_t("_id") . ": "); ?>
-		<INPUT type="hidden" name="id" value="<?php echo($this->id); ?>">
-		<INPUT type="text" name="id2" disabled="true" value="<?php echo($this->id); ?>">
-		<?php
-			if($this->new==0) {
-				echo("&nbsp;" . _t("delete") . ":");
-				?>
-					<INPUT type="checkbox" name="delete" value="1">
-				<?php
-			}
-		?>
-		<br>
-		<?php 
-			//echo(_t("parent") . ": "); 
-			echo(_t("category") . ": "); 
-		?>
-		<?php /*
-		<INPUT  type="text" name="pid" value="<?php echo($this->pid); ?>"><br>
-		*/ ?>
 
-		<SELECT name="pid">
-		<?php
-		$tree->writeOptions($this->pid);
-		?>
+		$content.='<br />' . _t('category') . ": 
+		<select name='pid'>
+		" . $tree->getOptions($rv['pid']) . "
 		</select>
-		<hr>
-		<?php echo(_t("_name") . ": "); ?>
-		<input type="text" name="name" value="<?php echo($this->name); ?>"><br>
-		<?php echo(_t("desc") . ": "); ?><br>
-		<?php /*
-		<input size="60" type="text" name="desc" value="<?php echo($this->desc); ?>"><br>
-		*/
-		?>
-		<textarea name="desc" rows="5" cols="50"><?php echo($this->desc); ?></textarea>
-		</fieldset>
+		<hr />
+		" . _t('_name') . ": 
+		<input type='text' name='name' value='{$rv['name']}' /><br />
+		" . _t('desc') . ": <br />
+		<textarea name='desc' rows='5' cols='50'>{$rv['desc']}</textarea>
+";
 
+		$book->AddPage(_t('props'),$content);
+		$book->AddPage('Hello world','Hi there');
+		$book->AddPage('Hello there','No no No');
+		$book->Write();
+
+		//End Content
+		echo('</form>');
+		echo('</fieldset>');
+		return;
+
+		?>
 		<?php
-			/*
-			for($i=0; $i<$cnt; $i++) {
-				$sname="name_" . $lns[$i];
-				$sdesc="desc_" . $lns[$i];
-				$name=$this->names[$lns[$i]];
-				$desc=$this->descs[$lns[$i]];
-				
-				echo($this->lan->get($lns[$i]) . ":<br>");
-				echo(_t("_name") . ": ");
-				echo('<input type="text" name="' . $sname . '" value="' . $name . '"><br>');
-				echo(_t("desc") . ": ");
-				echo('<input size="60" type="text" name="' . $sdesc . '" value="' . $desc . '"><br>');
-				echo("<hr>");
-			}*/
-			
 			if($this->type==1) {
 ?>
 <script language="JavaScript" type="text/javascript">

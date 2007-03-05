@@ -111,8 +111,10 @@ class ApfVideoPage extends ApfManager implements iDocument {
 		<?php echo(_t('admin') . ': '); ?>
 		<select name="action">
 		<option value="edit_media"><?php echo(_t('edit_media')); ?></option>
+		<option value="delete_media"><?php echo(_t('delete_media')); ?></option>
 		</select>
 		<input type="hidden" name="id" value="<?php echo($this->getId()); ?>" />
+		<input type="hidden" name="pid" value="<?php echo($this->pid); ?>" />
 		<input type="submit" value="<?php echo(_t('go')); ?>" />
 		</form>
 		</fieldset>

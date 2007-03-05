@@ -43,6 +43,14 @@ class ApfTree {
 	/// Escribe las opciones del nodo selecionado.
 	/// @param id El identificador del nodo.
 	function writeOptions($id) {
+		echo($this->getOptions($id));
+	}
+
+	/// Obtiene las opciones del nodo selecionado.
+	/// @param id El identificador del nodo.
+	/// @return Opciones
+	function getOptions($id) {
+		$content='';
 		$stack[]=&$this->tree;
 		$this->tree["j"]=0;
 		
@@ -62,7 +70,7 @@ class ApfTree {
 			$cnt=count($stack);
 			$cnode=&$stack[$cnt-1];
 			if($cnode["j"]==0) {
-				$this->writeNode($cnode["id"],$cnode["name"],$cnt-1,$id,$close);
+				$content.=$this->getNode($cnode["id"],$cnode["name"],$cnt-1,$id,$close);
 			}
 			if($cnode["j"]>=count($cnode["childs"])) {
 				//echo("deleting from stack\n");
@@ -79,11 +87,7 @@ class ApfTree {
 				}
 			}
 		}
-	
-		/*
-			<option value="1">* bla</option>
-		<option value="2">|- bla2</option>
-		<option value="4">&nbsp; |- bla6</option>*/
+		return $content;
 	}
 
 	///Busca un nodo
@@ -126,28 +130,40 @@ class ApfTree {
 	///@param sel_id Identificador del nodo actualmente selecionado
 	///@param close_table Tabla que identifica que niveles del arbol deben cerrarse
 	function writeNode($id,$name,$level,$sel_id,$close) {
-		echo('<option value="' . $id . '"');
+		echo($this->getNode($id,$name,$level,$sel_id,$close));
+	}
+
+	///Escribe un Nodo.
+	///@param id Identificador
+	///@param name Nombre del nodo
+	///@param level Nivel dentro del arbol
+	///@param sel_id Identificador del nodo actualmente selecionado
+	///@param close_table Tabla que identifica que niveles del arbol deben cerrarse
+	///@return Contenido generado
+	function getNode($id,$name,$level,$sel_id,$close) {
+		$content.='<option value="' . $id . '"';
 		if($id==$sel_id) {
-			echo(' selected="selected"');
+			$content.=' selected="selected"';
 		}
-		echo('>');
+		$content.='>';
 		if($level==0) {
-			echo("*");
+			$content.="*";
 		} else {
 			for($i=0; $i<$level-1; $i++) {
 				if($close[$i]==1) {
-					echo("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+					$content.="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 				} else {
-					echo("|&nbsp;&nbsp;&nbsp;&nbsp;");
+					$content.="|&nbsp;&nbsp;&nbsp;&nbsp;";
 				}
 			}
 			if($close[$i]==1) {
-				echo("`--");
+				$content.="`--";
 			} else {
-				echo("|--");
+				$content.="|--";
 			}
 		}
-		echo(" " . $name . "</option>" . "\n");
+		$content.=" " . $name . "</option>" . "\n";
+		return $content;
 	}
 	
 }
