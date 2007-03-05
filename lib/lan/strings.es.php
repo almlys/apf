@@ -78,5 +78,6 @@ $APF_STRINGS['OK']='Acceptar';
 $APF_STRINGS['Delete']='Borrar';
 $APF_STRINGS['login_field_empty']='El campo nombre esta vacio';
 $APF_STRINGS['authenticating']='Autenticando...';
+$APF_STRINGS['file_rejected']='Fichero rehusado por el servidor'; //File rejected by server
 
 ?>

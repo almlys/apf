@@ -72,6 +72,7 @@ $APF['page.logout']=array('common/LoginPage.php','ApfLoginPage',array("True"));
 $APF['page.edit']=array('common/EditPage.php','ApfEditPage',array());
 $APF['page.admin']=array('common/AdminPage.php','ApfAdminPage',array());
 $APF['page.iupload']=array('simple/UploadPage.php','ApfUploadPage',array());
+$APF['page.rpc']=array('simple/rpcserver.php','ApfRPCServer',array());
 
 // *** Base de datos ***
 ///Plugin de la base de datos
@@ -99,8 +100,8 @@ $APF['auth.chap']=True;
 // *** Configuración servidores VoD ***
 
 ///Indica la ruta al manejador que conecta la aplicación con el servidor VoD
-$APF['vod.plug']='HttpVoDhandler.php';
-//$APF['vod.plug']='VideoLanVoDhandler.php';
+$APF['vod.http']=array('HttpVoDhandler.php','ApfHttpVoDHandler',array());
+$APF['vod.videolan']=array('VideoLanVoDhandler.php','ApfVideoLanVoDHandler',array());
 
 // *** Configuración especifica por servidor VoD ***
 

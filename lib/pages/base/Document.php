@@ -82,11 +82,46 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 		return $this->auth->challenge();
 	}
 
+	/// Obtener objeto Auth
+	private function getAuthObject() {
+		if(!empty($this->auth)) return $this->auth;
+		$this->auth=createAuthObject(&$this);
+		return $this->auth;
+	}
+
+	/// Comprueba el hash de authenticación
+	/// @param data Datos de entrda a comprovar
+	/// @returns Verdadro si válido
+	function checkAuthData($data,$uidx) {
+		$this->auth=$this->getAuthObject();
+		$data=$this->CookieDecryptAndCheck($data);
+		if(!$data) return false;
+		$data=explode(" ",$data);
+		$uid=$data[0];
+		$AuthHash=$data[1];
+		$expire=intval($data[2]);
+		// Comprovación de expiración de sessión
+		if($expire-time()<=0) {
+			return false;
+		}
+		if($uid!=$uid) {
+			return false;
+		}
+		if(!empty($AuthHash) and $this->auth->verify($uid,$AuthHash)) {
+			$this->authed=1;
+			$this->admin=$this->auth->getLevel();
+			$this->uid=$this->auth->getUID();
+			$this->login=$this->auth->getLogin();
+			return true;
+		}
+		return false;
+	}
+
 	/// Comprueba si el usuario ya tienen una sessión existente y valida
 	/// @param release_session Indica si debemos liberar la sessión, para qu pueda ser utilizada
 	function checkLogedUser($release_session=True) {
 		global $APF;
-		$this->auth=createAuthObject(&$this);
+		$this->auth=$this->getAuthObject();
 		// 1o, Debe Existir la cookie de usuario
 		if(!isset($_COOKIE[$APF['cookie.name']])) return;
 		$data=$this->CookieDecryptAndCheck($_COOKIE[$APF['cookie.name']]);
@@ -232,6 +267,10 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 
 	function getId() {
 		return $this->id;
+	}
+
+	function getUID() {
+		return $this->uid;
 	}
 
 	function setId($id) {

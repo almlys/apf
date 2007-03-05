@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 #
 #  Copyright (c) 2005-2006 Alberto Montañola Lacort.
 #  Licensed under the GNU GPL. For full terms see the file COPYING.
@@ -11,8 +11,8 @@
 #upload_dir="/tmp/apf_upload"
 upload_dir="/home/apf_upload"
 ###rpc_path="/tfc/ajaxrpc.php"
-rpc_server_path="http://localhost/tfc/ajaxrpc.php"
-
+rpc_server_path="http://localhost/tfc/?page=rpc&"
+cookie_name="ApfVoDAuthData"
 
 ################################################################################
 #### NO TOCAR NADA DEBAJO DE LA BARRA A NO SER QUE SEPAS LO QUE HACES ##########
@@ -29,6 +29,7 @@ dpath=""
 # memoria, y esto pues tiene consequencias grabes cuando los ficheros a subir
 # són del orden de cientos de megabytes
 file_size=0
+speed_limit = 1
 
 import os,time,cgi,cgitb,sys,re,urllib2,glob
 import os.path
@@ -63,7 +64,7 @@ class slowFile:
     def write(self,input):
         global file_size
         w=len(input)
-        #print w
+        print w
         file_size=file_size + w
         self.quota=self.quota+w
         self.write_quota=self.write_quota+w
@@ -72,7 +73,7 @@ class slowFile:
             self.f.flush()
             self.write_quota=0
         #Limitar la velocidad de subida
-        if 0 and self.quota>1024*1024*10:
+        if speed_limit and self.quota>1024*1024*10:
             #print self.quota
             #sys.stdout.flush()
             self.quota=0
@@ -95,8 +96,8 @@ class rpcClient:
     def __init__(self,rpcserver):
         self.path=rpcserver
     def request(self,petition):
-        print "Opening %s" %(self.path)
-        f = urllib2.urlopen(self.path + "?" + petition)
+        print "Opening %s" %(self.path + petition)
+        f = urllib2.urlopen(self.path + petition)
         response = f.read()
         f.close()
         return response
@@ -213,17 +214,18 @@ def main():
     del get,q
 
     for g in cookies:
-        if g[0].strip()=="ApfVoDAuthHash":
+        if g[0].strip()==cookie_name:
             auth_hash=g[1].strip()
             break
     #print "hash-%s-endhash" %auth_hash
-    if not re.match(r"^[a-f0-9]{40}$",auth_hash):
-        error("auth validation failed")
+    #TODO bloquear hashes codificados con malas intenciones!!!
+    #if not re.match(r"^[a-f0-9]{40}$",auth_hash):
+    #    error("auth validation failed")
 
     #Realizar llamada RPC al la aplicación, y verificar el auth_hash
     rpc=rpcClient(rpc_server_path)
     rpc_reply=rpc.request("cmd=auth_verify&hash=%s&uid=%i" % (auth_hash,uid))
-    #print "<br>RPC Response:-%s-<br>" %(rpc_reply)
+    print "<br>RPC Response:-%s-<br>" %(rpc_reply)
     if not rpc_reply=="OK":
         error("rpc auth validation failed")
 
@@ -255,8 +257,8 @@ def main():
     #else:
     #    error("No File data was uploaded",False)
     if file_size==0:
-        error("No File data was uploaded %i" %(file_size),False,True,True)
-    elif filesize-file_size>500:
+        error("No File data was uploaded %i %i" %(file_size,filesize),False,True,True)
+    elif filesize-file_size>250:
         error("Uploaded file data seems to be incomplete",False,True,True)
 
     print """

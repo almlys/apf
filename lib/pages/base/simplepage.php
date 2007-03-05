@@ -9,12 +9,13 @@
 require_once(dirname(__FILE__) . "/Document.php");
 
 ///Clase base para páginas simples
-class ApfSimplePage extends ApfDocument {
+class ApfSimplePage extends ApfDocument implements iDocument {
 
 	/// Constructor
 	/// @param title Título de la página
-	function __construct($title="") {
-		parent::__construct($title);
+	/// @param release_session Indica si debemos liberar la sessión
+	function __construct($title='',$release_session=True) {
+		parent::__construct($title,$release_session);
 	}
 
 	/// Método cuerpo

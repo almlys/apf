@@ -174,7 +174,10 @@ class ApfBaseDocument implements iDocument {
 		}
 	}
 	
-	/** Muestra un mensaje de error */
+	/// Muestra un mensaje de error
+	/// @param msg Mensaje
+	/// @param title Título
+	/// @param die Matar aplicación?
 	function error($msg,$title="",$die=False) {
 		if(empty($this->title)) $this->title=_t("error_tit");
 		if($this->state==0) {
@@ -198,6 +201,14 @@ class ApfBaseDocument implements iDocument {
 			exit();
 		}
 	}
+
+	/// Mostrar mensaje de error y morir
+	/// @param msg Mensjae
+	/// @param title Título
+	function error_die($msg,$title='') {
+		$this->error($msg,$title,True);
+	}
+	
 
 	/// Genera y envía la página al cliente.
 	function show() {

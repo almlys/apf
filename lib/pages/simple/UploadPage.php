@@ -1,43 +1,46 @@
 <?php
 /*
-  Copyright (c) 2005-2006 Alberto Montañola Lacort.
+  Copyright (c) 2005-2007 Alberto Montañola Lacort.
   Licensed under the GNU GPL. For full terms see the file COPYING.
 
   Id: $Id$
 */
 
-require_once(dirname(__FILE__) . "/simplepage.php");
-require_once(dirname(__FILE__) . "/ajax.php");
+require_once(dirname(__FILE__) . "/../base/simplepage.php");
+require_once(dirname(__FILE__) . "/../../widgets/ajax.php");
 
 ///Clase página del gestor
-class ApfUploadPage extends ApfSimplePage {
-
-	var $xsid="null"; ///< Identificador unico del fichero
-	var $resource_type="video"; ///< Indica el tipo de recurso (video, img, etc...)
-	var $end_hook=""; ///< Nombre la función (hook) a llamar al finalizar el upload
+class ApfUploadPage extends ApfSimplePage implements iDocument {
+	private $xsid='null'; ///< Identificador unico del fichero
+	private $resource_type='video'; ///< Indica el tipo de recurso (video, img, etc...)
+	private $end_hook=''; ///< Nombre la función (hook) a llamar al finalizar el upload
+	private $uid;
 
 	/// Constructor
 	/// @param title Título de la página
 	/// @param resource_type Tipo de recurso a subir (video,imagen,etc...)
-	function ApfUploadPage($title="",$resource_type="video") {
+	function ApfUploadPage($title='',$resource_type='video') {
 		$this->resource_type=$resource_type;
-		ApfSimplePage::ApfSimplePage($title);
-		if(!$this->authed || !$this->admin) {
+		if(empty($title)) $title=_t('upload_file');
+		ApfSimplePage::__construct($title,False);
+		if(!$this->IAmAuthenticated() || !$this->IAmAdmin()) {
 			$this->error_die("TERMINATED: Not Authenticated");
 		}
 		$this->xsid=md5(uniqid(time() . rand()));
 		$_SESSION["xsid"]=$this->xsid;
 		if(!empty($_GET["type"])) {
-			$this->resource_type=$_GET["type"];
+			$this->resource_type=$this->escape_string($_GET["type"]);
 		}
 		if(!empty($_GET["end_hook"])) {
-			$this->end_hook=$_GET["end_hook"];
+			$this->end_hook=$this->escape_string($_GET["end_hook"]);
 		}
+		$this->uid=$this->getUID();
 	}
 
 	function dump_js() {
 ?>
 <script language="JavaScript" type="text/javascript">
+//<![CDATA[
 <?php
 		$ajax=new ApfAjax();
 		$ajax->write();
@@ -70,7 +73,7 @@ function validateFileCallback(http) {
 				keeprunning=true;
 				self.setTimeout("getFileStats()",1000);
 			} else {
-				out.innerHTML="<font color=red>File rejected by server<" + "/" + "font>";
+				out.innerHTML="<font color=red><?php echo(_t('file_rejected')); ?><" + "/" + "font> ";
 				out.innerHTML+=http.responseText;
 				document.upload_form.sourcefile.disabled=false;
 				document.upload_form.sourcefile.value="";
@@ -91,7 +94,7 @@ function validateFile() {
 		validateFileCallback(http);
 	}
 	fname=document.upload_form.sourcefile.value;
-	http.open("GET", "<?php echo($this->buildBaseURI("ajaxrpc.php?cmd=validate_file&type={$this->resource_type}")); ?>&name=" + encodeURIComponent(document.upload_form.sourcefile.value), true);
+	http.open("GET", "<?php echo($this->buildBaseURI("?page=rpc&cmd=validate_file&type={$this->resource_type}")); ?>&name=" + encodeURIComponent(document.upload_form.sourcefile.value), true);
 	http.send(null);
 	//alert(document.upload_form.sourcefile.value);
 	var out=document.getElementById("progress");
@@ -144,9 +147,9 @@ function getFileStats() {
 		getFileStatsCallback(http);
 	}
 	if(fsize==0) {
-		http.open("GET", "<?php echo($this->buildBaseURI("ajaxrpc.php?cmd=file_size&xsid={$this->xsid}")); ?>", true);
+		http.open("GET", "<?php echo($this->buildBaseURI("?page=rpc&cmd=file_size&xsid={$this->xsid}")); ?>", true);
 	} else {
-		http.open("GET", "<?php echo($this->buildBaseURI("ajaxrpc.php?cmd=file_status&xsid={$this->xsid}")); ?>", true);
+		http.open("GET", "<?php echo($this->buildBaseURI("?page=rpc&cmd=file_status&xsid={$this->xsid}")); ?>", true);
 	}
 	http.send(null);
 	//alert(document.upload_form.sourcefile.value);
@@ -225,7 +228,7 @@ function finishUpload() {
 	http.onreadystatechange= function() {
 		finishUploadCallback(http);
 	}
-	http.open("GET", "<?php echo($this->buildBaseURI("ajaxrpc.php?cmd=file_notify&xsid={$this->xsid}&type={$this->resource_type}&name=",false)); ?>" + encodeURIComponent(fname), true);
+	http.open("GET", "<?php echo($this->buildBaseURI("?page=rpc&cmd=file_notify&xsid={$this->xsid}&type={$this->resource_type}&name=",false)); ?>" + encodeURIComponent(fname), true);
 	http.send(null);	
 }
 
@@ -240,27 +243,28 @@ function enableUpload() {
 	document.upload_form.reset();
 }
 
+//]]>
 </script>
 <?php
 	}
 
 	function body() {
 		global $APF;
-		$upload_script=$APF["upload_script"];
+		$upload_script=$APF['upload_script'];
 		$this->dump_js();
 		?>
-		<iframe name="ghost" frameborder="0" width="90%" height="0">
+		<iframe name="ghost" frameborder="0" width="90%" height="50%">
 		<!-- Ghost Iframe -->
 		</iframe>
 		<div id="upload_file">
 		<form name="upload_form" target="ghost" enctype="multipart/form-data" action="<?php 
-			echo($this->buildRootURI($upload_script . "?xsid={$this->xsid}&amp;uid={$this->uid}&amp;type={$this->resource_type}"));
-		?>" method="POST">
+			echo(Request::buildRootURI($upload_script . "?xsid={$this->xsid}&amp;uid={$this->uid}&amp;type={$this->resource_type}"));
+		?>" method="post">
 		<!-- <input type="hidden" name="MAX_FILE_SIZE" value="1000"> -->
-		Source file: <input type="file" name="sourcefile" onchange="validateFile()"><br>
+		Source file: <input type="file" name="sourcefile" onchange="validateFile()" /><br />
 		<!-- Destination Filename: <input type="text" name="fname"><br> -->
 		<!-- <input type="button" onclick="validateFile()" value="<?php
-		echo($this->lan->get("Send_File"));
+		echo(_t('Send_File'));
 		?>"> -->
 		</form>
 		</div>

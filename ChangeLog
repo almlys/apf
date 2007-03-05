@@ -1,4 +1,11 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-05 00:44  alberto
+
+	* [r97] ChangeLog, DefaultConfig.php, lib/common/appcore.php,
+	  lib/pages/simple, lib/pages/simple/UploadPage.php,
+	  lib/widgets/upload.php, test/test_upload.php, tmp/upload.php:
+	  upload page updated
+
 2007-03-05 00:21  alberto
 
 	* [r96] ChangeLog, lib/pages/common/EditPage.php,
