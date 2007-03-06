@@ -70,6 +70,11 @@ function validateFileCallback(http) {
 			if (http.responseText=="OK") {
 				out.innerHTML="<?php echo(_t('UploadingFile')); ?> " + document.upload_form.sourcefile.value + " <?php echo(_t('PleaseWait')); ?>";
 				//parent.parent_callback();
+				<?php
+					if(!empty($this->end_hook)) {
+						echo("	parent." . $this->end_hook . "(fname,'started');");
+					}
+				?>
 				document.upload_form.sourcefile.disabled=false;
 				document.upload_form.submit();
 				document.upload_form.sourcefile.disabled=true;
@@ -191,6 +196,11 @@ function abortUpload(msg) {
 	var out=document.getElementById("progress");
 	out.innerHTML="<font color=red><?php echo(_t('UploadFailed')); ?><" + "/" + "font>: " + msg;
 	self.setTimeout("enableUpload()",1000);
+				<?php
+					if(!empty($this->end_hook)) {
+						echo("	parent." . $this->end_hook . "(fname,'aborted');");
+					}
+				?>
 }
 
 //Notificar subida satisfactoria después de la llamada RPC final
@@ -208,7 +218,7 @@ function finishUploadCallback(http) {
 				//Parent hooks
 				<?php
 					if(!empty($this->end_hook)) {
-						echo("	parent." . $this->end_hook . "(fname);");
+						echo("	parent." . $this->end_hook . "(fname,'finished');");
 					}
 				?>
 				self.setTimeout("enableUpload()",1000);

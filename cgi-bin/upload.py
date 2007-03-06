@@ -9,7 +9,7 @@
 
 #Configuración
 #upload_dir="/tmp/apf_upload"
-upload_dir="/home/apf_upload"
+upload_dir="/home/apf_upload/upload"
 ###rpc_path="/tfc/ajaxrpc.php"
 rpc_server_path="http://localhost/tfc/?page=rpc&"
 cookie_name="ApfVoDAuthData"

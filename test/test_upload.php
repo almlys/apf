@@ -5,8 +5,8 @@
 <body>
 
 <script language="JavaScript" type="text/javascript">
-function parent_callback() {
-	alert("parent callback");
+function parent_callback(a,b) {
+	alert(a + " " + b);
 }
 </script>
 
@@ -15,7 +15,7 @@ function parent_callback() {
 <?php
 
 require_once(dirname(__FILE__) . '/../lib/widgets/upload.php');
-$up=new UploadCtrl('');
+$up=new UploadCtrl('','img','parent_callback');
 $up->write();
 
 ?>

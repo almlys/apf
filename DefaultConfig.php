@@ -47,10 +47,21 @@ $APF['system.path']=dirname(__FILE__);
 $APF['log.path']=$APF['system.path'] . "/log/stdout.log";
 
 ///Ruta relativa a previsualizaciones, y otros datos dinámicos
+$APF['upload.imgs']='upload/imgs';
+
+///Ruta relativa a vídeos subidos
+///Poner ruta absoluta si se utiliza un servidor VoD no HTTP
+///para el servidor HTTP es obligatorio usar una ruta relativa y visible
+///desde fuera.
+$APF['upload.videos']='upload/videos';
+
+/////TO BE DELETED SOON - DEPRECEATED
+///Ruta relativa a previsualizaciones, y otros datos dinámicos
 $APF['cache']='cache';
 
 ///Ruta relativa a videos disponibles (para VoD sobre http y videolan)
 $APF['videos']='videos';
+////////////END DEPRECEATED
 
 ///Indica si se utilizarán rutas relativas, o absolutas.
 ///Nota: No se pueden utilizar rutas relativas si se va a llamar al script desde
@@ -119,7 +130,7 @@ $APF['videolan.port']='';
 $APF['upload_script']='cgi-bin/upload.py';
 ///Directorio de ficheros subidos (debe ser idéntico al configurado en el script)
 //$APF['upload_dir']='/tmp/apf_upload';
-$APF['upload_dir']='/home/apf_upload';
+$APF['upload_dir']='/home/apf_upload/upload';
 
 // *** Configuración de la sessión y Cookies ***
 $APF['session.expire']=3600;

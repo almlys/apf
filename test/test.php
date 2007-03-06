@@ -5,43 +5,38 @@
 <body>
 
 <script language="JavaScript" type="text/javascript">
-function parent_callback() {
-	alert("parent callback");
+function parent_callback(a,b) {
+	var out=document.getElementById("debug");
+	out.innerHTML+=a+" "+b+"<br />";
 }
 </script>
 
 <?php
 
 require_once(dirname(__FILE__) . '/../lib/widgets/notebook.php');
+require_once(dirname(__FILE__) . '/../lib/widgets/upload.php');
+$up=new UploadCtrl('','img','parent_callback');
+$uploadctrl=$up->get();
 
 $book = new ApfNoteBook();
-$book->AddPage("Upload",'
-<iframe name="upload" src="iframe.php?page=upload" frameborder="0" width="100%" height="300">
-Sorry, Your browser does not support the iframe tag, and it does not meet the minimal requirements for this application.
-</iframe>
-');
-$book->AddPage("Something else",'
-Another fieldset
-<table><tr><td>a table</td></tr><tr><td>la , la, la la</td></tr></table>
-<hr />
-Ooossp
+$book->AddPage("Upload Test","
+<h1>Upload</h1>
+$uploadctrl
+");
+$book->AddPage("FileSystem Test",'
+<h1>FileSystem Test</h1>
+ToDo
 ');
 $book->AddPage("Another page",'
 The content of the page
 ');
-$book->AddPage("WEEEEEEEEEEEEEEEEEE",'
-stha
-faf
-fs<br />
-afjkaf
-saf
-');
 $book->Write();
-
 ?>
 
 <hr />
+<div id='debug'>
 
+</div>
 
 
 </body>
