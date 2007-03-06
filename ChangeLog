@@ -1,4 +1,11 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-06 02:25  alberto
+
+	* [r100] ChangeLog, DefaultConfig.php, cgi-bin/upload.py,
+	  lib/pages/simple/UploadPage.php, lib/pages/simple/rpcserver.php,
+	  lib/widgets/upload.php, test/test.php, test/test_upload.php,
+	  upload: upload page updated
+
 2007-03-06 00:33  alberto
 
 	* [r99] ChangeLog, cgi-bin/upload.py, lib/lan/strings.es.php,
