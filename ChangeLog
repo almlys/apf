@@ -1,4 +1,15 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-05 03:44  alberto
+
+	* [r98] ChangeLog, DefaultConfig.php, cgi-bin/upload.py,
+	  imgs/videoclap.png, lib/lan/strings.es.php,
+	  lib/pages/base/BaseDocument.php, lib/pages/base/Document.php,
+	  lib/pages/base/simplepage.php, lib/pages/simple/UploadPage.php,
+	  lib/pages/simple/rpcserver.php, lib/vod/HttpVoDhandler.php,
+	  lib/vod/VideoLanVoDhandler.php, lib/vod/VoDFactory.php,
+	  lib/vod/baseVoDhandler.php, lib/widgets/ajax.php, tmp/ajax.php,
+	  tmp/ajaxrpc.php: upload page updated
+
 2007-03-05 00:44  alberto
 
 	* [r97] ChangeLog, DefaultConfig.php, lib/common/appcore.php,

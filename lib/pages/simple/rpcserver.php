@@ -30,6 +30,10 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 		switch($this->cmd) {
 			//Validar un fichero que va ser subido
 			case "validate_file":
+				if(!$this->IAmAuthenticated() || !$this->IAmAdmin()) {
+					echo('AUTHFAIL');
+					break;
+				}
 				$type=$_GET['type'];
 				$file=$_GET['name'];
 				if(get_magic_quotes_gpc()) {
@@ -58,6 +62,10 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 				break;
 			//Obtener tamaño del fichero
 			case "file_size":
+				if(!$this->IAmAuthenticated() || !$this->IAmAdmin()) {
+					echo('AUTHFAIL');
+					break;
+				}
 				$xsid=$_GET["xsid"];
 				if($xsid==$_SESSION["xsid"]) {
 					$path=$APF['upload_dir'] . "/" . $xsid . "/lenght.txt";
@@ -75,6 +83,10 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 				break;
 			//Obtener tamaño subido
 			case "file_status":
+				if(!$this->IAmAuthenticated() || !$this->IAmAdmin()) {
+					echo('AUTHFAIL');
+					break;
+				}
 				$xsid=$_GET["xsid"];
 				if($xsid==$_SESSION["xsid"]) {
 					$path=$APF['upload_dir'] . "/" . $xsid . "/upload.raw";
@@ -89,6 +101,10 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 				break;
 			//Notificar al Servidor VoD que hemos subido un nuevo fichero
 			case "file_notify":
+				if(!$this->IAmAuthenticated() || !$this->IAmAdmin()) {
+					echo('AUTHFAIL');
+					break;
+				}
 				$xsid=$_GET["xsid"];
 				$path=$APF['upload_dir'] . "/" . $xsid . "/upload.raw";
 				if($xsid==$_SESSION["xsid"] && is_readable($path) && filesize($path)!=0) {
@@ -97,6 +113,15 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 				} else {
 					echo("ERROR");
 				}
+				break;
+			case 'regenerate_xsid':
+				if(!$this->IAmAuthenticated() || !$this->IAmAdmin()) {
+					echo('AUTHFAIL');
+					break;
+				}
+				$xsid=md5(uniqid(time() . rand()));
+				$_SESSION["xsid"]=$xsid;
+				echo($xsid);
 				break;
 			//Verificar que el hash the autenticación es válido
 			case "auth_verify":

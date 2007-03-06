@@ -38,6 +38,8 @@ class ApfUploadPage extends ApfSimplePage implements iDocument {
 	}
 
 	function dump_js() {
+		global $APF;
+		$upload_script=$APF['upload_script'];
 ?>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
@@ -52,6 +54,9 @@ var fsize=0; //file size
 var csize=0; //current file size
 var count=0; //numero de veces a esperar hasta que el fichero este disponible
 var fname=""; //Nombre del fichero
+var rpcserver="<?php echo($this->buildBaseURI("?page=rpc&",false)); ?>";
+var xsid="<?php echo($this->xsid); ?>";
+var resource_type="<?php echo($this->resource_type); ?>";
 
 //Resultado de la validación del fichero a subir
 function validateFileCallback(http) {
@@ -63,11 +68,9 @@ function validateFileCallback(http) {
 		if (http.status==200) {
 			//out.innerHTML+=http.responseText;
 			if (http.responseText=="OK") {
-				out.innerHTML="Uploading File " + document.upload_form.sourcefile.value + " please wait...";
+				out.innerHTML="<?php echo(_t('UploadingFile')); ?> " + document.upload_form.sourcefile.value + " <?php echo(_t('PleaseWait')); ?>";
 				//parent.parent_callback();
 				document.upload_form.sourcefile.disabled=false;
-				//document.upload_form.sourcefile.value="C:\\boot.ini";
-				//document.upload_form.sourcefile.value="/etc/passwd";
 				document.upload_form.submit();
 				document.upload_form.sourcefile.disabled=true;
 				keeprunning=true;
@@ -94,11 +97,11 @@ function validateFile() {
 		validateFileCallback(http);
 	}
 	fname=document.upload_form.sourcefile.value;
-	http.open("GET", "<?php echo($this->buildBaseURI("?page=rpc&cmd=validate_file&type={$this->resource_type}")); ?>&name=" + encodeURIComponent(document.upload_form.sourcefile.value), true);
+	http.open("GET", rpcserver + "cmd=validate_file&type=" + resource_type + "&name=" + encodeURIComponent(document.upload_form.sourcefile.value), true);
 	http.send(null);
 	//alert(document.upload_form.sourcefile.value);
 	var out=document.getElementById("progress");
-	out.innerHTML="Validating file...";
+	out.innerHTML="<?php echo(_t('ValidatingFile')); ?>";
 	document.upload_form.sourcefile.disabled=true;
 }
 
@@ -147,15 +150,15 @@ function getFileStats() {
 		getFileStatsCallback(http);
 	}
 	if(fsize==0) {
-		http.open("GET", "<?php echo($this->buildBaseURI("?page=rpc&cmd=file_size&xsid={$this->xsid}")); ?>", true);
+		http.open("GET", rpcserver + "cmd=file_size&xsid=" + xsid, true);
 	} else {
-		http.open("GET", "<?php echo($this->buildBaseURI("?page=rpc&cmd=file_status&xsid={$this->xsid}")); ?>", true);
+		http.open("GET", rpcserver + "cmd=file_status&xsid=" + xsid, true);
 	}
 	http.send(null);
 	//alert(document.upload_form.sourcefile.value);
 	if(fsize==0) {
 		var out=document.getElementById("progress");
-		out.innerHTML="Uploading file...";
+		out.innerHTML="<?php echo(_t('UploadingFile')); ?>...";
 	} else {
 		updateUploadStats();
 	}
@@ -186,7 +189,7 @@ function abortUpload(msg) {
 	//alert("stopped");
 	keeprunning=false;
 	var out=document.getElementById("progress");
-	out.innerHTML="<font color=red>Upload failed!<" + "/" + "font>: " + msg;
+	out.innerHTML="<font color=red><?php echo(_t('UploadFailed')); ?><" + "/" + "font>: " + msg;
 	self.setTimeout("enableUpload()",1000);
 }
 
@@ -201,7 +204,7 @@ function finishUploadCallback(http) {
 			//out.innerHTML+=http.responseText;
 			if(http.responseText=="OK") {
 				//var out=document.getElementById("progress");
-				out.innerHTML="<font color=green>Upload Finished<" + "/" + "font>";
+				out.innerHTML="<font color=green><?php echo(_t('UploadFinished')); ?><" + "/" + "font>";
 				//Parent hooks
 				<?php
 					if(!empty($this->end_hook)) {
@@ -228,19 +231,43 @@ function finishUpload() {
 	http.onreadystatechange= function() {
 		finishUploadCallback(http);
 	}
-	http.open("GET", "<?php echo($this->buildBaseURI("?page=rpc&cmd=file_notify&xsid={$this->xsid}&type={$this->resource_type}&name=",false)); ?>" + encodeURIComponent(fname), true);
+	http.open("GET", rpcserver + "cmd=file_notify&xsid=" + xsid + "&type=" + resource_type + "&name=" + encodeURIComponent(fname), true);
 	http.send(null);	
+}
+
+function enableUploadCallback(http) {
+	var out=document.getElementById("progress");
+	if (http.readyState == 4) {
+		if (http.status==200) {
+			if(http.responseText=="AUTHFAIL") {
+				out.innerHTML="<font color=red>AUTHFAIL</fon>";
+			} else if(http.responseText.length==32) {
+				xsid=http.responseText;
+				//keeprunning=true;
+				fsize=0;
+				csize=0;
+				count=0;
+				document.upload_form.sourcefile.disabled=false;
+				document.upload_form.sourcefile.value="";
+				document.upload_form.reset();
+				document.upload_form.action="<?php 
+			echo(Request::buildRootURI($upload_script . "?uid={$this->uid}&type=")); ?>" + resource_type + "&xsid=" + xsid;
+				//alert(document.upload_form.action);
+			} else {
+				out.innerHTML="<font color=red>ERROR:</fon>" + http.responseText;
+			}
+		}
+	}
 }
 
 //Habilitar el upload
 function enableUpload() {
-	//keeprunning=true;
-	fsize=0;
-	csize=0;
-	count=0;
-	document.upload_form.sourcefile.disabled=false;
-	document.upload_form.sourcefile.value="";
-	document.upload_form.reset();
+	var http=get_ajax();
+	http.onreadystatechange= function() {
+		enableUploadCallback(http);
+	}
+	http.open("GET", rpcserver + "cmd=regenerate_xsid", true);
+	http.send(null);	
 }
 
 //]]>
@@ -253,7 +280,7 @@ function enableUpload() {
 		$upload_script=$APF['upload_script'];
 		$this->dump_js();
 		?>
-		<iframe name="ghost" frameborder="0" width="90%" height="50%">
+		<iframe name="ghost" frameborder="0" width="90%" height="0">
 		<!-- Ghost Iframe -->
 		</iframe>
 		<div id="upload_file">

@@ -64,7 +64,7 @@ class slowFile:
     def write(self,input):
         global file_size
         w=len(input)
-        print w
+        #print w
         file_size=file_size + w
         self.quota=self.quota+w
         self.write_quota=self.write_quota+w
@@ -96,7 +96,7 @@ class rpcClient:
     def __init__(self,rpcserver):
         self.path=rpcserver
     def request(self,petition):
-        print "Opening %s" %(self.path + petition)
+        #print "Opening %s" %(self.path + petition)
         f = urllib2.urlopen(self.path + petition)
         response = f.read()
         f.close()
@@ -182,11 +182,14 @@ def main():
     if not os.environ.has_key("QUERY_STRING"):
         error("Cannot get Query_string")
     q=os.environ["QUERY_STRING"]
+    #print q;
     get=q.split("&")
+    #print get
     geta=[]
     for g in get:
         geta.append(g.split("="))
     del get,q
+    #print geta
 
     for g in geta:
         if g[0]=="xsid":
@@ -198,6 +201,7 @@ def main():
 
     #Limpiar xsid (No podemos confiar en su valor)
     if not re.match(r"^[a-f0-9]{32}$",xsid):
+        #print "Xsid is %s" %xsid
         error("xsid validation failed")
     #print "res-%s-" % (resource_type)
     if not re.match(r"^\w+$",resource_type):
@@ -225,7 +229,7 @@ def main():
     #Realizar llamada RPC al la aplicación, y verificar el auth_hash
     rpc=rpcClient(rpc_server_path)
     rpc_reply=rpc.request("cmd=auth_verify&hash=%s&uid=%i" % (auth_hash,uid))
-    print "<br>RPC Response:-%s-<br>" %(rpc_reply)
+    #print "<br>RPC Response:-%s-<br>" %(rpc_reply)
     if not rpc_reply=="OK":
         error("rpc auth validation failed")
 
@@ -258,8 +262,8 @@ def main():
     #    error("No File data was uploaded",False)
     if file_size==0:
         error("No File data was uploaded %i %i" %(file_size,filesize),False,True,True)
-    elif filesize-file_size>250:
-        error("Uploaded file data seems to be incomplete",False,True,True)
+    elif filesize-file_size>500:
+        error("Uploaded file data seems to be incomplete %i %i" %(file_size,filesize),False,True,True)
 
     print """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

@@ -22,7 +22,7 @@ class ApfManager extends ApfDocument implements iDocument {
 		$this->maintitle=_t('vod_viewer');
 		$this->setTitle($title);
 		// Estilos
-		$this->addStyle(_t('default_style'),$this->buildBaseUri('styles/default.css'));
+		//$this->addStyle(_t('default_style'),$this->buildBaseUri('styles/default.css'));
 		// Menu
 		$this->add2Menu(_t('main_page'),'main','','imgs/home.png');
 		$this->add2Menu(_t('videos_page'),'categ','','imgs/video.png');

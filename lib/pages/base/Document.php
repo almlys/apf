@@ -23,11 +23,15 @@ class ApfDocument extends ApfBaseDocument implements iDocument {
 	private $page='main'; ///<Nombre de la página
 	private $params=array(); ///<Listado de parámetros extra, empezando por &amp;key=value pairs
 	private $id=0; ///<Identificador de un recurso (categoria, video, etc...)
+
 	///Constructor
 	/// @param $title Título del documento
 	/// @param $release_session Indica si liberamos la sessión
 	function __construct($title='',$release_session=True) {
 		parent::__construct($title);
+		// Estilos
+		$this->addStyle(_t('default_style'),$this->buildBaseUri('styles/default.css'));
+		// Validar usuario
 		$this->checkLogedUser($release_session);
 		$this->checkPageId();
 	}

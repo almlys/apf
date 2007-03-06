@@ -79,5 +79,9 @@ $APF_STRINGS['Delete']='Borrar';
 $APF_STRINGS['login_field_empty']='El campo nombre esta vacio';
 $APF_STRINGS['authenticating']='Autenticando...';
 $APF_STRINGS['file_rejected']='Fichero rehusado por el servidor'; //File rejected by server
-
+$APF_STRINGS['UploadingFile']='Subiendo fichero';
+$APF_STRINGS['PleaseWait']='Por favor espera...';
+$APF_STRINGS['ValidatingFile']='Validando fichero...';
+$APF_STRINGS['UploadFailed']='¡Fallo la subida del fichero!'; //Upload failed!
+$APF_STRINGS['UploadFinished']='Subida finalizada'; //Upload failed!
 ?>
