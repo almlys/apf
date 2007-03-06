@@ -47,6 +47,7 @@ $APF['system.path']=dirname(__FILE__);
 $APF['log.path']=$APF['system.path'] . "/log/stdout.log";
 
 ///Ruta relativa a previsualizaciones, y otros datos dinámicos
+/// (debe ser relativa) (absoluta no vale)
 $APF['upload.imgs']='upload/imgs';
 
 ///Ruta relativa a vídeos subidos
@@ -116,6 +117,9 @@ $APF['auth.chap']=True;
 ///Indica la ruta al manejador que conecta la aplicación con el servidor VoD
 $APF['vod.http']=array('HttpVoDhandler.php','ApfHttpVoDHandler',array());
 $APF['vod.videolan']=array('VideoLanVoDhandler.php','ApfVideoLanVoDHandler',array());
+
+///Tipo de manejador por defecto
+$APF['default_vod']='videolan';
 
 // *** Configuración especifica por servidor VoD ***
 

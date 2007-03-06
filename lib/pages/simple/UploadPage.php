@@ -273,7 +273,7 @@ function finishUploadCallback(http) {
 				?>
 				self.setTimeout("enableUpload()",1000);
 			} else {
-				abortUpload("Last RPC call failed!");
+				abortUpload("Last RPC call failed! " + http.responseText);
 			}
 		}
 	}

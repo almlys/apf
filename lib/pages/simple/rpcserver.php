@@ -12,19 +12,33 @@ require_once(dirname(__FILE__) . "/../base/simplepage.php");
 class ApfRPCServer extends ApfSimplePage implements iDocument {
 	private $cmd;
 	private $xsid;
+	private $vod_type;
+	private $type;
+	private $file;
 
 	function __construct() {
+		global $APF;
 		parent::__construct('',False);
 		//Comando a procesar
 		$cmd=$this->escape_string($_GET['cmd']);
 		if(empty($cmd)) die("ERROR");
 		$this->cmd=$cmd;
+		$this->vod_type=$APF['default_vod'];
 	}
 
+	///Mostrar página
 	function show() {
-		$this->process();
+		try {
+			$this->process();
+		} catch(Exception $e) {
+			echo('UNHANDLED_EXCEPTION');
+			print_exception($e);
+		}
 	}
 
+	///Verificar autenticación
+	/// @param xsid_check VErificar xsid
+	/// @param file_check verificar nombre fichero
 	function AuthCheck($xsid_check=True,$file_check=False) {
 		if(!$this->IAmAuthenticated() || !$this->IAmAdmin()) {
 			return false;
@@ -34,8 +48,8 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 			return false;
 		}
 		if($file_check) {
-			$type=$_GET['type'];
-			$file=$_GET['name'];
+			$this->type=$type=$_GET['type'];
+			$this->file=$file=$_GET['name'];
 			if($type!=$_SESSION['file_type'] || $file!=$_SESSION['file_name']) {
 				return false;
 			}
@@ -43,6 +57,47 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 		return true;
 	}
 
+	/// Obtener Manejador VoD
+	/// @returns El manejador VoD solicitado
+	function getVodServer() {
+		//Instanciate APF_VOD class
+		require_once(dirname(__FILE__) . '/../../vod/VoDFactory.php');
+		$vod_server=VoDFactory::getVoDHandler($this->vod_type);
+		return $vod_server;
+	}
+
+	/// Copiar una imagen
+	/// @param path ruta del fichero temporal
+	/// @param file nombre definido por el usuario
+	/// @return Nombre del fichero final
+	function copyImage($path,$file) {
+		//echo($path . "--" . $file);
+		if(!ereg('^[^./][^/]*$',$file)) {
+			return null;
+		}
+		//echo($path . "--" . $file);
+		$file=cleanFileName($file);
+		if(empty($file)) {
+			return null;
+		}
+		//echo($path . "--" . $file);
+		global $APF;
+		$imgdest=$APF['system.path'] . '/' . $APF['upload.imgs'] . '/' . $file;
+		$count=0;
+		$imgdestck=$imgdest;
+		while(file_exists($imgdestck)) {
+			$imgdestck=ereg_replace('\.(.*)$',"_$count.\\1",$imgdest);
+			$count++;
+		}
+		$imgdest=$imgdestck;
+		//echo($path . "--" . $imgdest);
+		if(!rename($path,$imgdest)) {
+			return null;
+		}
+		return $file;
+	}
+
+	/// Processar
 	function process() {
 		global $APF;
 		//Procesar comando RPC recibido
@@ -65,8 +120,7 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 				switch($type) {
 					case "video":
 						//Instanciate APF_VOD class
-						require_once(dirname(__FILE__) . '/../../vod/VoDFactory.php');
-						$vod_server=VoDFactory::getVoDHandler('http');
+						$vod_server=$this->getVodServer();
 						if($vod_server->CheckVideoFileBeforeUpload($file)) {
 							echo("OK");
 						} else {
@@ -123,10 +177,35 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 				if($this->AuthCheck(True,True)) {
 					$xsid=$this->xsid;
 					$path=$APF['upload_dir'] . "/" . $xsid . "/upload.raw";
+
+					if(get_magic_quotes_gpc()) {
+						$file=stripslashes($this->file);
+					}
+					$file=str_replace("\\","/",$file);
+					$file=basename($file);
+
 					if(is_readable($path) && filesize($path)!=0) {
 						//Do It!
-						//
-						echo("OK");
+						switch($this->type) {
+							case 'video':
+								$vod_server=$this->getVodServer();
+								if($vod_server->UploadVideoFile($path,$file)) {
+									echo('OK');
+								} else {
+									echo('VOD_SERVER_ERROR');
+								}
+								break;
+							case 'img':
+								$result=$this->copyImage($path,$file);
+								if($result==null) {
+									echo('ERROR');
+								} else {
+									echo('OK');
+								}
+								break;
+							default:
+								echo('ERROR');
+						}
 					} else {
 						echo("ERROR");
 					}

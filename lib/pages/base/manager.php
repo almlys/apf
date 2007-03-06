@@ -276,7 +276,7 @@ class ApfManager extends ApfDocument implements iDocument {
 		$this->getMediaTree()->writeOptions($id);
 		echo("</select>\n");
 		echo($this->getArgsHidden(array('page' => 'categ'),'',array('id')));
-		echo('<input type="submit" value="' . _t("go") . '" />' . "\n");
+		//echo('<input type="submit" value="' . _t("go") . '" />' . "\n");
 		echo('</form>');
 		echo('</fieldset>');
 	}

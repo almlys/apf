@@ -17,7 +17,7 @@ interface iVoDHandler {
 	///Indica al VoD, que un nuevo fichero de video a sido subido al servidor
 	///@param path Ruta al fichero en el sistema local
 	///@param filename Nombre del fichero especificado por el usuario
-	///@return Devuelve un objecto ApfVoDFile
+	///@return Devuelve verdadero en caso de éxito
 	function UploadVideoFile($path,$filename);
 
 	///Pasa un nombre de fichero al VoD para validar antes de ser subido
@@ -42,8 +42,10 @@ abstract class ApfBaseVoDHandler implements iVoDHandler {
 	///Indica al VoD, que un nuevo fichero de video a sido subido al servidor
 	///@param path Ruta al fichero en el sistema local
 	///@param filename Nombre del fichero especificado por el usuario
-	///@return Devuelve un objecto ApfVoDFile
-	function UploadVideoFile($path,$filename) {}
+	///@return Devuelve verdadero en caso de éxito
+	function UploadVideoFile($path,$filename) {
+		return false;
+	}
 
 	///Pasa un nombre de fichero al VoD para validar antes de ser subido
 	/// @param path Nombre fichero

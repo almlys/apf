@@ -108,7 +108,10 @@ def cleanUpOldTempFiles():
         try:
             mstat=os.stat(d + "/upload.raw")
         except OSError:
-            continue
+            try:
+                mstat=os.stat(d + "/lenght.txt")
+            except OSError:
+                continue
         if mstat[8]<(cur_stamp-(5*60)): #5 minutos
             for f in glob.glob(d + "/*"):
                 #print "removing %s" %(f)

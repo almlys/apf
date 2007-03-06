@@ -9,22 +9,14 @@
 require_once(dirname(__FILE__) . "/baseVoDhandler.php");
 
 ///Implementa los manejadores necesarios para un servidor VoD VideoLan
-class ApfVideoLanVoDHandler extends ApfBaseVoDHandler {
-
-	//Constructor
-	//function ApfVideoLanVoDHandler() {}
+class ApfVideoLanVoDHandler extends ApfBaseVoDHandler implements iVoDHandler {
 
 	function UploadVideoFile($path,$name) {
-		echo("Path: $path, name: $name");
+		//echo("Path: $path, name: $name");
+		return false;
 	}
 
 } //End Class ApfVideoLanVodHandler
 
-
-//Crear el objecto
-//$APF_VOD=new ApfVideoLanVoDHandler();
-function createApfVoDHandler() {
-	return new ApfVideoLanVoDHandler();
-}
 
 ?>

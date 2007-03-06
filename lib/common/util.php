@@ -6,6 +6,31 @@
   Id: $Id$
 */
 
+function beginsWith( $str, $sub ) {
+   return ( substr( $str, 0, strlen( $sub ) ) === $sub );
+}
+function endsWith( $str, $sub ) {
+   return ( substr( $str, strlen( $str ) - strlen( $sub ) ) === $sub );
+}
+
+/// Limpia el nombre de fichero
+/// @param file nombre definido por el usuario
+/// @return Nombre limpio (Vacio si no es válido)
+function cleanFileName($file) {
+	if(!ereg('^[^./][^/]*$',$file)) {
+		return '';
+	}
+	$file=ereg_replace('[^a-zA-z0-9\._]','',$file);
+	$nfile='';
+	while($nfile!=$file) {
+		$nfile=$file;
+		$file=ereg_replace('^\.','',$nfile);
+	}
+	return $file;
+}
+
+
+
 class Request {
 
 	public function __construct() {

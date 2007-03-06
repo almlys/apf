@@ -1,4 +1,13 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-06 08:52  alberto
+
+	* [r102] ChangeLog, DefaultConfig.php, lib/lan/strings.es.php,
+	  lib/pages/simple/FileSystemRPC.php,
+	  lib/pages/simple/UploadPage.php, lib/widgets/ajax.php,
+	  lib/widgets/filesystem.php, lib/widgets/notebook.php,
+	  lib/widgets/upload.php, styles/default.css, test/test.php:
+	  updates
+
 2007-03-06 02:28  alberto
 
 	* [r101] ChangeLog, lib/widgets/filesystem.php,
