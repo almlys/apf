@@ -44,8 +44,9 @@ class ApfUploadPage extends ApfSimplePage implements iDocument {
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 <?php
-		$ajax=new ApfAjax();
-		$ajax->write();
+		//$ajax=new ApfAjax();
+		//$ajax->write();
+		ApfAjax::write();
 ?>
 
 var keeprunning=false;
@@ -176,15 +177,64 @@ function updateUploadStats() {
 	var out=document.getElementById("progress");
 	var percent=(csize/fsize)*100;
 	var pg=(self.innerWidth-40)*(percent/100);
-	out.innerHTML="Uploading file...<br>";
-	out.innerHTML+="Total Size: " + fsize + "<br>";
-	out.innerHTML+="Uploaded Size: " + csize + "<br>";
-	out.innerHTML+="Elapsed time: " + elapsed + " seconds<br>";
-	out.innerHTML+="Remaining time: " + remain + " seconds<br>";
-	out.innerHTML+="Speed: " + speed + " KB/s<br>";
-	out.innerHTML+="Percent: " + percent + "%<br>";
-	out.innerHTML+="Width: " + pg + "<br>";
-	out.innerHTML+="<img width=\"" + pg + "\" height=\"10\" src=\"<?php
+	out.innerHTML="<?php echo(_t('UploadingFile')); ?>... ";
+	out.innerHTML+=percent.toFixed() + "% ";
+	if (fsize>5000000) {
+		out.innerHTML+=(csize/1000000).toFixed(1) + "/" + (fsize/1000000).toFixed(1) + " MB";
+	} else {
+		out.innerHTML+=(csize/1000000).toFixed(1) + "/" + (fsize/1000000).toFixed(1) + " KB";
+	}
+	out.innerHTML+=" ";
+	if (speed>1000) {
+		out.innerHTML+=(speed/1000).toFixed(1) + " MB/s";
+	} else {
+		out.innerHTML+=(speed).toFixed(1) + " KB/s";
+	}
+	out.innerHTML+="<br />";
+	/*
+	out.innerHTML+="<?php echo(_t('ElapsedTime')); ?>: "
+	if (elapsed<60) {
+		out.innerHTML+=elapsed.toFixed() + " <?php echo(_t('seconds')); ?>";
+	} else if(elapsed<3600) {
+		out.innerHTML+=(elapsed/60).toFixed() + " <?php echo(_t('minutes')); ?>";
+	} else {
+		out.innerHTML+=(elapsed/3600).toFixed() + " <?php echo(_t('hours')); ?>";
+	}
+	out.innerHTML+=" <?php echo(_t('RemainingTime')); ?>: "
+	if (remain<60) {
+		out.innerHTML+=remain.toFixed() + " <?php echo(_t('seconds')); ?>";
+	} else if(remain<3600) {
+		out.innerHTML+=(remain/60).toFixed() + " <?php echo(_t('minutes')); ?>";
+	} else {
+		out.innerHTML+=(remain/3600).toFixed() + " <?php echo(_t('hours')); ?>";
+	}
+	*/
+	out.innerHTML+="<?php echo(_t('RemainingTime')); ?>: "
+	if (remain<60) {
+		out.innerHTML+=remain.toFixed() + " <?php echo(_t('seconds')); ?>";
+	} else if(remain<3600) {
+		out.innerHTML+=(remain/60).toFixed(1) + " <?php echo(_t('minutes')); ?>";
+	} else {
+		out.innerHTML+=(remain/3600).toFixed(2) + " <?php echo(_t('hours')); ?>";
+	}
+	out.innerHTML+=" (";
+	if (elapsed<60) {
+		out.innerHTML+=elapsed.toFixed() + " <?php echo(_t('seconds')); ?>";
+	} else if(elapsed<3600) {
+		out.innerHTML+=(elapsed/60).toFixed(1) + " <?php echo(_t('minutes')); ?>";
+	} else {
+		out.innerHTML+=(elapsed/3600).toFixed(2) + " <?php echo(_t('hours')); ?>";
+	}
+	out.innerHTML+=")<br />";
+	//out.innerHTML="Uploading file...<br>";
+	//out.innerHTML+="Total Size: " + fsize + "<br>";
+	//out.innerHTML+="Uploaded Size: " + csize + "<br>";
+	//out.innerHTML+="Elapsed time: " + elapsed + " seconds<br>";
+	//out.innerHTML+="Remaining time: " + remain + " seconds<br>";
+	//out.innerHTML+="Speed: " + speed + " KB/s<br>";
+	//out.innerHTML+="Percent: " + percent + "%<br>";
+	//out.innerHTML+="Width: " + pg + "<br>";
+	out.innerHTML+="<img width=\"" + pg + "\" height=\"20\" src=\"<?php
 		echo($this->buildBaseURI("imgs/progress_point.png"));
 	?>\">";
 }
@@ -250,7 +300,7 @@ function enableUploadCallback(http) {
 	if (http.readyState == 4) {
 		if (http.status==200) {
 			if(http.responseText=="AUTHFAIL") {
-				out.innerHTML="<font color=red>AUTHFAIL</fon>";
+				out.innerHTML="<font color=red>AUTHFAIL<" + "/" + "font>";
 			} else if(http.responseText.length==32) {
 				xsid=http.responseText;
 				//keeprunning=true;
@@ -264,7 +314,7 @@ function enableUploadCallback(http) {
 			echo(Request::buildRootURI($upload_script . "?uid={$this->uid}&type=")); ?>" + resource_type + "&xsid=" + xsid;
 				//alert(document.upload_form.action);
 			} else {
-				out.innerHTML="<font color=red>ERROR:</fon>" + http.responseText;
+				out.innerHTML="<font color=red>ERROR:<" + "/" + "font>" + http.responseText;
 			}
 		}
 	}
@@ -293,7 +343,7 @@ function enableUpload() {
 		<iframe name="ghost" frameborder="0" width="90%" height="0">
 		<!-- Ghost Iframe -->
 		</iframe>
-		<div id="upload_file">
+		<div class="upload_ctrl" id="upload_file">
 		<form name="upload_form" target="ghost" enctype="multipart/form-data" action="<?php 
 			echo(Request::buildRootURI($upload_script . "?xsid={$this->xsid}&amp;uid={$this->uid}&amp;type={$this->resource_type}"));
 		?>" method="post">
@@ -305,7 +355,7 @@ function enableUpload() {
 		?>"> -->
 		</form>
 		</div>
-		<div id="progress">
+		<div class="upload_ctrl" id="progress">
 		<!-- Empty -->
 		</div>
 		<?php

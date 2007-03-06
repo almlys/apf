@@ -2,6 +2,44 @@ body {
 	background-color:#E9FFD0;
 }
 
+input {
+	border-style:solid;
+	border-color: Black;
+	border-width: 1px;
+	/*background-color:Yellow;*/
+}
+
+input:hover {
+	border-color:Blue;
+	border-width:2px;
+}
+
+
+select {
+	border-style:solid;
+	border-color: Black;
+	border-width: 1px;
+}
+
+select:hover {
+	border-color:Blue;
+	border-width:2px;
+}
+
+
+textarea {
+	border-style:solid;
+	border-color: Black;
+	border-width: 1px;
+}
+
+textarea:hover {
+	border-color:Blue;
+	border-width:2px;
+}
+
+
+
 .header {
 	background-color: #FEFFCF;
 	color: inherit;
@@ -252,3 +290,22 @@ body {
 	background-color:#421709;
 	color:White;
 }
+
+.upload_ctrl {
+	background-color:inherit;
+	color: blue;
+	font-family: "Courier" , serif;
+}
+
+.upload_ctrl input {
+	background-color: #ffa500;
+	border-style:solid;
+	border-color: Black;
+	border-width: 1px;
+}
+
+.upload_ctrl input:hover {
+	border-width:2px;
+	border-color:Blue;
+}
+

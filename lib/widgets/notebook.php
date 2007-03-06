@@ -14,7 +14,7 @@ class ApfNoteBookTab {
 	///Constructor
 	///@param name Nombre de la página
 	///@param content Contenido de la página
-	function ApfNoteBookTab($name,$content) {
+	function __construct($name,$content) {
 		$this->name=$name;
 		$this->content=$content;
 	}
@@ -27,7 +27,7 @@ class ApfNoteBook {
 
 	///Constructor
 	///@param name Nombre del NoteBook
-	function ApfNoteBook($name='') {
+	function __construct($name='') {
 		if(empty($name)) {
 			$name='NoteBook_' . md5(rand() . uniqid());
 		}

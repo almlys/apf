@@ -8,9 +8,24 @@
 
 ///Clase base para AJAX (Asynchronous JavaScript And XML)
 class ApfAjax {
+	private static $send=False;
+
+	function __construct() {
+		throw new Exception("This class cannot be instanciated");
+	}
+
 	///Escribe el código base necesario para cualquier aplicación Ajax
-	function write() {
-?>
+	static function write() {
+		if(!self::$send) {
+			echo(self::get());
+		}
+	}
+
+	///Escribe el código base necesario para cualquier aplicación Ajax
+	static function get() {
+		if(self::$send) return;
+		self::$send=True;
+$out=<<<EOF
 //Variable global contenedora del objecto
 //var http=false;
 
@@ -46,9 +61,9 @@ function get_ajax() {
 	if(!http) alert("Imposible inicializar el HTTPRequest");
 	return http;
 }
+EOF;
 
-
-<?php /*
+/*
 
 function ajax_init() {
 	http=getXMLHttpRequest();
@@ -79,8 +94,7 @@ function trabaja() {
 	http.open("GET", "info.php", true);
 	http.send("hola");
 } */
-?>
-<?php
+		return $out;
 	}
 
 } //End Class ApfAjax

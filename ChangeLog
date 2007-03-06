@@ -1,4 +1,9 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-06 02:28  alberto
+
+	* [r101] ChangeLog, lib/widgets/filesystem.php,
+	  test/ajaxclient.php, test/uploadfile.php, tmp: tmp removed
+
 2007-03-06 02:25  alberto
 
 	* [r100] ChangeLog, DefaultConfig.php, cgi-bin/upload.py,

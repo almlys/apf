@@ -84,6 +84,9 @@ $APF['page.edit']=array('common/EditPage.php','ApfEditPage',array());
 $APF['page.admin']=array('common/AdminPage.php','ApfAdminPage',array());
 $APF['page.iupload']=array('simple/UploadPage.php','ApfUploadPage',array());
 $APF['page.rpc']=array('simple/rpcserver.php','ApfRPCServer',array());
+$APF['page.fsrpc']=array('simple/FileSystemRPC.php','ApfFileSystemRPC',array());
+
+$APF['page.test']=array('../../test/test.php','ApfTestPage',array());
 
 // *** Base de datos ***
 ///Plugin de la base de datos

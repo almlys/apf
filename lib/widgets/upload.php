@@ -28,7 +28,7 @@ class UploadCtrl {
 	/// @returns Control generado
 	function get() {
 		if(!empty($this->parent)) {
-			$addr=$this->buildBaseURI('?page=iupload');
+			$addr=$this->parent->buildBaseURI('?page=iupload');
 			$msg=_t('unsuported_outdated_old_browser');
 		} else {
 			$addr='http://pegasus/tfc/?page=iupload';
@@ -39,7 +39,7 @@ class UploadCtrl {
 			$addr.="&amp;end_hook={$this->callback}";
 		}
 		$out=<<<EOF
-<iframe name="upload" src="$addr" frameborder="0" width="100%" height="300">
+<iframe name="upload" src="$addr" frameborder="0" width="100%" height="90" scrolling="no">
 $msg
 </iframe>
 EOF;

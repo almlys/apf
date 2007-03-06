@@ -84,4 +84,8 @@ $APF_STRINGS['PleaseWait']='Por favor espera...';
 $APF_STRINGS['ValidatingFile']='Validando fichero...';
 $APF_STRINGS['UploadFailed']='¡Fallo la subida del fichero!'; //Upload failed!
 $APF_STRINGS['UploadFinished']='Subida finalizada'; //Upload failed!
+$APF_STRINGS['ElapsedTime']='Tiempo transcurrido';
+$APF_STRINGS['RemainingTime']='Tiempo restante';
+$APF_STRINGS['minutes']='minutos';
+$APF_STRINGS['hours']='horas';
 ?>
