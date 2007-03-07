@@ -74,6 +74,7 @@ class ApfMysqlDB implements iDB {
 		if($this->result) {
 			return (mysql_fetch_array($this->result));
 		} else {
+			throw new DataBaseException('null fetchArray');
 			return null;
 		}
 	}

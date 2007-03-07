@@ -16,12 +16,10 @@ class ApfVideoPage extends ApfManager implements iDocument {
 
 	///Constructor
 	function __construct() {
-		parent::__construct(_t("untitled"));
-	}
-	
-	///Cabezera
-	function head() {
-		$vid=$this->getMediaMGR()->getVideo($this->getId());
+		parent::__construct(_t('untitled'));
+		$vmgr=$this->getMediaMGR();
+		$vid=$vmgr->getVideo($this->getId());
+		$vmgr->increaseVideoHitCount($this->getId());
 		$this->vid=$vid;
 		$this->pid=$vid['pid'];
 		$this->setTitle($vid['name']);
@@ -30,7 +28,6 @@ class ApfVideoPage extends ApfManager implements iDocument {
 		$this->dur=$vid['dur'];
 		$this->url=$vid['url'];
 		$this->category=$vid['category'];
-		parent::head();
 	}
 	
 	///Método cuerpo

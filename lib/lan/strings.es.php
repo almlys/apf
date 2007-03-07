@@ -89,4 +89,6 @@ $APF_STRINGS['RemainingTime']='Tiempo restante';
 $APF_STRINGS['minutes']='minutos';
 $APF_STRINGS['hours']='horas';
 $APF_STRINGS['SourceFile']='Fichero de origen';
+$APF_STRINGS['return']='Volver';
+$APF_STRINGS['delete_media']='Borrar recurso multimedia';
 ?>

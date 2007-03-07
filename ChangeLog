@@ -1,4 +1,12 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-07 07:50  alberto
+
+	* [r104] ChangeLog, lib/common/exceptions.php, lib/common/util.php,
+	  lib/lan/strings.es.php, lib/pages/simple/UploadPage.php,
+	  lib/pages/simple/rpcserver.php, lib/vod/HttpVoDhandler.php,
+	  lib/vod/VideoLanVoDhandler.php, lib/vod/baseVoDhandler.php,
+	  test/test.php: video upload
+
 2007-03-06 14:24  alberto
 
 	* [r103] ChangeLog, DefaultConfig.php, cgi-bin/upload.py,
