@@ -12,8 +12,10 @@ require_once(dirname(__FILE__) . "/baseVoDhandler.php");
 class ApfVideoLanVoDHandler extends ApfBaseVoDHandler implements iVoDHandler {
 
 	function UploadVideoFile($path,$name) {
+		$result=parent::UploadVideoFile($path,$name);
 		//echo("Path: $path, name: $name");
-		return false;
+		//throw new InvalidFileException($name);
+		return $result;
 	}
 
 } //End Class ApfVideoLanVodHandler

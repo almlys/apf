@@ -23,7 +23,7 @@ function parent_callback(a,b) {
 require_once(dirname(__FILE__) . '/../lib/widgets/notebook.php');
 require_once(dirname(__FILE__) . '/../lib/widgets/upload.php');
 require_once(dirname(__FILE__) . '/../lib/widgets/filesystem.php');
-$up=new UploadCtrl($this,'img','parent_callback');
+$up=new UploadCtrl($this,'video','parent_callback');
 $uploadctrl=$up->get();
 $fs=new ApfFilesystem($this);
 $fsctrl=$fs->get();

@@ -73,12 +73,12 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 	function copyImage($path,$file) {
 		//echo($path . "--" . $file);
 		if(!ereg('^[^./][^/]*$',$file)) {
-			return null;
+			throw new InvalidFileException($file);
 		}
 		//echo($path . "--" . $file);
 		$file=cleanFileName($file);
 		if(empty($file)) {
-			return null;
+			throw new InvalidFileException($file);
 		}
 		//echo($path . "--" . $file);
 		global $APF;
@@ -92,7 +92,7 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 		$imgdest=$imgdestck;
 		//echo($path . "--" . $imgdest);
 		if(!rename($path,$imgdest)) {
-			return null;
+			throw new InvalidFileException($file);
 		}
 		return $file;
 	}
@@ -188,20 +188,14 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 						//Do It!
 						switch($this->type) {
 							case 'video':
-								$vod_server=$this->getVodServer();
-								if($vod_server->UploadVideoFile($path,$file)) {
-									echo('OK');
-								} else {
-									echo('VOD_SERVER_ERROR');
-								}
+								$result=$vod_server=$this->getVodServer()->UploadVideoFile($path,$file);
+								echo('OK');
+								//echo('VOD_SERVER_ERROR');
 								break;
 							case 'img':
 								$result=$this->copyImage($path,$file);
-								if($result==null) {
-									echo('ERROR');
-								} else {
-									echo('OK');
-								}
+								echo('OK');
+								//echo('ERROR');
 								break;
 							default:
 								echo('ERROR');

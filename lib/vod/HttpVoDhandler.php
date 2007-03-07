@@ -11,10 +11,10 @@ require_once(dirname(__FILE__) . "/baseVoDhandler.php");
 ///Implementa los manejadores necesarios para un servidor VoD sobre HTTP
 class ApfHttpVoDHandler extends ApfBaseVoDHandler implements iVoDHandler {
 
-	function UploadVideoFile($path,$name) {
+/*	function UploadVideoFile($path,$name) {
 		//echo("Path: $path, name: $name");
 		return false;
-	}
+	}*/
 
 } //End Class ApfHttVodHandler
 

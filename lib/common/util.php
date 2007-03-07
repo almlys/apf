@@ -18,14 +18,13 @@ function endsWith( $str, $sub ) {
 /// @return Nombre limpio (Vacio si no es válido)
 function cleanFileName($file) {
 	if(!ereg('^[^./][^/]*$',$file)) {
+		echo('AII1');
 		return '';
 	}
-	$file=ereg_replace('[^a-zA-z0-9\._]','',$file);
-	$nfile='';
-	while($nfile!=$file) {
-		$nfile=$file;
-		$file=ereg_replace('^\.','',$nfile);
-	}
+	$file=ereg_replace('[^a-zA-Z0-9.]','_',$file);
+	//$file=preg_replace('/[^a-zA-Z0-9\.]/','#',$file);
+	$file=ereg_replace('_+','_',$file);
+	$file=ereg_replace('^\.+','',$file);
 	return $file;
 }
 

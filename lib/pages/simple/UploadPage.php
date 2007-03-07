@@ -348,7 +348,7 @@ function enableUpload() {
 			echo(Request::buildRootURI($upload_script . "?xsid={$this->xsid}&amp;uid={$this->uid}&amp;type={$this->resource_type}"));
 		?>" method="post">
 		<!-- <input type="hidden" name="MAX_FILE_SIZE" value="1000"> -->
-		Source file: <input type="file" name="sourcefile" onchange="validateFile()" /><br />
+		<?php echo(_t('SourceFile')); ?>: <input type="file" name="sourcefile" onchange="validateFile()" /><br />
 		<!-- Destination Filename: <input type="text" name="fname"><br> -->
 		<!-- <input type="button" onclick="validateFile()" value="<?php
 		echo(_t('Send_File'));

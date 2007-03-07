@@ -41,17 +41,50 @@ abstract class ApfBaseVoDHandler implements iVoDHandler {
 
 	///Indica al VoD, que un nuevo fichero de video a sido subido al servidor
 	///@param path Ruta al fichero en el sistema local
-	///@param filename Nombre del fichero especificado por el usuario
-	///@return Devuelve verdadero en caso de éxito
-	function UploadVideoFile($path,$filename) {
-		return false;
+	///@param file Nombre del fichero especificado por el usuario
+	///@return Devuelve el nombre del fichero subido al VoD server
+	function UploadVideoFile($path,$file) {
+		//echo($path . "--" . $file);
+		if(!ereg('^[^./][^/]*$',$file)) {
+			throw new InvalidFileException($file);
+		}
+		//echo($path . "--" . $file);
+		$file=cleanFileName($file);
+		if(empty($file)) {
+			throw new InvalidFileException($file);
+		}
+		//echo($path . "--" . $file);
+		global $APF;
+		if(ereg('^/',$APF['upload.videos'])) {
+			$imgdest=$APF['upload.videos'];
+		} else {
+			$imgdest=$APF['system.path'] . '/' . $APF['upload.videos'];
+		}
+		$imgdest.='/' . $file;
+		$count=0;
+		$imgdestck=$imgdest;
+		while(file_exists($imgdestck)) {
+			$imgdestck=ereg_replace('\.(.*)$',"_$count.\\1",$imgdest);
+			$count++;
+		}
+		$imgdest=$imgdestck;
+		//echo($path . "--" . $imgdest);
+		if(!rename($path,$imgdest)) {
+			throw new InvalidFileException($file);
+		}
+		return $file;
 	}
 
 	///Pasa un nombre de fichero al VoD para validar antes de ser subido
 	/// @param path Nombre fichero
 	/// @return Devuelve verdadero si el fichero es aceptable
 	function CheckVideoFileBeforeUpload($path) {
-		return true;
+		ereg('\.(.*)$',$path,$out);
+		$check=array('avi','mpg');
+		if(in_array($out[1],$check)) {
+			return true;
+		}
+		return false;
 	}
 
 } //End Class ApfBaseVodHandler

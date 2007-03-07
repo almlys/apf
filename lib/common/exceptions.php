@@ -37,6 +37,8 @@ set_error_handler(array("PHPError", "errorHandlerCallback"), $e_types);
 
 class NotImplementedException extends Exception {}
 
+class InvalidFileException extends Exception {}
+
 /// Imprime una excepción
 /// @param $e Excepción
 /// @param $body_tags Indica si se imprimen las etiquetas <html><head></head><body>...</body></html>
