@@ -14,6 +14,7 @@ interface iVodFile {
 ///interfaz base para cada tipo de servidor VoD
 ///contiene los hooks que relacionan el servidor VoD con la aplicación
 interface iVoDHandler {
+
 	///Indica al VoD, que un nuevo fichero de video a sido subido al servidor
 	///@param path Ruta al fichero en el sistema local
 	///@param filename Nombre del fichero especificado por el usuario
