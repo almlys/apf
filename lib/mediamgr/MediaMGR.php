@@ -326,7 +326,7 @@ class MediaMGR {
 			$this->query($query);
 		}
 		//Insertar el registro
-		$query="insert into vid_mfs (ctg,prev,dur,url,name_id,desc_id) values({$rv['pid']},\"{$rv['prev']}\",\"{$rv['dur']}\",\"{$rv['url']}\",$name_id,$desc_id)";
+		$query="insert into vid_mfs (ctg,prev,dur,url,name_id,desc_id,created) values({$rv['pid']},\"{$rv['prev']}\",\"{$rv['dur']}\",\"{$rv['url']}\",$name_id,$desc_id,NOW())";
 		$this->query($query);
 		return $this->insertId();
 	}

@@ -58,10 +58,10 @@ $APF['upload.videos']='upload/videos';
 
 /////TO BE DELETED SOON - DEPRECEATED
 ///Ruta relativa a previsualizaciones, y otros datos dinámicos
-$APF['cache']='cache';
+//$APF['cache']='cache'; UNUSED
 
 ///Ruta relativa a videos disponibles (para VoD sobre http y videolan)
-$APF['videos']='videos';
+//$APF['videos']='videos'; UNUSED
 ////////////END DEPRECEATED
 
 ///Indica si se utilizarán rutas relativas, o absolutas.
@@ -125,10 +125,11 @@ $APF['default_vod']='videolan';
 
 ///Videolan
 ///Dirección del servidor de gestión (administración)
-$APF['videolan.host']='';
+$APF['videolan.host']='localhost';
 ///Puerto de telnet
-$APF['videolan.port']='';
-
+$APF['videolan.port']='4212';
+///Password
+$APF['videolan.passwd']='admin';
 
 // *** Subida de ficheros ***
 ///Script que se encarga de la subida de ficheros

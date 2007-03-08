@@ -87,6 +87,7 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 		$imgdestck=$imgdest;
 		while(file_exists($imgdestck)) {
 			$imgdestck=ereg_replace('\.(.*)$',"_$count.\\1",$imgdest);
+			$file=ereg_replace('\.(.*)$',"_$count.\\1",$file);
 			$count++;
 		}
 		$imgdest=$imgdestck;
@@ -189,6 +190,7 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 						switch($this->type) {
 							case 'video':
 								$result=$vod_server=$this->getVodServer()->UploadVideoFile($path,$file);
+								$_SESSION['vod_video']=$result;
 								echo('OK');
 								//echo('VOD_SERVER_ERROR');
 								break;

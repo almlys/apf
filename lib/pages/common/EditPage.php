@@ -132,7 +132,7 @@ class ApfEditPage extends ApfManager implements iDocument {
 
 	///Constructor
 	function __construct() {
-		parent::__construct(_t('edit_page'));
+		parent::__construct(_t('edit_page'),False);
 		if($_SERVER['REQUEST_METHOD']=='POST') {
 			$rv=$_POST;
 		} else {
@@ -164,7 +164,19 @@ class ApfEditPage extends ApfManager implements iDocument {
 		
 		//END
 		$this->rv=&$rv;
+		$this->preprocess();
+		$this->release_session(); //Liberar sessión
 		$this->process();
+	}
+
+	function preprocess() {
+		$rv=&$this->rv;
+		if($rv['edit']) {
+			if(!empty($_SESSION['vod_video'])) {
+				$rv['url']=$_SESSION['vod_video'];
+				//echo($rv['url']);
+			}
+		}
 	}
 
 	function process() {
@@ -203,7 +215,8 @@ class ApfEditPage extends ApfManager implements iDocument {
 						$this->setParam('id',$rv['id']);
 					}
 				} else {
-					throw Exception('Unknown resource type');
+					//throw new Exception('Unknown resource type');
+					$this->redirect2page('main');
 				}
 			}
 		} else {
@@ -224,7 +237,8 @@ class ApfEditPage extends ApfManager implements iDocument {
 					$rv['dur']=$vals['dur'];
 					$rv['url']=$vals['url'];
 				} else {
-					throw Exception('Unknown resource type');
+					//throw new Exception('Unknown resource type');
+					$this->redirect2page('main');
 				}
 			}
 		}
@@ -233,6 +247,7 @@ class ApfEditPage extends ApfManager implements iDocument {
 	///Método body
 	function body() {
 		require_once(dirname(__FILE__) . '/../../widgets/notebook.php');
+		require_once(dirname(__FILE__) . '/../../widgets/upload.php');
 		$rv=&$this->rv;
 
 		if($rv['edit']) {
@@ -274,18 +289,26 @@ class ApfEditPage extends ApfManager implements iDocument {
 		<textarea name='desc' rows='5' cols='50'>{$rv['desc']}</textarea>
 ";
 
+		// ** Página de subida de vídeos **
+		//$up=new UploadCtrl($this,'video','parent_callback');
+		$up=new UploadCtrl($this,'video','');
+		$vid_content=$up->get();
+
+		if($rv['type']=='media') {
+			$book->AddPage(_t('upload_video'),$vid_content);
+		}
 		$book->AddPage(_t('props'),$props_content);
-		$book->AddPage('Hello world','Hi there');
-		$book->AddPage('Hello there','No no No');
+		//$book->AddPage('Hello world','Hi there');
+		//$book->AddPage('Hello there','No no No');
 		$book->Write();
 
 		//End Content
 
 ?>
-		<input type="hidden" name="new" value="<?php echo($rv['new']); ?>">
-		<input type="hidden" name="action" value="<?php echo($rv['action']); ?>">
-		<INPUT type="submit" value="<?php echo(_t('go')); ?>">
-		<INPUT type="reset" value="<?php echo(_t('reset')); ?>">
+		<input type="hidden" name="new" value="<?php echo($rv['new']); ?>" />
+		<input type="hidden" name="action" value="<?php echo($rv['action']); ?>" />
+		<input type="submit" value="<?php echo(_t('go')); ?>" />
+		<input type="reset" value="<?php echo(_t('reset')); ?>" />
 		<input type='button' value='<?php echo(_t('return')); ?>' onclick='document.location="<?php
 			if($rv['id']==0) {
 				$continue_id=$rv['pid'];

@@ -26,14 +26,15 @@ class ApfBaseDocument implements iDocument {
                    state=3 (Ha ocurrido un error (head))
                    state=4 (Enviando error (foot)) */
 	///charset
-	private $charset="UTF-8";
+	private $charset='UTF-8';
 	///Generador
-	private $generator="ApfManager";
+	private $generator='ApfManager';
 	///Array de estilos disponibles
 	private $stylesheets;
 	///Directorio base
-	private $path="";
+	private $path='';
 	private $UseRelativePaths=False;
+	private $bodyclass='';
 	
 	/// Constructor
 	/// @param $title Título del documento
@@ -59,6 +60,12 @@ class ApfBaseDocument implements iDocument {
 	/// @param $title Título
 	public function setTitle($title) {
 		$this->title=$title;
+	}
+
+	/// Fija la classe de Body
+	/// @param class Classe
+	public function setBodyClass($class) {
+		$this->bodyclass=$class;
 	}
 
 	/// Añade un nuevo estilo en cascada
@@ -138,11 +145,13 @@ class ApfBaseDocument implements iDocument {
 				if($i!=0) echo("alternate ");
 				echo('stylesheet" title="' . $styles[$i][0] .'" href="' . $styles[$i++][1] . '" type="text/css" />');
 			}
-			?>
-</head>
-<body>
-<?php
-		$this->state=2;
+			echo("</head>\n");
+			if(empty($this->bodyclass)) {
+				echo("<body>\n");
+			} else {
+				echo("<body class='{$this->bodyclass}'>");
+			}
+			$this->state=2;
 		} catch(Exception $e) {
 			$this->print_exception($e,True);
 		}

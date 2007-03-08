@@ -1,4 +1,8 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-07 18:16  alberto
+
+	* [r106] ChangeLog: almost finished
+
 2007-03-07 15:23  alberto
 
 	* [r105] ChangeLog, lib/db/MySQL.php, lib/lan/strings.es.php,

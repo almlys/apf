@@ -16,6 +16,7 @@ class ApfSimplePage extends ApfDocument implements iDocument {
 	/// @param release_session Indica si debemos liberar la sessión
 	function __construct($title='',$release_session=True) {
 		parent::__construct($title,$release_session);
+		$this->setBodyClass('simple_page');
 	}
 
 	/// Método cuerpo
