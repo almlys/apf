@@ -1,4 +1,13 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-08 12:29  alberto
+
+	* [r107] ChangeLog, DefaultConfig.php, lib/mediamgr/MediaMGR.php,
+	  lib/pages/base/BaseDocument.php, lib/pages/base/simplepage.php,
+	  lib/pages/common/EditPage.php, lib/pages/simple/rpcserver.php,
+	  lib/vod/VideoLanVoDhandler.php, lib/vod/baseVoDhandler.php,
+	  styles/default.css, vod_server/videolan/genserverconfig.py,
+	  vod_server/videolan/videolanserver.sh: almost almost finished
+
 2007-03-07 18:16  alberto
 
 	* [r106] ChangeLog: almost finished

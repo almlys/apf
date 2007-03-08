@@ -19,8 +19,11 @@ class ApfVideoLanVoDHandler extends ApfBaseVoDHandler implements iVoDHandler {
 		return $result;
 	}*/
 
-	function notifyNewUploadedVideo($path) {
+	function notifyNewUploadedVideo($name,$path) {
 		//Notificar al VoD
+		require_once(dirname(__FILE__) . '/VideoLanTelnetClient.php');
+		$cli = new VideoLanTelnetClient('localhost',4212,'admin');
+		$cli->addVodResource($name,$path);
 	}
 
 } //End Class ApfVideoLanVodHandler

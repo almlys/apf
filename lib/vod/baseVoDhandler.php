@@ -26,8 +26,9 @@ interface iVoDHandler {
 	function CheckVideoFileBeforeUpload($path);
 
 	/// Notifica al VoD que un fichero nuevo a sido subido
+	/// @param name Nombre del fichero
 	/// @param path Ruta al fichero
-	function notifyNewUploadedVideo($path);
+	function notifyNewUploadedVideo($name,$path);
 
 }
 
@@ -77,7 +78,7 @@ abstract class ApfBaseVoDHandler implements iVoDHandler {
 		if(!rename($path,$imgdest)) {
 			throw new InvalidFileException($file);
 		}
-		$this->notifyNewUploadedVideo($imgdest);
+		$this->notifyNewUploadedVideo($file,$imgdest);
 		return $file;
 	}
 
@@ -85,11 +86,13 @@ abstract class ApfBaseVoDHandler implements iVoDHandler {
 	/// @param path Nombre fichero
 	/// @return Devuelve verdadero si el fichero es aceptable
 	function CheckVideoFileBeforeUpload($path) {
-		ereg('\.(.*)$',$path,$out);
-		$check=array('avi','mpg');
+		ereg('\.([a-zA-Z]*)$',$path,$out);
+		$check=array('avi','mpg','mov');
 		if(in_array($out[1],$check)) {
 			return true;
 		}
+		echo($path . "<br />");
+		print_r($out);
 		return false;
 	}
 
