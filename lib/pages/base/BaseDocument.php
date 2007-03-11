@@ -35,6 +35,7 @@ class ApfBaseDocument implements iDocument {
 	private $path='';
 	private $UseRelativePaths=False;
 	private $bodyclass='';
+	private $unload_actions=array(); ///<Codigo a ejecutar al producirse un onUnload
 	
 	/// Constructor
 	/// @param $title Título del documento
@@ -146,15 +147,41 @@ class ApfBaseDocument implements iDocument {
 				echo('stylesheet" title="' . $styles[$i][0] .'" href="' . $styles[$i++][1] . '" type="text/css" />');
 			}
 			echo("</head>\n");
+			$unload='';
+			if(!empty($this->unload_actions)) {
+				$unload=' onunload="onUnloadDocument()"';
+			}
 			if(empty($this->bodyclass)) {
-				echo("<body>\n");
+				echo("<body$unload>\n");
 			} else {
-				echo("<body class='{$this->bodyclass}'>");
+				echo("<body class='{$this->bodyclass}'$unload>");
+			}
+			if(!empty($this->unload_actions)) {
+				$unload=' onunload="onUnloadDocument()"';
+				echo("<script type='text/javascript'>
+				//<![CDATA[
+				function onUnloadDocument() {
+				");
+				foreach ($this->unload_actions as $action) {
+					echo("
+					$action();
+					");
+				}
+				echo("
+				}
+				//]]>
+				</script>");
 			}
 			$this->state=2;
 		} catch(Exception $e) {
 			$this->print_exception($e,True);
 		}
+	}
+
+	/// Registra una función js a ejecutar cuando se cierre la página
+	/// @param hook Funcion a ejecutar
+	function registerUnloadHook($hook) {
+		array_push($this->unload_actions,$hook);
 	}
 
 	function body() {}

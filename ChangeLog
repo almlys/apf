@@ -1,4 +1,14 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-08 22:50  alberto
+
+	* [r109] lib/vod/baseVoDhandler.php: i:wq
+
+2007-03-08 16:07  alberto
+
+	* [r108] ChangeLog, lib/net, lib/net/simpletcpclient.php,
+	  lib/vod/VideoLanTelnetClient.php, lib/vod/VideoLanVoDhandler.php,
+	  lib/vod/baseVoDhandler.php: videolan telnet client implemented
+
 2007-03-08 12:29  alberto
 
 	* [r107] ChangeLog, DefaultConfig.php, lib/mediamgr/MediaMGR.php,
