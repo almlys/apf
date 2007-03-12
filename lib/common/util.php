@@ -29,7 +29,7 @@ function cleanFileName($file) {
 }
 
 
-
+///Petición
 class Request {
 
 	public function __construct() {

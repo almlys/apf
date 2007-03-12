@@ -30,6 +30,25 @@ class MediaMGR {
 	}
 
 
+	/// Incrementa el número de hits de un vídeo
+	/// @param id Identificador
+	function increaseCategoryCounter($id) {
+		if($id==0) return;
+		$query="update vid_categ set count = count+1
+						where vid_categ.id = $id;";
+		$this->DB->query($query);
+	}
+
+	/// Incrementa el número de hits de un vídeo
+	/// @param id Identificador
+	function decreaseCategoryCounter($id) {
+		if($id==0) return;
+		$query="update vid_categ set count = count-1
+						where vid_categ.id = $id;";
+		$this->DB->query($query);
+	}
+
+
 	/// Buscar datos de una categoria en especial
 	/// @param id Identificador
 	/// @returns Un array con los datos pedidos
@@ -65,6 +84,15 @@ class MediaMGR {
 	function saveCategory($rv) {
 		//1o Actualizar nombre y descripción
 		$lan=ApfLocal::getDefaultLanguage();
+
+		$query="select parent from vid_categ where id={$rv['id']};";
+		$this->query($query);
+		$pid=$this->fetchArray();
+		if($pid[0]!=$rv['pid']) {
+			$this->decreaseCategoryCounter($pid[0]);
+			$this->increaseCategoryCounter($rv['pid']);
+		}
+
 		$query="update vid_names b, vid_descs c, vid_categ a
 						set b.name=\"{$rv['name']}\",
 						c.desc=\"{$rv['desc']}\",
@@ -77,9 +105,33 @@ class MediaMGR {
 	/// Borrar categoria
 	/// @param id ID
 	function deleteCategory($id) {
+		///TODO - borrar nodos huerfanos
+		//Borrado recursivo, no es muy eficiente, pero no hay tiempo para andarse con finezas
+		$res=$this->getFolders($id);
+		foreach($res as $r) {
+			$this->deleteCategory($r['id']);
+		}
+		$res=$this->getMedia($id);
+		foreach($res as $r) {
+			$this->deleteVideo($r['id']);
+		}
+
+		$query="select name_id,desc_id from vid_categ where id=$id";
+		$this->query($query);
+		$val=$this->fetchArray();
+		$query="delete from vid_descs where id={$val[0]}";
+		$this->query($query);
+		$query="delete from vid_names where id={$val[1]}";
+		$this->query($query);
+
+		//Obtener pid
+		$query="select parent from vid_categ where id=$id";
+		$this->query($query);
+		$pid=$this->fetchArray();
+		$this->decreaseCategoryCounter($pid[0]);
+
 		$query="delete from vid_categ where id=$id;";
 		$this->query($query);
-		///TODO - borrar nodos huerfanos
 	}
 
 	/// Crear una nueva categoria
@@ -115,7 +167,11 @@ class MediaMGR {
 		//Insertar el registro
 		$query="insert into vid_categ (parent,name_id,desc_id) values({$rv['pid']},$name_id,$desc_id)";
 		$this->query($query);
-		return $this->insertId();
+		$iid=$this->insertId();
+
+		//Actualizar contadores
+		$this->increaseCategoryCounter($rv['pid']);
+		return $iid;
 	}
 
 
@@ -276,15 +332,28 @@ class MediaMGR {
 	/// @param rv array
 	function saveVideo($rv) {
 		$lan=ApfLocal::getDefaultLanguage();
+
+		$query="select ctg from vid_mfs where id={$rv['id']};";
+		$this->query($query);
+		$pid=$this->fetchArray();
+		if($pid[0]!=$rv['pid']) {
+			$this->decreaseCategoryCounter($pid[0]);
+			$this->increaseCategoryCounter($rv['pid']);
+		}
+
 		//1o Actualizar nombre y descripción
 		$query="update vid_names b, vid_descs c, vid_mfs a
 						set b.name=\"{$rv['name']}\",
 						c.desc=\"{$rv['desc']}\",
-						a.ctg=\"{$rv['pid']}\",
-						a.prev=\"{$rv['prev']}\",
-						a.dur=\"{$rv['dur']}\",
-						a.url=\"{$rv['url']}\"
-						where a.name_id=b.id and a.desc_id=c.id
+						a.ctg=\"{$rv['pid']}\"";
+		if(!empty($rv['prev'])) {
+			$query.=",a.prev=\"{$rv['prev']}\"";
+		}
+			$query.=",a.dur=\"{$rv['dur']}\"";
+		if(!empty($rv['url'])) {
+			$query.=",a.url=\"{$rv['url']}\"";
+		}
+		$query.="where a.name_id=b.id and a.desc_id=c.id
 						and b.lan=c.lan and b.lan=\"$lan\" and a.id={$rv['id']}";
 		$this->query($query);
 	}
@@ -292,9 +361,29 @@ class MediaMGR {
 	/// Borra un vídeo
 	/// @param id Identificador
 	function deleteVideo($id) {
+		global $APF;
+		$rv=$this->getVideo($id);
+		$name=$rv['url'];
+		Builder::build('VoDFactory');
+		$vod=VoDFactory::getVoDHandler($APF['default_vod']);
+		$vod->DeleteVideoFile($name);
+
+		$query="select name_id,desc_id from vid_mfs where id=$id";
+		$this->query($query);
+		$val=$this->fetchArray();
+		$query="delete from vid_descs where id={$val[0]}";
+		$this->query($query);
+		$query="delete from vid_names where id={$val[1]}";
+		$this->query($query);
+
+		//Obtener pid
+		$query="select ctg from vid_mfs where id=$id";
+		$this->query($query);
+		$pid=$this->fetchArray();
+		$this->decreaseCategoryCounter($pid[0]);
+
 		$query="delete from vid_mfs where id=$id";
 		$this->query($query);
-		///TODO - borrar nodos huerfanos
 	}
 
 	/// Crea un vídeo
@@ -328,7 +417,12 @@ class MediaMGR {
 		//Insertar el registro
 		$query="insert into vid_mfs (ctg,prev,dur,url,name_id,desc_id,created) values({$rv['pid']},\"{$rv['prev']}\",\"{$rv['dur']}\",\"{$rv['url']}\",$name_id,$desc_id,NOW())";
 		$this->query($query);
-		return $this->insertId();
+		$iid=$this->insertId();
+
+		//Actualizar contadores
+		$this->increaseCategoryCounter($rv['pid']);
+
+		return $iid;
 	}
 
 

@@ -6,7 +6,7 @@
   Id: $Id$
 */
 
-//Lanzar errores como si fueran excepciones
+///Lanzar errores como si fueran excepciones
 class PHPError extends Exception {
 	public static function errorHandlerCallback($code, $string, $file, $line, $context) {
 	if(error_reporting()==0) return;
@@ -35,8 +35,10 @@ $e_types=E_ALL & ~E_NOTICE;
 //$e_types=E_ALL | E_STRICT;
 set_error_handler(array("PHPError", "errorHandlerCallback"), $e_types);
 
+///Excepción de funcionalidad no implementada
 class NotImplementedException extends Exception {}
 
+///Fichero no válido
 class InvalidFileException extends Exception {}
 
 /// Imprime una excepción

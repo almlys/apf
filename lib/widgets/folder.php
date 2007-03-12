@@ -68,6 +68,8 @@ class ApfFolder {
 	function details() {
 			if($this->count>1) {
 				echo("<br />" . $this->count . " " . _t("objects")); 
+			} elseif($this->count==1) {
+				echo("<br />" . $this->count . " " . _t("object")); 
 			}
 	}
 
@@ -81,11 +83,12 @@ class ApfVideo extends ApfFolder {
 	/// @param parent Página padre
 	/// @param vals Array con las claves id, name, desc, count, etc...
 	function __construct(&$parent,$vals) {
+		global $APF;
 		parent::__construct($parent,$vals);
 		if(empty($vals['prev'])) {
 			$this->image=$parent->buildBaseUri("imgs/video_big.png");
 		} else {
-			$this->image=$parent->buildBaseUri("cache/" . $vals['prev']);
+			$this->image=$parent->buildBaseUri($APF['upload.imgs'] . "/" . $vals['prev']);
 		}
 		$this->dur=$vals['dur'];
 	}

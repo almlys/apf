@@ -33,8 +33,13 @@ class ApfMediaPage extends ApfManager implements iDocument {
 				$this->setTitle($ctg['name']);
 				$this->category=$ctg['name'];
 				$this->desc=$ctg['desc'];
-				if($ctg['count']>1) {
-					$this->desc=$this->desc . ' - ' . $ctg['count'] . ' ' . _t('objects');
+				if($ctg['count']>0) {
+					$this->desc=$this->desc . ' - ' . $ctg['count'] . ' ';
+					if($ctg['count']>1) { 
+						$this->desc.= _t('objects');
+					} else {
+						$this->desc.= _t('object');
+					}
 				}
 			}
 		}

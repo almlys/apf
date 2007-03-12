@@ -27,6 +27,7 @@ $APF_STRINGS['videos_page']='Media';
 $APF_STRINGS['untitled']='S&iacute;n t&iacute;tulo';
 $APF_STRINGS['no_avail']='El recurso solicitado no esta disponible';
 $APF_STRINGS['objects']='objectos';
+$APF_STRINGS['object']='objecto';
 $APF_STRINGS['num_querys']='N&uacute;mero de peticiones:';
 $APF_STRINGS['videos']='V&iacute;deo';
 $APF_STRINGS['login_page']='Login';
@@ -91,4 +92,5 @@ $APF_STRINGS['hours']='horas';
 $APF_STRINGS['SourceFile']='Fichero de origen';
 $APF_STRINGS['return']='Volver';
 $APF_STRINGS['delete_media']='Borrar recurso multimedia';
+$APF_STRINGS['missing_video']='No se ha subido ningún vídeo';
 ?>

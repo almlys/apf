@@ -26,6 +26,12 @@ class ApfVideoLanVoDHandler extends ApfBaseVoDHandler implements iVoDHandler {
 		$cli->addVodResource($name,$path);
 	}
 
+	function notifyVideoDeleted($name,$path) {
+		require_once(dirname(__FILE__) . '/VideoLanTelnetClient.php');
+		$cli = new VideoLanTelnetClient('localhost',4212,'admin');
+		$cli->removeVodResource($name);
+	}
+
 } //End Class ApfVideoLanVodHandler
 
 

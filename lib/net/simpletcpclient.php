@@ -30,10 +30,11 @@ class SimpleTcpClient {
 			$prompt=trim($this->read(256));
 			$prompt=trim($prompt,"\xff\xfc\x01\x0d\x0a");
 		}
-		//echo("---$prompt---\n");
+		//echo("PROMPT:---$prompt---\n");
 		if(substr($prompt,0,strlen($what))==$what) {
 			return True;
 		} elseif($throw) {
+			//print_r($this->buffer);
 			throw new ProtocolProblemExcpetion("Got $prompt instead of $what");
 		} else {
 			return False;
@@ -50,9 +51,10 @@ class SimpleTcpClient {
 			return array_shift($this->buffer);
 		} elseif(!feof($this->res)) {
 			$x=fread($this->res,$size);
+			//echo("XX:####$x####\n");
 			$this->buffer=explode("\n",$x);
 			$x=array_shift($this->buffer);
-			//echo("----$x----\n");
+			//echo("READ:----$x----\n");
 			return $x; 
 		}
 		return '';

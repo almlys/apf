@@ -56,13 +56,6 @@ $APF['upload.imgs']='upload/imgs';
 ///desde fuera.
 $APF['upload.videos']='upload/videos';
 
-/////TO BE DELETED SOON - DEPRECEATED
-///Ruta relativa a previsualizaciones, y otros datos dinámicos
-//$APF['cache']='cache'; UNUSED
-
-///Ruta relativa a videos disponibles (para VoD sobre http y videolan)
-//$APF['videos']='videos'; UNUSED
-////////////END DEPRECEATED
 
 ///Indica si se utilizarán rutas relativas, o absolutas.
 ///Nota: No se pueden utilizar rutas relativas si se va a llamar al script desde

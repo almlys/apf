@@ -6,6 +6,7 @@
   Id: $Id$
 */
 
+/// Clase control de subidas
 class UploadCtrl {
 	private $parent;
 	private $resource_type;

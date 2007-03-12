@@ -18,17 +18,26 @@ if(is_readable($APF['config_path'] . "/LocalConfig.php")) {
 
 /* Cargar contenido localizado de forma dinamica */
 require_once(dirname(__FILE__) . "/../lan/strings.php");
+require_once(dirname(__FILE__) . "/gatebuilder.php");
 
 ApfLocal::init($_GET["lan"]);
 
+///Excepción de recurso desconocido
 class UnknownResourceException extends Exception {
+
+	///constructor
+	///@param name Nombre
 	public function __construct($name="None") {
 		if($name=="None") $name=_t("None");
 		parent::__construct(_t("Unknown_resource") . " " . $name . _t("requested"));
 	}
 }
 
+///Excpeción de modulo no encontrado
 class ModuleNotFoundException extends Exception {
+
+	///constructor
+	///@param name Nombre
 	public function __construct($name="None") {
 		if($name=="None") $name=_t("None");
 		parent::__construct(_t("NotFoundModule") . " " . $name);

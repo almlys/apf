@@ -173,8 +173,45 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 					echo("-1");
 				}
 				break;
-			//Notificar al Servidor VoD que hemos subido un nuevo fichero
+
 			case "file_notify":
+				if($this->AuthCheck(True,True)) {
+					$xsid=$this->xsid;
+					$path=$APF['upload_dir'] . "/" . $xsid . "/upload.raw";
+
+					if(get_magic_quotes_gpc()) {
+						$file=stripslashes($this->file);
+					}
+					$file=str_replace("\\","/",$file);
+					$file=basename($file);
+
+					if(is_readable($path) && filesize($path)!=0) {
+						switch($this->type) {
+							case 'video':
+								$_SESSION['video.path']=$path;
+								$_SESSION['video.file']=$file;
+								$_SESSION['video.ok']=True;
+								echo("OK");
+								break;
+							case 'img':
+								$_SESSION['img.path']=$path;
+								$_SESSION['img.file']=$file;
+								$_SESSION['img.ok']=True;
+								echo("OK");
+								break;
+							default:
+								echo('ERROR');
+						}
+					} else {
+						echo("ERROR");
+					}
+				} else {
+					echo('AUTHFAIL');
+				}
+				break;
+
+			//Notificar al Servidor VoD que hemos subido un nuevo fichero
+			case "file_notify_final":
 				if($this->AuthCheck(True,True)) {
 					$xsid=$this->xsid;
 					$path=$APF['upload_dir'] . "/" . $xsid . "/upload.raw";
@@ -191,12 +228,12 @@ class ApfRPCServer extends ApfSimplePage implements iDocument {
 							case 'video':
 								$result=$vod_server=$this->getVodServer()->UploadVideoFile($path,$file);
 								$_SESSION['vod_video']=$result;
-								echo('OK');
+								echo("OK $result");
 								//echo('VOD_SERVER_ERROR');
 								break;
 							case 'img':
 								$result=$this->copyImage($path,$file);
-								echo('OK');
+								echo("OK $result");
 								//echo('ERROR');
 								break;
 							default:

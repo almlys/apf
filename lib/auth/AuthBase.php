@@ -6,6 +6,7 @@
   Id: $Id$
 */
 
+/// Interfaz de autenticación
 interface iAuth {
 	///Autentica el usuario
 	///@param login Login del usuario

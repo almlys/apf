@@ -11,6 +11,7 @@ require_once(dirname(__FILE__) . "/../base/manager.php");
 ///Página de edición de medios/categorias
 class ApfEditPage extends ApfManager implements iDocument {
 	private $rv;
+	private $missing_video=False;
 
 	/// Expandir acción
 	/// @param rv Array de props
@@ -171,11 +172,31 @@ class ApfEditPage extends ApfManager implements iDocument {
 
 	function preprocess() {
 		$rv=&$this->rv;
+		/*
 		if($rv['edit']) {
 			if(!empty($_SESSION['vod_video'])) {
 				$rv['url']=$_SESSION['vod_video'];
 				//echo($rv['url']);
 			}
+		}*/
+		if($rv['edit'] && $rv['valid']) {
+			if($rv['type']=='media' && isset($_SESSION['video.ok']) && $_SESSION['video.ok']) {
+				$vod_server=$this->getVodServer();
+				$result=$vod_server->GeneratePreview($_SESSION['video.path'],$_SESSION['video.file']);
+				$rv['prev']=$result;
+				//echo("prev:__" . $result);
+				$result=$vod_server->UploadVideoFile($_SESSION['video.path'],$_SESSION['video.file']);
+				$rv['url']=$result;
+				$_SESSION['video.ok']=False;
+				unset($_SESSION['video.path']);
+				unset($_SESSION['video.file']);
+				unset($_SESSION['video.ok']);
+			}
+		}
+		//Revalidation (Marcar no valido, creaciones sin video)
+		if($rv['new'] && $rv['valid'] && $rv['type']=='media' && empty($rv['url'])) {
+			$rv['valid']=False;
+			$this->missing_video=True;
 		}
 	}
 
@@ -243,6 +264,16 @@ class ApfEditPage extends ApfManager implements iDocument {
 			}
 		}
 	}
+
+	/// Obtener Manejador VoD
+	/// @returns El manejador VoD solicitado
+	function getVodServer() {
+		global $APF;
+		//Instanciate APF_VOD class
+		require_once(dirname(__FILE__) . '/../../vod/VoDFactory.php');
+		$vod_server=VoDFactory::getVoDHandler($APF['default_vod']);
+		return $vod_server;
+	}
 	
 	///Método body
 	function body() {
@@ -252,15 +283,22 @@ class ApfEditPage extends ApfManager implements iDocument {
 
 		if($rv['edit']) {
 			if(!$rv['valid']) {
-				echo('<div class="error">' . _t('data_error') . '</div><br />');
+				$missing='';
+				if($this->missing_video) {
+					$missing='<br />' . _t('missing_video');
+				}
+				echo('<div id="info_msg" class="error">' . _t('data_error') . $missing . '</div><br />');
 			} else {
-				echo('<div class="message">' . _t('data_saved') . '</div><br />');
+				echo('<div id="info_msg" class="message">' . _t('data_saved') . '</div><br />');
+				$rv['new']=False;
 			}
+		} else {
+				echo('<div id="info_msg" class="message"></div><br />');
 		}
 
 		//Start Content
 		echo('<fieldset class="setjumpfrm">');
-		echo('<form action="' . $this->buildBaseUri($this->getArgs()) . '" method="post">');
+		echo('<form name="f1" action="' . $this->buildBaseUri($this->getArgs()) . '" method="post">');
 
 		$book=new ApfNoteBook();
 
@@ -271,7 +309,7 @@ class ApfEditPage extends ApfManager implements iDocument {
 ";
 		if(!$rv['new']) {
 			$props_content.='&nbsp;' . _t('delete') . ":
-			<input type='checkbox' name='delete' />
+			<input type='checkbox' name='delete' value='1' />
 ";
 		}
 
@@ -291,7 +329,7 @@ class ApfEditPage extends ApfManager implements iDocument {
 
 		// ** Página de subida de vídeos **
 		//$up=new UploadCtrl($this,'video','parent_callback');
-		$up=new UploadCtrl($this,'video','');
+		$up=new UploadCtrl($this,'video','parent_callback');
 		$vid_content=$up->get();
 
 		if($rv['type']=='media') {
@@ -307,7 +345,7 @@ class ApfEditPage extends ApfManager implements iDocument {
 ?>
 		<input type="hidden" name="new" value="<?php echo($rv['new']); ?>" />
 		<input type="hidden" name="action" value="<?php echo($rv['action']); ?>" />
-		<input type="submit" value="<?php echo(_t('go')); ?>" />
+		<input type="submit" name="go" value="<?php echo(_t('go')); ?>" />
 		<input type="reset" value="<?php echo(_t('reset')); ?>" />
 		<input type='button' value='<?php echo(_t('return')); ?>' onclick='document.location="<?php
 			if($rv['id']==0) {
@@ -325,28 +363,36 @@ class ApfEditPage extends ApfManager implements iDocument {
 ?>"'/>
 		</form>
 		</fieldset>
+		<script language="JavaScript" type="text/javascript">
+		//<![CDATA[
+
+		function enable_submit() {
+			document.f1.go.disabled=false;
+		}
+
+		function disable_submit() {
+			document.f1.go.disabled=true;
+		}
+
+		//Definir hooks del padre (started,aborted,finished)
+		function parent_callback(file,status,newname) {
+			//alert(file + " " + status + " " + newname);
+			if(status=='started') {
+				disable_submit();
+			} else {
+				enable_submit();
+			}
+		}
+
+		//]]>
+		</script>
+
 <?php
 		return;
 
-
 			if($this->type==1) {
 ?>
-<script language="JavaScript" type="text/javascript">
-//Definir hooks del padre
-function upload_hook(file) {
-	alert(file);
-}
-</script>
 
-
-<fieldset>
-<legend><?php echo(_t("upload_video")); ?></legend>
-<iframe name="upload" src="<?php echo($this->buildBaseURI("iframe.php?page=upload&amp;type=video&amp;end_hook=upload_hook")); ?>" frameborder="0" width="100%" height="100">
-<?php /* height="300" */
-	echo(_t("unsuported_outdated_old_browser"));
-?>
-</iframe>
-</fieldset>
 <fieldset>
 <legend>Old shit (outdated)</legend>
 

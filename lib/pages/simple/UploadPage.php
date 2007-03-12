@@ -73,7 +73,7 @@ function validateFileCallback(http) {
 				//parent.parent_callback();
 				<?php
 					if(!empty($this->end_hook)) {
-						echo("	parent." . $this->end_hook . "(fname,'started');");
+						echo("	parent." . $this->end_hook . "(fname,'started','');");
 					}
 				?>
 				document.upload_form.sourcefile.disabled=false;
@@ -248,7 +248,7 @@ function abortUpload(msg) {
 	self.setTimeout("enableUpload()",1000);
 				<?php
 					if(!empty($this->end_hook)) {
-						echo("	parent." . $this->end_hook . "(fname,'aborted');");
+						echo("	parent." . $this->end_hook . "(fname,'aborted','');");
 					}
 				?>
 }
@@ -262,13 +262,14 @@ function finishUploadCallback(http) {
 	if (http.readyState == 4) {
 		if (http.status==200) {
 			//out.innerHTML+=http.responseText;
-			if(http.responseText=="OK") {
+			if(http.responseText.substr(0,2)=="OK") {
 				//var out=document.getElementById("progress");
 				out.innerHTML="<font color=green><?php echo(_t('UploadFinished')); ?><" + "/" + "font>";
 				//Parent hooks
+				var newname = http.responseText.substr(3);
 				<?php
 					if(!empty($this->end_hook)) {
-						echo("	parent." . $this->end_hook . "(fname,'finished');");
+						echo("	parent." . $this->end_hook . "(fname,'finished',newname);");
 					}
 				?>
 				self.setTimeout("enableUpload()",1000);
