@@ -6,8 +6,8 @@
   Id: $Id$
 */
 
-class CannotConnectExcpetion extends Exception {}
-class ProtocolProblemExcpetion extends Exception {}
+class CannotConnectException extends Exception {}
+class ProtocolProblemException extends Exception {}
 
 
 /// Cliente Tcp sencillo
@@ -20,7 +20,7 @@ class SimpleTcpClient {
 	/// @param port Puerto
 	function __construct($destination,$port) {
 		$this->res=fsockopen($destination,$port,$errno,$errstr);
-		if(!$this->res) throw new CannotConnectExcpetion("$errstr ($errno)");
+		if(!$this->res) throw new CannotConnectException("$errstr ($errno)");
 		
 	}
 
@@ -35,7 +35,7 @@ class SimpleTcpClient {
 			return True;
 		} elseif($throw) {
 			//print_r($this->buffer);
-			throw new ProtocolProblemExcpetion("Got $prompt instead of $what");
+			throw new ProtocolProblemException("Got $prompt instead of $what");
 		} else {
 			return False;
 		}

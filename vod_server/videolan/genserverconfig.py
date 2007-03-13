@@ -9,7 +9,7 @@ import sys
 if len(sys.argv)>1:
     os.chdir(sys.argv[1])
 
-input=["*.avi","*.wmv","*.mpg","*.mov","*.mp4"]
+input=["*.avi","*.wmv","*.mpg","*.mov","*.mp4","*.ogg","*.ogm"]
 
 input_files=[]
 

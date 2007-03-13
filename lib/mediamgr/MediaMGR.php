@@ -177,8 +177,8 @@ class MediaMGR {
 
 	/// Genera el árbol de categorías
 	/// @returns El arbol
-	function getMediaTree() {
-		if(empty($this->tree)) {
+	function getMediaTree($force_update=False) {
+		if(empty($this->tree) || $force_update) {
 			require_once(dirname(__FILE__) . "/../widgets/tree.php");
 			$lan=ApfLocal::getDefaultLanguage();
 			$query="select a.id,a.parent,b.name
@@ -333,13 +333,27 @@ class MediaMGR {
 	function saveVideo($rv) {
 		$lan=ApfLocal::getDefaultLanguage();
 
-		$query="select ctg from vid_mfs where id={$rv['id']};";
+		$query="select ctg,url,prev from vid_mfs where id={$rv['id']};";
 		$this->query($query);
-		$pid=$this->fetchArray();
-		if($pid[0]!=$rv['pid']) {
-			$this->decreaseCategoryCounter($pid[0]);
+		$vals=$this->fetchArray();
+		$pid=$vals[0];
+		$url=$vals[1];
+		$prev=$vals[2];
+		if($pid!=$rv['pid']) {
+			$this->decreaseCategoryCounter($pid);
 			$this->increaseCategoryCounter($rv['pid']);
 		}
+		if(!empty($rv['url'])) {
+			Builder::build('VoDFactory');
+			$vod=VoDFactory::getVoDHandler($APF['default_vod']);
+			if(!empty($url)) {
+				$vod->DeleteVideoFile($url);
+			}
+			if(!empty($prev)) {
+				$vod->DeletePreview($prev);
+			}
+		}
+
 
 		//1o Actualizar nombre y descripción
 		$query="update vid_names b, vid_descs c, vid_mfs a
@@ -366,7 +380,12 @@ class MediaMGR {
 		$name=$rv['url'];
 		Builder::build('VoDFactory');
 		$vod=VoDFactory::getVoDHandler($APF['default_vod']);
-		$vod->DeleteVideoFile($name);
+		if(!empty($name)) {
+			$vod->DeleteVideoFile($name);
+		}
+		if(!empty($rv['prev'])) {
+			$vod->DeletePreview($rv['prev']);
+		}
 
 		$query="select name_id,desc_id from vid_mfs where id=$id";
 		$this->query($query);

@@ -166,6 +166,16 @@ class ApfTree {
 		return $content;
 	}
 	
+	function isChildOf($child,$parent) {
+		if($child==0) return False;
+		$cnode=$this->findNode($child);
+		while($cnode!=null && $cnode['parent']!=null && $cnode['parent']['id']!=$parent) {
+			$cnode=$cnode['parent'];
+		}
+		if($cnode!=null && $cnode['parent']!=null && $cnode['parent']['id']==$parent) return True;
+		return False;
+	}
+
 }
 
 

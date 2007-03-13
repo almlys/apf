@@ -14,6 +14,10 @@ upload_dir="/home/apf_upload/upload"
 rpc_server_path="http://localhost/tfc/?page=rpc&"
 cookie_name="ApfVoDAuthData"
 
+#limitar la velocidad de subida (Poner a 0 para desactivar)
+speed_limit = 50 * 1024 * 1024 # 50 MBytes/second
+
+
 ################################################################################
 #### NO TOCAR NADA DEBAJO DE LA BARRA A NO SER QUE SEPAS LO QUE HACES ##########
 ################################################################################
@@ -29,7 +33,6 @@ dpath=""
 # memoria, y esto pues tiene consequencias grabes cuando los ficheros a subir
 # són del orden de cientos de megabytes
 file_size=0
-speed_limit = 1
 
 import os,time,cgi,cgitb,sys,re,urllib2,glob
 import os.path
@@ -73,7 +76,7 @@ class slowFile:
             self.f.flush()
             self.write_quota=0
         #Limitar la velocidad de subida
-        if speed_limit and self.quota>1024*1024*10:
+        if speed_limit and self.quota>speed_limit:
             #print self.quota
             #sys.stdout.flush()
             self.quota=0

@@ -261,8 +261,8 @@ class ApfManager extends ApfDocument implements iDocument {
 	}
 
 	/// Genera el árbol de categorías
-	function getMediaTree() {
-		return $this->getMediaMGR()->getMediaTree();
+	function getMediaTree($force_update=False) {
+		return $this->getMediaMGR()->getMediaTree($force_update);
 	}
 
 	/// Escribe el árbol de categorias
@@ -308,6 +308,7 @@ class ApfManager extends ApfDocument implements iDocument {
 	function printNewMedia($cut=4) {
 		require_once(dirname(__FILE__) . "/../../widgets/folder.php");
 		$r=$this->getMediaMGR()->getNewMedia($cut);
+		if(count($r)==0) echo(_t('NoMedia'));
 		foreach($r as $i) {
 			$folder=new ApfVideo($this,$i);
 			$folder->show();
@@ -319,6 +320,7 @@ class ApfManager extends ApfDocument implements iDocument {
 	function printTopMedia($cut=4) {
 		require_once(dirname(__FILE__) . "/../../widgets/folder.php");
 		$r=$this->getMediaMGR()->getTopMedia($cut);
+		if(count($r)==0) echo(_t('NoMedia'));
 		foreach($r as $i) {
 			$folder=new ApfVideo($this,$i);
 			$folder->show();

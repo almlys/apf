@@ -132,6 +132,7 @@ abstract class ApfBaseVoDHandler implements iVoDHandler {
 		$file=$this->fileCleanner($file);
 		$imgdest=$this->getVideoFolder();
 		$imgdest.='/' . $file;
+		if(empty($file)) return;
 		$this->notifyVideoDeleted($file,$imgdest);
 		return unlink($imgdest);
 	}
@@ -154,6 +155,15 @@ abstract class ApfBaseVoDHandler implements iVoDHandler {
 		}
 	}
 
+	function DeletePreview($file) {
+		$file=$this->fileCleanner($file);
+		$imgdest=$this->getImgFolder();
+		$imgdest.='/' . $file;
+		if(empty($file)) return;
+		return unlink($imgdest);
+	}
+
+
 	function doPreviewCmd($path,$dest) {
 		$cmd="ffmpeg -y -i \"$path\" -vframes 1 -ss 00:00:30 -an -vcodec png -f rawvideo -s 320x240 \"$dest\"";
 		//echo $cmd;
@@ -167,7 +177,7 @@ abstract class ApfBaseVoDHandler implements iVoDHandler {
 	/// @return Devuelve verdadero si el fichero es aceptable
 	function CheckVideoFileBeforeUpload($path) {
 		ereg('\.([a-zA-Z0-9]*)$',$path,$out);
-		$check=array('avi','mpg','mov','wmv','mp4');
+		$check=array('avi','mpg','mov','wmv','mp4','ogg','ogm','mpeg');
 		if(in_array($out[1],$check)) {
 			return true;
 		}

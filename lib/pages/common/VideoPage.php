@@ -42,11 +42,13 @@ class ApfVideoPage extends ApfManager implements iDocument {
 		<div class="description"><?php echo($this->desc); ?>
 		<br />
 		<?php
-			echo(_t("lenght") . ": " . $this->dur . "<br />");
+			//echo(_t("lenght") . ": " . $this->dur . "<br />");
 		?>
-		</div><?php /*
-		<!-- <a href="<?php echo($this->buildBaseUri() . "videos/" . $this->url); ?>">Play HTTP</a> -->*/?>
-		
+		</div>
+		<?php
+			$rtsp_path="rtsp://{$_SERVER["SERVER_NAME"]}:5000/{$this->url}";
+			require_once(dirname(__FILE__) . '/../../players/VideoLAN.php');
+		?>
 		<br /><br />
 		<embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org" 
 			version="VideoLAN.VLCPlugin.2"

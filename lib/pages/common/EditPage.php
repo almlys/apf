@@ -102,7 +102,8 @@ class ApfEditPage extends ApfManager implements iDocument {
 				$rv['valid']=False;
 				return $rv;
 			}
-			if($rv['type']=='ctg' && $rv['id']==$rv['pid']) {
+			$tree=&$this->getMediaTree();
+			if($rv['type']=='ctg' && ($rv['id']==$rv['pid'] || $tree->isChildOf($rv['pid'],$rv['id']))) {
 				$rv['valid']=False;
 				return $rv;
 			}
@@ -314,7 +315,7 @@ class ApfEditPage extends ApfManager implements iDocument {
 		}
 
 		//Generar arbol de directorios
-		$tree=$this->getMediaTree();
+		$tree=$this->getMediaTree(True);
 
 		$props_content.='<br />' . _t('category') . ": 
 		<select name='pid'>
@@ -345,7 +346,7 @@ class ApfEditPage extends ApfManager implements iDocument {
 ?>
 		<input type="hidden" name="new" value="<?php echo($rv['new']); ?>" />
 		<input type="hidden" name="action" value="<?php echo($rv['action']); ?>" />
-		<input type="submit" name="go" value="<?php echo(_t('go')); ?>" />
+		<input type="submit" name="go" value="<?php echo(_t('go')); ?>" onclick='please_wait();' />
 		<input type="reset" value="<?php echo(_t('reset')); ?>" />
 		<input type='button' value='<?php echo(_t('return')); ?>' onclick='document.location="<?php
 			if($rv['id']==0) {
@@ -374,6 +375,12 @@ class ApfEditPage extends ApfManager implements iDocument {
 			document.f1.go.disabled=true;
 		}
 
+		function please_wait() {
+			var out=document.getElementById("info_msg");
+			disable_submit();
+			out.innerHTML="<?php echo(_t('PleaseWait') . "..."); ?>";
+		}
+
 		//Definir hooks del padre (started,aborted,finished)
 		function parent_callback(file,status,newname) {
 			//alert(file + " " + status + " " + newname);
@@ -388,37 +395,6 @@ class ApfEditPage extends ApfManager implements iDocument {
 		</script>
 
 <?php
-		return;
-
-			if($this->type==1) {
-?>
-
-<fieldset>
-<legend>Old shit (outdated)</legend>
-
-<?php
-				//Vídeo
-				echo(_t("properties") . ":<br>");
-				if(empty($this->prev)) {
-					$this->image=$this->buildBaseUri("imgs/videoimg.jpg");
-				} else {
-					$this->image=$this->buildBaseUri("cache/" . $this->prev);
-				}
-				echo('<img alt="blah" src="' . $this->image . '" border=0 width="160" height="120"><br>');
-				echo(_t("preview") . ": ");
-				echo('<input type="text" name="prev" value="' . $this->prev . '">
-				<INPUT type="checkbox" name="prev_auto" value="1"> 
-				' . _t("automatic") . '
-				<br>');
-				echo(_t("url") . ": ");
-				echo('<input type="text" name="url" value="' . $this->url . '"><br>');
-				echo(_t("lenght") . ": ");
-				echo('<input type="text" name="dur" value="' . $this->dur . '"><br>');
-				echo("</fieldset>");
-			}
-		?>
-		<?php
-	
 	}
 
 }
