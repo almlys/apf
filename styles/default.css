@@ -1,5 +1,6 @@
 body {
 	background-color:#E9FFD0;
+	/*background-color:black;*/
 }
 
 input {
@@ -47,8 +48,9 @@ textarea:hover {
 .header {
 	background-color: #FEFFCF;
 	color: inherit;
-	border-bottom: 4px Black;
+	border-bottom: 2px Black;
 	border-style: solid;
+	width: 100%;
 }
 
 .title {
@@ -70,20 +72,25 @@ textarea:hover {
 	font-weight:bold;
 	padding-left:10px;
 	padding-right:10px;
+	padding-bottom:1px;
+	padding-top:2px;
 }
 
 .language_selector a:hover {
 	color:Black;
-	background-color:White;
+	background-color:White;	
 }
 
 /*a:visited*/
 
 .doc_body {
 	/*background:#1050ff;*/
-	border-bottom: 4px Black;
-	border-right: 2px Black;
+	/*border-bottom: 2px Black;*/
+	/*border-right: 2px Black;*/
+	border-right: 2px #ecf7d7;
+	border-left: 2px #7ca7e7;
 	border-style: solid;
+	width:100%;
 }
 
 .menu {
@@ -91,12 +98,12 @@ textarea:hover {
 	color:inherit;
 	vertical-align: top;
 	height:100%;
-	/*width:100%;*/
-	/*padding-left:10px;
-	padding-right:10px;*/
-	border-width: 0px 5px 0px 2px ;
-	border-style: solid;
 	font-family: "Arial" , serif;
+	border-right: 2px #7f9ff7;
+	border-left: 0px;
+	border-top: 0px;
+	border-bottom: 0px;
+	border-style: solid;
 }
 
 .fmenu {
@@ -151,7 +158,8 @@ textarea:hover {
 	color: #705718; /*#9c6500;*/ /*#ff3300; */
 	background:inherit;
 	text-transform:capitalize;
-	letter-spacing:  2px;
+	letter-spacing:2px;
+	line-height:0px;
 }
 
 .document h2 {
@@ -169,6 +177,9 @@ textarea:hover {
 .fot {
 	background-color: #FEFFCF;
 	color:inherit;
+	border-top: 2px Black;
+	border-style: solid;
+	width:100%;
 }
 
 .debug {
@@ -322,3 +333,44 @@ textarea:hover {
 	color:Green;
 	font-weight:bolder;
 }
+
+.vlc_player {
+	background-color: Black;
+	/*width:100%;*/
+	text-align:center;
+	color:White;
+}
+
+.player_controls {
+	/*background-color:Red;*/
+	text-align:center;
+}
+
+.player_controls_table {
+	text-align:center;
+	vertical-align:middle;
+	
+}
+
+.button {
+	cursor: pointer;
+}
+
+.player_controls input, .player_controls select {
+	border-width:0px;
+	background-color:Black;
+	color:White;
+}
+
+.player_controls input:hover, .player_controls select:hover {
+	border-color:inherit;
+	border-width:0px;
+}
+
+.bar_drag {
+	/*position: absolute;*/
+	cursor: pointer;
+	position: relative;
+}
+
+

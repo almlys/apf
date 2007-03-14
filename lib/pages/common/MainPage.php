@@ -30,12 +30,12 @@ class ApfMainPage extends ApfManager implements iDocument {
 		echo('<table><tr><td>');
 		echo('<h2>' . _t('new_videos') . '</h2>');
 		echo('<div style="height:210px;overflow:hidden">');
-		$this->printNewMedia(4);
+		$this->printNewMedia(5);
 		echo('</div>');
 		echo('</td></tr><tr><td>');
 		echo('<h2>' . _t('most_viewed_videos') . '</h2>');
 		echo('<div style="height:210px;overflow:hidden">');
-		$this->printTopMedia(4);
+		$this->printTopMedia(5);
 		echo('</div>');
 		echo('</td></tr></table>');
 	}

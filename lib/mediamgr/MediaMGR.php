@@ -331,6 +331,7 @@ class MediaMGR {
 	/// Salva un video en la DB
 	/// @param rv array
 	function saveVideo($rv) {
+		global $APF;
 		$lan=ApfLocal::getDefaultLanguage();
 
 		$query="select ctg,url,prev from vid_mfs where id={$rv['id']};";

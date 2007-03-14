@@ -94,4 +94,6 @@ $APF_STRINGS['return']='Volver';
 $APF_STRINGS['delete_media']='Borrar recurso multimedia';
 $APF_STRINGS['missing_video']='No se ha subido ningún vídeo';
 $APF_STRINGS['NoMedia']='El catálogo esta vacio';
+$APF_STRINGS['default']='Por defecto';
+
 ?>

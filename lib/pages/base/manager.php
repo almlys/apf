@@ -67,7 +67,7 @@ class ApfManager extends ApfDocument implements iDocument {
 	function head() {
 		parent::head(); //Constructor de la clase base
 		?>
- <table border="0" width="97%" cellpadding="0" cellspacing="0" align="center" class="header">
+ <table border="0" cellpadding="0" cellspacing="0" align="center" class="header">
  <tr>
  <td>
   <!-- title/logo -->
@@ -122,7 +122,7 @@ class ApfManager extends ApfDocument implements iDocument {
 	/// Crea el menú de navegación
 	function menu() {
 		?>
-	<table border="0" width="97%" cellspacing="0" cellpadding="0" align="center" class="doc_body">
+	<table border="0" cellspacing="0" cellpadding="0" align="center" class="doc_body">
 		<tr>
 		<!-- Nav -->
 		<td class="menu" align="center" width="13%" valign="top">
@@ -142,11 +142,13 @@ class ApfManager extends ApfDocument implements iDocument {
 			} else {
 				$img='';
 			}
-			echo("<tr><td align=\"center\" nowrap='nowrap'>");
 			if($page==$me['page']) {
+				echo("<tr><td align=\"center\" nowrap='nowrap'>");
 				echo("<div class=\"selected\">$img<b>&gt;{$me['title']}&lt;</b></div>");
+				echo("</td></tr>");
 				$done=True;
 			} elseif(!$me['hidden']) {
+				echo("<tr><td align=\"center\" nowrap='nowrap'>");
 				if(empty($me['link'])) { //Link interno
 					if(!$me['redirect']) {
 						$str_id=$this->getArgs(array('page' => $me['page']),$mask);
@@ -157,8 +159,8 @@ class ApfManager extends ApfDocument implements iDocument {
 				} else { //Link externo
 					echo("<div class=\"unselected\"><a href=\"{$me['link']}\">$img{$me['title']}</a></div>");
 				}
+				echo("</td></tr>");
 			}
-			echo("</td></tr>");
 		}
 		if(!$done) {
 			$nampage=$page;
@@ -193,7 +195,7 @@ class ApfManager extends ApfDocument implements iDocument {
 	function foot() {
 		?>
  <!-- Footer -->
- <table border="0" width="97%" align="center" class="fot">
+ <table border="0" align="center" class="fot">
  <tr><td>
  <?php /*
   <!-- Second object -->
