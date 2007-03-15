@@ -25,5 +25,6 @@ for i in input_files:
     o=os.getcwd() + "/" + i
     f.write("new %s vod enabled\n" %i)
     f.write("setup %s input \"%s\"\n" %(i,o))
+    #f.write("setup %s mux mp2t\n\n" %(i,))
 
 f.close()

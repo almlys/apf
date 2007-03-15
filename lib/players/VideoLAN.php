@@ -165,9 +165,8 @@ class VideoLANPlayer implements iPlayer {
 			var pgbar_green = document.getElementById("pgbar_green");
 			var pgbar_drag = document.getElementById("pgbar_drag");
 			var mywidth=<?php echo($this->width); ?>;
-			pgbar_drag.style.width=(mywidth)+'px';
-			pgbar_green.style.width=0+'px';
-
+			
+			//vlc.width=100;
 
 			if(vlc==null) {
 				log_write("VideoLAN not found, or unsuported browser");
@@ -181,8 +180,14 @@ class VideoLANPlayer implements iPlayer {
 				log_write("VideoLAN version: " + version);
 				self.setTimeout("do_events()",1000);
 				volumeText.innerHTML = vlc.audio.volume/2+"%";
+				mywidth=player.clientWidth;
+				vlc.width=mywidth;
+				vlc.height=mywidth*100/221;
+				mywidth=mywidth-(mywidth*5/100);
 			}
 
+			pgbar_drag.style.width=(mywidth)+'px';
+			pgbar_green.style.width=0+'px';
 			var oldstate = 11;
 
 			function do_events() {
