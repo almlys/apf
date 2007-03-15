@@ -29,12 +29,14 @@ class VideoLANPlayer implements iPlayer {
 
 	function write() {
 		?>
+		<div class='error' id='vlc_error_msg'>
+		</div>
 		<div class='vlc_player' id='player'>
 		<object classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921'
 			codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab#Version=0,8,6,0'
 			width='<?php echo($this->width); ?>'
 			height='<?php echo($this->height); ?>'
-			id='vlc2'
+			id='vlc'
 			events='True'>
 		<param name='MRL' value='<?php echo($this->path); ?>' />
 		<param name='ShowDisplay' value='True' />
@@ -48,13 +50,12 @@ class VideoLANPlayer implements iPlayer {
 		<div id='embed_player'>
 		<embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org" 
 			version="VideoLAN.VLCPlugin.2"
-			name="video1"
+			name="vlc"
 			autoplay="true"
 			hidden="no"
 			loop="no"
 			width="<?php echo($this->width); ?>"
 			height="<?php echo($this->height); ?>"
-			id="vlc"
 			target="<?php echo($this->path); ?>" />
 		</div>
 		<div class='player_controls'>
@@ -67,7 +68,13 @@ class VideoLANPlayer implements iPlayer {
 		<br />*/ ?>
 		<table width='100%' border='0' cellpadding='0' cellspacing='0'>
 		<tr><td align='center'>
-		<img class='bar_drag' width='<?php echo($this->width); ?>' height='5' alt='Progress' src='<?php echo($this->parent->buildBaseUri('imgs/progress_point.png')); ?>' />
+		<div id='pgbar_drag' class='bar_drag'>
+<?php /*<img class='bar2_drag' width='<?php echo($this->width); ?>' height='1' alt='Progress' src='<?php echo($this->parent->buildBaseUri('imgs/progress_point_white.png')); ?>' /> */ ?>
+<?php /*
+<img class='bar2_drag' id='pbar_green' width='<?php echo($this->width); ?>' height='5' alt='Progress' src='<?php echo($this->parent->buildBaseUri('imgs/progress_point.png')); ?>' /> */ ?>
+<?php /* <img class='bar2_drag' width='<?php echo($this->width); ?>' height='1' alt='Progress' src='<?php echo($this->parent->buildBaseUri('imgs/progress_point_white.png')); ?>' /> */ ?>
+		<div id='pgbar_green' class='bar2_drag'></div>
+		</div>
 		</td></tr>
 		<tr><td align='center'>
 		<table class='player_controls_table' border='0' cellpadding='0' cellspacing='5'><tr><td>
@@ -110,7 +117,7 @@ class VideoLANPlayer implements iPlayer {
 		?>
 		</div>
 		<?php
-		if(0) {
+		if(1) {
 		?>
 		<div id="debug" style='visibility:hidden;height:0px'>
 		<?php
@@ -124,6 +131,7 @@ class VideoLANPlayer implements iPlayer {
 		</div>
 		<script type='text/javascript'>
 			//<![CDATA[
+			var errormsg = document.getElementById("vlc_error_msg");
 			var player=document.getElementById("player");
 			var embed_player=document.getElementById("embed_player");
 			function log_write(text) {
@@ -131,30 +139,50 @@ class VideoLANPlayer implements iPlayer {
 				out.innerHTML+=text+"<br />";
 			}
 			log_write("Initializing...");
+			var vlc=null;
 			try {
-				var vlc=document.getElementById("vlc");
+				if (window.document['vlc']) {
+					vlc=window.document['vlc'];
+				} else if(navigator.appName.indexOf("Microsoft Internet")==-1) {
+					if (document.embeds && document.embeds['vlc']) {
+						vlc=document.embeds['vlc'];
+					}
+				} else {
+					vlc=document.getElementById('vlc');
+				}
 			} catch(e) {
-				try {
-					var vlc=document.getElementById("vlc2");
-				} catch(e) {
-					var vlc=null;
-				}
+				vlc=null;
 			}
-			if(vlc==null) {
-				log_write("VideoLAN not found, or unsuported browser");
-			} else {
-				var version=vlc.VersionInfo;
-				log_write("VideoLAN version: " + version);
-				if (navigator.appName.indexOf("Microsoft Internet")!=-1) {
-					embed_player.innerHTML="Unsuported browner!!!";
-				}
+			try {
+				var vlc_version=vlc.versionInfo();
+			} catch(e) {
+				vlc=null;
 			}
 
 			var btnPlay = document.getElementById("play_button");
 			var volumeText = document.getElementById("volumeText");
 			var playstats = document.getElementById("playstats");
+			var pgbar_green = document.getElementById("pgbar_green");
+			var pgbar_drag = document.getElementById("pgbar_drag");
+			var mywidth=<?php echo($this->width); ?>;
+			pgbar_drag.style.width=(mywidth)+'px';
+			pgbar_green.style.width=0+'px';
 
-			volumeText.innerHTML = vlc.audio.volume/2+"%";
+
+			if(vlc==null) {
+				log_write("VideoLAN not found, or unsuported browser");
+				errormsg.innerHTML='<?php echo(_t('vlcNotFound')); ?>'
+				errormsg.innerHTML+='<br /><a href="<?php echo($this->path); ?>"><?php echo(_t('vlcManual')); ?></a>';
+			} else {
+				if (navigator.appName.indexOf("Microsoft Internet")!=-1) {
+					embed_player.innerHTML="Unsuported brownser!!!";
+				}
+				var version=vlc.VersionInfo;
+				log_write("VideoLAN version: " + version);
+				self.setTimeout("do_events()",1000);
+				volumeText.innerHTML = vlc.audio.volume/2+"%";
+			}
+
 			var oldstate = 11;
 
 			function do_events() {
@@ -251,6 +279,7 @@ class VideoLANPlayer implements iPlayer {
 			
 			function updateStats() {
 				playstats.innerHTML=formatTime(vlc.input.time)+"/"+formatTime(vlc.input.length);
+				pgbar_green.style.width=(vlc.input.position*pgbar_drag.clientWidth) + 'px';
 			}
 
 			/* Events */
@@ -271,9 +300,7 @@ class VideoLANPlayer implements iPlayer {
 				btnPlay.src='<?php echo($this->parent->buildBaseUri('imgs/play.png')); ?>';
 			}
 
-			self.setTimeout("do_events()",1000);
-
-			// Experimenta progress bar stuff
+			// Experimental progress bar stuff
 
 			var _startX = 0; // mouse starting positions
 			var _startY = 0;
@@ -302,13 +329,14 @@ class VideoLANPlayer implements iPlayer {
 				
 				// for IE, left click == 1 
 				// for Firefox, left click == 0
-				if ((e.button == 1 && window.event != null || e.button == 0) && target.className == 'bar_drag') {
+				if ((e.button == 1 && window.event != null || e.button == 0) && (target.className == 'bar_drag' || target.className == 'bar2_drag')) {
 					//log_write(e.clientX + " " + ExtractNumber(target.style.left));
 					//log_write(target.offsetLeft);
 					var pos = getPosition(target);
 					//log_write(e.clientX - pos.x);
-					//log_write(target.width);
-					var video_progress = (e.clientX - pos.x)/target.width;
+					//log_write(target.clientWidth);
+					//var video_progress = (e.clientX - pos.x)/target.clientWidth;
+					var video_progress = (e.clientX - pos.x)/pgbar_drag.clientWidth;
 					log_write(video_progress);
 					seek_video(video_progress);
 					/*

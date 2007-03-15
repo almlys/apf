@@ -4,7 +4,7 @@
 #  Copyright (c) 2005-2006 Alberto Montañola Lacort.
 #  Licensed under the GNU GPL. For full terms see the file COPYING.
 #
-#  Id: $Id: test.php 35 2006-05-23 13:37:00Z alberto $
+#  Id: $Id$
 #
 
 #Configuración

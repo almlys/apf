@@ -1,4 +1,44 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-14 23:31  alberto
+
+	* [r114] imgs/folder.png, lib/lan/strings.es.php,
+	  lib/mediamgr/MediaMGR.php, lib/pages/base/manager.php,
+	  lib/pages/common/MainPage.php, lib/pages/common/VideoPage.php,
+	  lib/players/VideoLAN.php, lib/widgets/button.php,
+	  styles/default.css: Some work was done with the player
+
+2007-03-13 13:28  alberto
+
+	* [r113] lib/players/VideLAN.php, lib/players/VideoLAN.php: kk
+
+2007-03-13 13:28  alberto
+
+	* [r112] cgi-bin/upload.py, lib/lan/strings.es.php,
+	  lib/mediamgr/MediaMGR.php, lib/net/simpletcpclient.php,
+	  lib/pages/base/manager.php, lib/pages/common/EditPage.php,
+	  lib/pages/common/VideoPage.php, lib/players,
+	  lib/players/VideLAN.php, lib/players/basePlayer.php,
+	  lib/vod/VideoLanVoDhandler.php, lib/vod/baseVoDhandler.php,
+	  lib/widgets/tree.php, vod_server/videolan/genserverconfig.py: kk
+
+2007-03-12 15:22  alberto
+
+	* [r111] DefaultConfig.php, lib/auth/AuthBase.php,
+	  lib/common/appcore.php, lib/common/exceptions.php,
+	  lib/common/gatebuilder.php, lib/common/util.php,
+	  lib/lan/strings.es.php, lib/mediamgr/MediaMGR.php,
+	  lib/net/simpletcpclient.php, lib/pages/common/EditPage.php,
+	  lib/pages/common/MediaPage.php, lib/pages/simple/UploadPage.php,
+	  lib/pages/simple/rpcserver.php, lib/vod/VideoLanTelnetClient.php,
+	  lib/vod/VideoLanVoDhandler.php, lib/vod/baseVoDhandler.php,
+	  lib/widgets/folder.php, lib/widgets/upload.php:
+	  Previsualizaciones implementadas
+
+2007-03-11 19:16  alberto
+
+	* [r110] ChangeLog, countLines.sh, lib/pages/base/BaseDocument.php,
+	  lib/pages/common/VideoPage.php: some work was done
+
 2007-03-08 22:50  alberto
 
 	* [r109] lib/vod/baseVoDhandler.php: i:wq

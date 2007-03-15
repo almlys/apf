@@ -95,5 +95,6 @@ $APF_STRINGS['delete_media']='Borrar recurso multimedia';
 $APF_STRINGS['missing_video']='No se ha subido ningún vídeo';
 $APF_STRINGS['NoMedia']='El catálogo esta vacio';
 $APF_STRINGS['default']='Por defecto';
-
+$APF_STRINGS['vlcNotFound']='No he encontrado <a href="http://www.videolan.org">VideoLAN</a>, o tu navegador no esta soportado!';
+$APF_STRINGS['vlcManual']='Lanzar VideoLAN de forma externa';
 ?>
