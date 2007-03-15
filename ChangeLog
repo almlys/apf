@@ -1,4 +1,21 @@
 Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-15 02:41  alberto
+
+	* [r117] README: touch README
+
+2007-03-15 02:39  alberto
+
+	* [r116] tables.sql: Añadido fichero de tablas sql
+
+2007-03-15 02:35  alberto
+
+	* [r115] ChangeLog, cgi-bin/upload.py, encode.sh,
+	  imgs/fullscreen.png, imgs/pause.png, imgs/play.png,
+	  imgs/progress_point_white.png, imgs/stop.png, imgs/volume.png,
+	  imgs/volumedown.png, imgs/volumeup.png, index.php,
+	  lib/lan/strings.es.php, lib/players/VideoLAN.php,
+	  styles/default.css: Release Candidate 2
+
 2007-03-14 23:31  alberto
 
 	* [r114] imgs/folder.png, lib/lan/strings.es.php,
