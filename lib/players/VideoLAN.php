@@ -37,16 +37,29 @@ class VideoLANPlayer implements iPlayer {
 			width='<?php echo($this->width); ?>'
 			height='<?php echo($this->height); ?>'
 			id='vlc'
-			events='True'>
-		<param name='MRL' value='<?php echo($this->path); ?>' />
-		<param name='ShowDisplay' value='True' />
-		<param name="AutoLoop" value="False" />
-		<param name="AutoPlay" value="True" />
-		<param name="Volume" value="50" />
-		<param name="StartTime" value="0" />
-		<param name="ShowControls" value="True"  />
-		<param name="type" value="application/x-vlc-plugin" />
+			<?php /* events='True' */ ?>>
+			<param name='MRL' value='<?php echo($this->path); ?>' />
+			<param name='ShowDisplay' value='True' />
+			<param name="AutoLoop" value="False" />
+			<param name="AutoPlay" value="True" />
+			<param name="Volume" value="50" />
+			<param name="StartTime" value="0" />
+			<param name="ShowControls" value="True"  />
 		</object>
+		<div id='embed_player'>
+		<object type='application/x-vlc-plugin'
+			width='<?php echo($this->width); ?>'
+			height='<?php echo($this->height); ?>'
+			id='vlc2' >
+			<param name='pluginspage' value='http://www.videolan.org' />
+			<param name='version' value='VideoLAN.VLCPlugin.2' />
+			<param name='autoplay' value='true' />
+			<param name='hidden' value='no' />
+			<param name='loop' value='no' />
+			<param name='target' value='<?php echo($this->path); ?>' />
+		</object>
+		</div>
+		<?php /*
 		<div id='embed_player'>
 		<embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org" 
 			version="VideoLAN.VLCPlugin.2"
@@ -57,7 +70,7 @@ class VideoLANPlayer implements iPlayer {
 			width="<?php echo($this->width); ?>"
 			height="<?php echo($this->height); ?>"
 			target="<?php echo($this->path); ?>" />
-		</div>
+		</div>*/ ?>
 		<div class='player_controls'>
 		<!-- Controls -->
 		<?php /*<a href="javascript:;" onclick="vlc.playlist.play()">Play RTSP</a>
@@ -135,11 +148,14 @@ class VideoLANPlayer implements iPlayer {
 			var player=document.getElementById("player");
 			var embed_player=document.getElementById("embed_player");
 			function log_write(text) {
+				return;
 				var out=document.getElementById("debug");
 				out.innerHTML+=text+"<br />";
 			}
 			log_write("Initializing...");
 			var vlc=null;
+
+			/*
 			try {
 				if (window.document['vlc']) {
 					vlc=window.document['vlc'];
@@ -158,6 +174,24 @@ class VideoLANPlayer implements iPlayer {
 			} catch(e) {
 				vlc=null;
 			}
+			vlc=null;
+			*/
+
+			if (navigator.appName.indexOf("Microsoft Internet")!=-1) {
+				embed_player.innerHTML="";
+			}
+
+			try {
+				vlc=document.getElementById('vlc');
+				var vlc_version=vlc.versionInfo();
+			} catch(e) {
+				try {
+					vlc=document.getElementById('vlc2');
+					var vlc_version=vlc.versionInfo();
+				} catch(e) {
+					vlc=null;
+				}
+			}
 
 			var btnPlay = document.getElementById("play_button");
 			var volumeText = document.getElementById("volumeText");
@@ -170,12 +204,9 @@ class VideoLANPlayer implements iPlayer {
 
 			if(vlc==null) {
 				log_write("VideoLAN not found, or unsuported browser");
-				errormsg.innerHTML='<?php echo(_t('vlcNotFound')); ?>'
-				errormsg.innerHTML+='<br /><a href="<?php echo($this->path); ?>"><?php echo(_t('vlcManual')); ?></a>';
+				errormsg.innerHTML='<?php echo(str_replace('</',"' + '<' + '/' + '",_t('vlcNotFound'))); ?>';
+				errormsg.innerHTML+='<br /><a href="<?php echo($this->path); ?>"><?php echo(_t('vlcManual')); ?><' + '/' + 'a>';
 			} else {
-				if (navigator.appName.indexOf("Microsoft Internet")!=-1) {
-					embed_player.innerHTML="Unsuported brownser!!!";
-				}
 				var version=vlc.VersionInfo;
 				log_write("VideoLAN version: " + version);
 				self.setTimeout("do_events()",1000);
