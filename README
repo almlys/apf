@@ -18,7 +18,6 @@ README
 * Desenpaquetar, e instalar la distribución dentro de un directorio del arbol utilizado por el servidor web. (Pore ejemplo /var/www/apf)
 * Configurar el servidor web, e instal·lar cualquier dependencia necesaria para que pueda funcionar la aplicación.
 * El directorio cgi-bin de la destribución, debe ser configurado en el servidor de forma que se ejeucten los scripts que este contiene.
-* Crear las tablas necesarias a partir del fichero tables.sql
 
 ** Configuración **
 ===================
