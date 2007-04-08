@@ -1,0 +1,666 @@
+Este fichero has sido automáticamente generado a partir de svn2cl
+2007-03-15 02:41  alberto
+
+	* [r117] README: touch README
+
+2007-03-15 02:39  alberto
+
+	* [r116] tables.sql: Añadido fichero de tablas sql
+
+2007-03-15 02:35  alberto
+
+	* [r115] ChangeLog, cgi-bin/upload.py, encode.sh,
+	  imgs/fullscreen.png, imgs/pause.png, imgs/play.png,
+	  imgs/progress_point_white.png, imgs/stop.png, imgs/volume.png,
+	  imgs/volumedown.png, imgs/volumeup.png, index.php,
+	  lib/lan/strings.es.php, lib/players/VideoLAN.php,
+	  styles/default.css: Release Candidate 2
+
+2007-03-14 23:31  alberto
+
+	* [r114] imgs/folder.png, lib/lan/strings.es.php,
+	  lib/mediamgr/MediaMGR.php, lib/pages/base/manager.php,
+	  lib/pages/common/MainPage.php, lib/pages/common/VideoPage.php,
+	  lib/players/VideoLAN.php, lib/widgets/button.php,
+	  styles/default.css: Some work was done with the player
+
+2007-03-13 13:28  alberto
+
+	* [r113] lib/players/VideLAN.php, lib/players/VideoLAN.php: kk
+
+2007-03-13 13:28  alberto
+
+	* [r112] cgi-bin/upload.py, lib/lan/strings.es.php,
+	  lib/mediamgr/MediaMGR.php, lib/net/simpletcpclient.php,
+	  lib/pages/base/manager.php, lib/pages/common/EditPage.php,
+	  lib/pages/common/VideoPage.php, lib/players,
+	  lib/players/VideLAN.php, lib/players/basePlayer.php,
+	  lib/vod/VideoLanVoDhandler.php, lib/vod/baseVoDhandler.php,
+	  lib/widgets/tree.php, vod_server/videolan/genserverconfig.py: kk
+
+2007-03-12 15:22  alberto
+
+	* [r111] DefaultConfig.php, lib/auth/AuthBase.php,
+	  lib/common/appcore.php, lib/common/exceptions.php,
+	  lib/common/gatebuilder.php, lib/common/util.php,
+	  lib/lan/strings.es.php, lib/mediamgr/MediaMGR.php,
+	  lib/net/simpletcpclient.php, lib/pages/common/EditPage.php,
+	  lib/pages/common/MediaPage.php, lib/pages/simple/UploadPage.php,
+	  lib/pages/simple/rpcserver.php, lib/vod/VideoLanTelnetClient.php,
+	  lib/vod/VideoLanVoDhandler.php, lib/vod/baseVoDhandler.php,
+	  lib/widgets/folder.php, lib/widgets/upload.php:
+	  Previsualizaciones implementadas
+
+2007-03-11 19:16  alberto
+
+	* [r110] ChangeLog, countLines.sh, lib/pages/base/BaseDocument.php,
+	  lib/pages/common/VideoPage.php: some work was done
+
+2007-03-08 22:50  alberto
+
+	* [r109] lib/vod/baseVoDhandler.php: i:wq
+
+2007-03-08 16:07  alberto
+
+	* [r108] ChangeLog, lib/net, lib/net/simpletcpclient.php,
+	  lib/vod/VideoLanTelnetClient.php, lib/vod/VideoLanVoDhandler.php,
+	  lib/vod/baseVoDhandler.php: videolan telnet client implemented
+
+2007-03-08 12:29  alberto
+
+	* [r107] ChangeLog, DefaultConfig.php, lib/mediamgr/MediaMGR.php,
+	  lib/pages/base/BaseDocument.php, lib/pages/base/simplepage.php,
+	  lib/pages/common/EditPage.php, lib/pages/simple/rpcserver.php,
+	  lib/vod/VideoLanVoDhandler.php, lib/vod/baseVoDhandler.php,
+	  styles/default.css, vod_server/videolan/genserverconfig.py,
+	  vod_server/videolan/videolanserver.sh: almost almost finished
+
+2007-03-07 18:16  alberto
+
+	* [r106] ChangeLog: almost finished
+
+2007-03-07 15:23  alberto
+
+	* [r105] ChangeLog, lib/db/MySQL.php, lib/lan/strings.es.php,
+	  lib/mediamgr/MediaMGR.php, lib/pages/common/EditPage.php,
+	  lib/pages/common/VideoPage.php, styles/default.css: almost
+	  finished
+
+2007-03-07 07:50  alberto
+
+	* [r104] ChangeLog, lib/common/exceptions.php, lib/common/util.php,
+	  lib/lan/strings.es.php, lib/pages/simple/UploadPage.php,
+	  lib/pages/simple/rpcserver.php, lib/vod/HttpVoDhandler.php,
+	  lib/vod/VideoLanVoDhandler.php, lib/vod/baseVoDhandler.php,
+	  test/test.php: video upload
+
+2007-03-06 14:24  alberto
+
+	* [r103] ChangeLog, DefaultConfig.php, cgi-bin/upload.py,
+	  lib/common/util.php, lib/pages/base/manager.php,
+	  lib/pages/simple/UploadPage.php, lib/pages/simple/rpcserver.php,
+	  lib/vod/HttpVoDhandler.php, lib/vod/VideoLanVoDhandler.php,
+	  lib/vod/baseVoDhandler.php, test/test.php: updates
+
+2007-03-06 08:52  alberto
+
+	* [r102] ChangeLog, DefaultConfig.php, lib/lan/strings.es.php,
+	  lib/pages/simple/FileSystemRPC.php,
+	  lib/pages/simple/UploadPage.php, lib/widgets/ajax.php,
+	  lib/widgets/filesystem.php, lib/widgets/notebook.php,
+	  lib/widgets/upload.php, styles/default.css, test/test.php:
+	  updates
+
+2007-03-06 02:28  alberto
+
+	* [r101] ChangeLog, lib/widgets/filesystem.php,
+	  test/ajaxclient.php, test/uploadfile.php, tmp: tmp removed
+
+2007-03-06 02:25  alberto
+
+	* [r100] ChangeLog, DefaultConfig.php, cgi-bin/upload.py,
+	  lib/pages/simple/UploadPage.php, lib/pages/simple/rpcserver.php,
+	  lib/widgets/upload.php, test/test.php, test/test_upload.php,
+	  upload: upload page updated
+
+2007-03-06 00:33  alberto
+
+	* [r99] ChangeLog, cgi-bin/upload.py, lib/lan/strings.es.php,
+	  lib/pages/base/Document.php, lib/pages/base/manager.php,
+	  lib/pages/simple/UploadPage.php, lib/pages/simple/rpcserver.php:
+	  upload page updated
+
+2007-03-05 03:44  alberto
+
+	* [r98] ChangeLog, DefaultConfig.php, cgi-bin/upload.py,
+	  imgs/videoclap.png, lib/lan/strings.es.php,
+	  lib/pages/base/BaseDocument.php, lib/pages/base/Document.php,
+	  lib/pages/base/simplepage.php, lib/pages/simple/UploadPage.php,
+	  lib/pages/simple/rpcserver.php, lib/vod/HttpVoDhandler.php,
+	  lib/vod/VideoLanVoDhandler.php, lib/vod/VoDFactory.php,
+	  lib/vod/baseVoDhandler.php, lib/widgets/ajax.php, tmp/ajax.php,
+	  tmp/ajaxrpc.php: upload page updated
+
+2007-03-05 00:44  alberto
+
+	* [r97] ChangeLog, DefaultConfig.php, lib/common/appcore.php,
+	  lib/pages/simple, lib/pages/simple/UploadPage.php,
+	  lib/widgets/upload.php, test/test_upload.php, tmp/upload.php:
+	  upload page updated
+
+2007-03-05 00:21  alberto
+
+	* [r96] ChangeLog, lib/pages/common/EditPage.php,
+	  lib/pages/common/VideoPage.php, lib/widgets/notebook.php,
+	  lib/widgets/tree.php, styles/default.css, test/test.php: edit
+	  page updated
+
+2007-03-04 19:51  alberto
+
+	* [r95] ChangeLog, lib/mediamgr/MediaMGR.php,
+	  lib/pages/base/Document.php, lib/pages/common/EditPage.php,
+	  lib/pages/common/LoginPage.php: video page updated
+
+2007-03-04 14:22  alberto
+
+	* [r94] ChangeLog, lib/mediamgr/MediaMGR.php,
+	  lib/pages/base/manager.php, lib/pages/common/MediaPage.php,
+	  lib/pages/common/VideoPage.php: video page updated
+
+2007-03-03 01:49  alberto
+
+	* [r93] ChangeLog, imgs/folder.png, imgs/video_big.png: two missing
+	  images added
+
+2007-03-03 01:48  alberto
+
+	* [r92] ChangeLog, lib/lan/strings.es.php,
+	  lib/mediamgr/MediaMGR.php, lib/pages/base/Document.php,
+	  lib/pages/base/manager.php, lib/pages/common/MainPage.php,
+	  lib/pages/common/MediaPage.php, lib/widgets/folder.php,
+	  lib/widgets/tree.php, styles/default.css: media page done
+
+2007-03-02 21:51  alberto
+
+	* [r91] ChangeLog, lib/mediamgr/MediaMGR.php,
+	  lib/pages/base/Document.php, lib/pages/base/manager.php,
+	  lib/pages/common/MainPage.php, lib/pages/common/MediaPage.php:
+	  wip
+
+2007-03-02 19:18  alberto
+
+	* [r90] lib/mediamgr, lib/mediamgr/MediaMGR.php: added media
+	  manager
+
+2007-03-02 19:13  alberto
+
+	* [r89] lib/pages/base/Document.php,
+	  lib/pages/common/MediaPage.php: kk
+
+2007-03-02 18:56  alberto
+
+	* [r88] ChangeLog, DefaultConfig.php, lib/auth/AuthBase.php,
+	  lib/lan/strings.es.php, lib/pages/base/manager.php,
+	  lib/pages/common/LoginPage.php: Chap auth finished
+
+2007-03-02 16:24  alberto
+
+	* [r87] ChangeLog, DefaultConfig.php, imgs/home.png,
+	  lib/auth/AuthBase.php, lib/pages/base/Document.php,
+	  lib/pages/base/manager.php, lib/pages/common/LoginPage.php,
+	  lib/pages/common/MainPage.php, lib/pages/common/MediaPage.php:
+	  Plain Auth finished, tested and submitted
+
+2007-03-01 03:22  alberto
+
+	* [r86] styles/fonts.txt: kk
+
+2007-03-01 03:21  alberto
+
+	* [r85] imgs/config.png, imgs/login.png, imgs/logout.png,
+	  imgs/video.png, lib/pages/base/BaseDocument.php,
+	  lib/pages/base/Document.php, lib/pages/base/manager.php,
+	  styles/default.css: wip
+
+2007-02-19 15:27  alberto
+
+	* [r84] ChangeLog, lib/common/appcore.php, lib/lan/strings.es.php,
+	  lib/pages/base/BaseDocument.php, lib/pages/base/Document.php,
+	  lib/pages/base/manager.php, lib/pages/base/simplepage.php,
+	  lib/pages/common/MainPage.php: more code
+
+2007-02-19 13:39  alberto
+
+	* [r83] ChangeLog, DefaultConfig.php, lib/auth/SimpleAuth.php,
+	  lib/common/util.php, lib/db/MySQL.php,
+	  lib/pages/base/BaseDocument.php, lib/pages/base/Document.php,
+	  lib/pages/base/manager.php, lib/pages/common/MainPage.php: Base
+	  document changes
+
+2007-02-18 16:58  alberto
+
+	* [r82] lib/pages/base/BaseDocument.php, lib/pages/base/main.php,
+	  lib/pages/common/EditPage.php: ren basedocument
+
+2007-02-18 16:41  alberto
+
+	* [r81] DefaultConfig.php, cgi-bin/upload.py, generatedocs.sh,
+	  lib/auth/SimpleAuth.php, lib/common/util.php,
+	  lib/lan/strings.ca.php, lib/lan/strings.es.php,
+	  lib/lan/strings.php, lib/pages/base/manager.php,
+	  lib/pages/common/AdminPage.php, lib/pages/common/EditPage.php,
+	  lib/pages/common/LoginPage.php, lib/pages/common/MainPage.php,
+	  lib/pages/common/MediaPage.php, lib/pages/common/VideoPage.php,
+	  lib/vod/HttpVoDhandler.php, lib/vod/VideoLanVoDhandler.php,
+	  lib/vod/baseVoDhandler.php, lib/widgets/folder.php,
+	  lib/widgets/layer.php, test/test.php, utf2latin.sh: Gendocs and
+	  final utf-8 conversion
+
+2007-02-17 16:58  alberto
+
+	* [r80] ChangeLog, latin2utf.sh, lib/common/tree.php,
+	  lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/pages/base/main.php,
+	  lib/pages/base/manager.php, lib/pages/common/MediaPage.php,
+	  lib/widgets/tree.php: vale
+
+2007-02-17 16:26  alberto
+
+	* [r79] lib/pages/base/simplepage.php, tmp/simplepage.php: wip
+
+2007-02-17 16:26  alberto
+
+	* [r78] AUTHORS, Doxyfile, tmp/simplepage.php, vod_server,
+	  vod_server/videolan: wip
+
+2007-02-17 16:19  alberto
+
+	* [r77] tmp/ajax.php, tmp/ajaxclient.php, tmp/ajaxrpc.php,
+	  tmp/filesystem.php, tmp/iframe.php, tmp/simplepage.php,
+	  tmp/upload.php, tmp/uploadfile.php: latin1 to utf-8 conversion of
+	  some files
+
+2007-02-17 16:01  alberto
+
+	* [r76] ChangeLog, ajax.php, ajaxclient.php, ajaxrpc.php,
+	  filesystem.php, iframe.php, info.php, simplepage.php, test,
+	  test.php, test/info.php, test/test.php, tmp, tmp/ajax.php,
+	  tmp/ajaxclient.php, tmp/ajaxrpc.php, tmp/filesystem.php,
+	  tmp/iframe.php, tmp/simplepage.php, tmp/upload.php,
+	  tmp/uploadfile.php, upload.php, uploadfile.php: Final de la
+	  reorganización
+
+2007-02-17 15:58  alberto
+
+	* [r75] ChangeLog, ajaxclient.php, js/ajax.js, updateChangeLog.sh:
+	  some missing files
+
+2007-02-17 15:53  alberto
+
+	* [r74] ChangeLog, DefaultConfig.php, lib/auth/AuthBase.php,
+	  lib/common/appcore.php, lib/common/tree.php, lib/common/util.php,
+	  lib/lan/strings.php, lib/pages/base/main.php,
+	  lib/pages/common/AdminPage.php, lib/pages/common/EditPage.php,
+	  lib/pages/common/LoginPage.php, lib/pages/common/MainPage.php,
+	  lib/pages/common/MediaPage.php, lib/pages/common/VideoPage.php:
+	  Algunos cambios de estructura
+
+2007-02-17 13:02  alberto
+
+	* [r73] HttpVoDhandler.php, VideoLanVoDhandler.php,
+	  baseVoDhandler.php, lib/vod, lib/vod/HttpVoDhandler.php,
+	  lib/vod/VideoLanVoDhandler.php, lib/vod/baseVoDhandler.php: dir
+	  changes
+
+2007-02-17 13:00  alberto
+
+	* [r72] lib/pages/common, lib/pages/vod: dir changes
+
+2007-02-17 13:00  alberto
+
+	* [r71] lib/pages/AdminPage.php, lib/pages/EditPage.php,
+	  lib/pages/LoginPage.php, lib/pages/MainPage.php,
+	  lib/pages/MediaPage.php, lib/pages/VideoPage.php, lib/pages/base,
+	  lib/pages/base/main.php, lib/pages/base/manager.php,
+	  lib/pages/main.php, lib/pages/manager.php, lib/pages/vod,
+	  lib/pages/vod/AdminPage.php, lib/pages/vod/EditPage.php,
+	  lib/pages/vod/LoginPage.php, lib/pages/vod/MainPage.php,
+	  lib/pages/vod/MediaPage.php, lib/pages/vod/VideoPage.php: dir
+	  changes
+
+2007-02-17 12:58  alberto
+
+	* [r70] ChangeLog, index.php, lib/appcore.php,
+	  lib/common/appcore.php, lib/common/exceptions.php,
+	  lib/common/tree.php, lib/common/util.php, lib/exceptions.php,
+	  lib/log/logger.php, lib/main.php, lib/pages/MediaPage.php,
+	  lib/pages/main.php, lib/pages/manager.php, lib/template.php,
+	  lib/templates, lib/templates/template.php, lib/util.php,
+	  lib/widgets/tree.php: ok
+
+2007-02-17 12:40  alberto
+
+	* [r69] ChangeLog, lib/common, lib/db/MySQL.php, lib/db/dbBase.php,
+	  lib/folder.php, lib/layer.php, lib/main.php,
+	  lib/pages/manager.php, lib/tree.php, lib/widgets/folder.php,
+	  lib/widgets/layer.php, lib/widgets/tree.php: Changes
+
+2007-02-17 02:58  alberto
+
+	* [r68] DefaultConfig.php, appcore.php, index.php, lib/appcore.php,
+	  lib/auth.php, lib/auth/AuthBase.php, lib/auth/SimpleAuth.php,
+	  lib/authbase.php, lib/db/MySQL.php, lib/exceptions.php,
+	  lib/folder.php, lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/lan/strings.php, lib/main.php,
+	  lib/pages/AdminPage.php, lib/pages/LoginPage.php,
+	  lib/pages/MainPage.php, lib/pages/MediaPage.php,
+	  lib/pages/VideoPage.php, lib/pages/manager.php: Today's work
+
+2007-02-16 20:11  alberto
+
+	* [r67] DefaultConfig.php, Doxyfile, lib/db/MySQL.php,
+	  lib/db/dbBase.php, lib/exceptions.php: Db update
+
+2007-02-16 15:32  alberto
+
+	* [r66] lib/MySQL.php, lib/db/MySQL.php: Database changes
+
+2007-02-16 15:32  alberto
+
+	* [r65] lib/MySQL.php, lib/db/bd.php: Database changes
+
+2007-02-16 15:31  alberto
+
+	* [r64] ChangeLog, DefaultConfig.php, lib/bd.php, lib/db/bd.php,
+	  lib/db/dbBase.php: Database changes
+
+2007-02-16 15:23  alberto
+
+	* [r63] AUTHORS, ChangeLog, TODO: rm ToDo add Authors file
+
+2007-02-16 15:20  alberto
+
+	* [r62] ChangeLog, appcore.php, countLines.sh, index.php,
+	  updateChangeLog.sh: Renamed index to appcore, added simple index
+
+2007-02-16 14:34  alberto
+
+	* [r61] ChangeLog: Changelog updated
+
+2007-02-16 14:04  alberto
+
+	* [r60] index.php, log/.htaccess: Done
+
+2007-02-16 03:25  alberto
+
+	* [r59] DefaultConfig.php, index.php, lib/exceptions.php, lib/log,
+	  lib/log/logger.php, lib/util.php, log: some work
+
+2007-02-16 02:34  alberto
+
+	* [r58] DefaultConfig.php, adminpage.php, editpage.php, index.php,
+	  lib/pages/AdminPage.php, lib/pages/EditPage.php,
+	  lib/pages/LoginPage.php, lib/pages/VideoPage.php, loginpage.php,
+	  videopage.php: some changes
+
+2007-02-16 02:23  alberto
+
+	* [r57] lib/pages/MediaPage.php, lib/pages/mediapage.php: some
+	  changes
+
+2007-02-16 02:23  alberto
+
+	* [r56] DefaultConfig.php, index.php, lib/auth, lib/db,
+	  lib/exceptions.php, lib/pages, lib/pages/MainPage.php,
+	  lib/pages/manager.php, lib/pages/mediapage.php, lib/widgets,
+	  mainpage.php, manager.php, mediapage.php: some changes
+
+2007-02-16 01:52  alberto
+
+	* [r55] DefaultConfig.php, index.php, lib/exceptions.php,
+	  lib/template.php: ok2
+
+2007-02-15 19:43  alberto
+
+	* [r54] Doxyfile, videopage.php: ok2
+
+2006-10-02 10:45  alberto
+
+	* [r49] ., .cvsignore: svn:ignore updated
+
+2006-10-02 10:44  alberto
+
+	* [r48] ., .cvsignore, TODO: svn:ignore updated
+
+2006-10-02 10:41  alberto
+
+	* [r47] LocalConfig.php: Don't worry this password is not going to
+	  work anywhere
+
+2006-10-02 10:41  alberto
+
+	* [r46] LocalConfig.php: wtf
+
+2006-09-27 14:46  alberto
+
+	* [r45] manager.php, styles/default.css: Layout fix
+
+2006-08-29 11:25  alberto
+
+	* [r44] cgi-bin/upload.py, upload.php: wip
+
+2006-06-16 14:05  alberto
+
+	* [r43] cgi-bin/upload.py, lib/main.php, test.php, upload.php: WIP
+
+2006-05-31 17:01  alberto
+
+	* [r42] ajaxrpc.php, editpage.php, lib/lan/strings.ca.php,
+	  lib/lan/strings.en.php, lib/lan/strings.es.php, lib/main.php,
+	  upload.php: WIP
+
+2006-05-30 10:56  alberto
+
+	* [r41] imgs/progress_point.png: Added progress point (for the
+	  progress bar)
+
+2006-05-30 10:55  alberto
+
+	* [r40] DefaultConfig.php, cgi-bin/upload.py, upload.php: Work In
+	  Progress
+
+2006-05-25 15:14  alberto
+
+	* [r39] DefaultConfig.php, HttpVoDhandler.php,
+	  VideoLanVoDhandler.php, ajax.php, ajaxrpc.php,
+	  baseVoDhandler.php, cgi-bin/upload.py, lib/auth.php,
+	  lib/authbase.php, lib/bd.php, lib/main.php, upload.php,
+	  uploadfile.php: Blah
+
+2006-05-24 14:08  alberto
+
+	* [r38] DefaultConfig.php, HttpVoDhandler.php,
+	  VideoLanVoDhandler.php, ajax.php, ajaxrpc.php,
+	  baseVoDhandler.php, cgi-bin/upload.py, iframe.php, lib/auth.php,
+	  lib/main.php, loginpage.php, simplepage.php, test.php,
+	  upload.php, uploadfile.php: WIP
+
+2006-05-23 14:58  alberto
+
+	* [r37] HttpVoDhandler.php, VideoLanVoDhandler.php: WIP
+
+2006-05-23 14:55  alberto
+
+	* [r36] baseVoDhandler.php, cgi-bin, uploadfile.php: WIP
+
+2006-05-23 13:37  alberto
+
+	* [r35] iframe.php, test.php, upload.php: WIP
+
+2006-05-22 16:07  alberto
+
+	* [r34] filesystem.php, lib/layer.php, test.php: WIP
+
+2006-05-22 15:15  alberto
+
+	* [r33] lib/template.php: template keywords
+
+2006-05-22 15:14  alberto
+
+	* [r32] lib/template.php: add template
+
+2006-05-22 15:09  alberto
+
+	* [r31] Doxyfile, editpage.php, lib/bd.php, lib/lan/strings.ca.php,
+	  lib/lan/strings.en.php, lib/lan/strings.es.php, manager.php,
+	  mediapage.php: WIP
+
+2006-05-19 12:03  alberto
+
+	* [r30] Doxyfile: update doc file
+
+2006-05-18 16:30  alberto
+
+	* [r29] editpage.php: categorias finalmente portadas
+
+2006-05-18 15:11  alberto
+
+	* [r28] editpage.php, lib/main.php: categorias finalmente portadas
+
+2006-05-16 19:27  alberto
+
+	* [r27] DefaultConfig.php, lib/bd.php, lib/folder.php,
+	  lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/main.php, lib/tree.php, manager.php,
+	  mediapage.php, videopage.php: Cambios en la DB
+
+2006-05-16 01:49  alberto
+
+	* [r26] DefaultConfig.php, LocalConfig.php, lib/bd.php,
+	  lib/lan/strings.php, lib/main.php, lib/tree.php, mediapage.php:
+	  wip
+
+2006-05-15 23:30  alberto
+
+	* [r25] DefaultConfig.php, lib/lan/strings.ca.php,
+	  lib/lan/strings.es.php, lib/lan/strings.php, lib/main.php,
+	  manager.php, mediapage.php: Arregado bug de localización
+	  conversión a nuevo layout de la base de datos
+
+2006-05-15 16:11  alberto
+
+	* [r24] DefaultConfig.php, DefaultConfing.php: fix incorrect name
+
+2006-05-15 16:10  alberto
+
+	* [r23] DefaultConfing.php, LocalConfig.php, index.php: argh
+
+2006-05-15 15:07  alberto
+
+	* [r22] ChangeLog, updateChangeLog.sh: Añadido changelog
+
+2006-05-15 15:02  alberto
+
+	* [r21] DefaultConfing.php, defaultconfig.php: mv
+
+2006-05-15 15:01  alberto
+
+	* [r20] LocalConfig.php, defaultconfig.php, localconfig.php: wip2
+
+2006-05-15 13:17  alberto
+
+	* [r19] info.php, videopage.php: no much stuff was done :(
+
+2006-03-16 15:04  alberto
+
+	* [r18] lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/lan/strings.php: Arreglo de
+	  properties
+
+2006-03-08 16:53  alberto
+
+	* [r17] defaultconfig.php, lib/lan/strings.ca.php,
+	  lib/lan/strings.en.php, lib/lan/strings.es.php, lib/main.php,
+	  loginpage.php, rmbackups.sh, styles/default.css: wip
+
+2006-03-08 15:26  alberto
+
+	* [r16] config.php, localconfig.php: cp config.php
+
+2006-02-10 16:09  alberto
+
+	* [r15] adminpage.php, config.php, editpage.php, index.php,
+	  info.php, lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
+	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php, videopage.php: id?
+
+2006-02-10 16:05  alberto
+
+	* [r14] adminpage.php, config.php, editpage.php, index.php,
+	  info.php, lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
+	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php, videopage.php: propdel
+
+2006-02-10 15:55  alberto
+
+	* [r13] adminpage.php, config.php, editpage.php, index.php,
+	  info.php, lib/auth.php, lib/bd.php, lib/folder.php, lib/main.php,
+	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php, videopage.php: propdel
+
+2006-02-10 15:54  alberto
+
+	* [r12] config.php: WIP
+
+2006-02-06 16:53  alberto
+
+	* [r11] config.php, js, js/md5.js, lib/auth.php: javascript md5
+	  function
+
+2006-01-31 17:59  alberto
+
+	* [r10] adminpage.php, config.php, editpage.php, index.php,
+	  info.php, lib/auth.php, lib/bd.php, lib/folder.php,
+	  lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/lan/strings.php, lib/main.php,
+	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php, videopage.php: Propiedades?
+
+2006-01-31 17:57  alberto
+
+	* [r9] adminpage.php, config.php, editpage.php, index.php,
+	  info.php, lib/auth.php, lib/bd.php, lib/folder.php,
+	  lib/lan/strings.ca.php, lib/lan/strings.en.php,
+	  lib/lan/strings.es.php, lib/lan/strings.php, lib/main.php,
+	  lib/tree.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php, videopage.php: Documentación y etiquetas SVN
+
+2006-01-31 15:50  alberto
+
+	* [r8] ., .cvsignore, Doxyfile, adminpage.php, config.php,
+	  editpage.php, loginpage.php, mainpage.php, manager.php,
+	  mediapage.php: Documentación
+
+2006-01-26 16:43  alberto
+
+	* [r7] Doxyfile, adminpage.php, config.php, editpage.php, imgs,
+	  imgs/folder.jpg, imgs/valid-html401.gif, imgs/vcss,
+	  imgs/videoimg.jpg, index.php, info.php, lib, lib/auth.php,
+	  lib/bd.php, lib/folder.php, lib/lan, lib/lan/strings.ca.php,
+	  lib/lan/strings.en.php, lib/lan/strings.es.php,
+	  lib/lan/strings.php, lib/main.php, lib/tree.php, loginpage.php,
+	  mainpage.php, manager.php, mediapage.php, styles,
+	  styles/default.css, videopage.php: Revision inicial
+
+2006-01-26 16:32  alberto
+
+	* [r6] ., .cvsignore: rebuilding...
+
+2006-01-26 15:58  alberto
+
+	* [r5] LICENSE: added the license
+
+2006-01-26 15:52  alberto
+
+	* [r4] apf, apf/branches, apf/tags, .: skeleton
+
