@@ -3,4 +3,33 @@ README
 = Gestor de Contenidos =
 ========================
 
-Aquí irán las instrucciones de instalación.
+** Requisitos **
+================
+* Sistema operativo Linux o compatible. (Debian Etch o superior recomendado)
+* Servidor web Apache o compatible. (Apache 2.2 o superior recomendado)
+* PHP 5
+* Python 2.4 o superior (activado en el servidor web)
+* Servidor VideoLAN
+* Herramientas FFMPeg en el path, para la generación de previsualizaciones.
+* Servidor MySQL 4 o superior.
+
+** Instalación **
+=================
+* Desenpaquetar, e instalar la distribución dentro de un directorio del arbol utilizado por el servidor web. (Pore ejemplo /var/www/apf)
+* Configurar el servidor web, e instal·lar cualquier dependencia necesaria para que pueda funcionar la aplicación.
+* El directorio cgi-bin de la destribución, debe ser configurado en el servidor de forma que se ejeucten los scripts que este contiene.
+
+** Configuración **
+===================
+* Copiar el fichero DefaultConfig.php como LocalConfig.php, i modificarlo para que se ajuste a nuestras necesidades.
+* Modificar la configuración de el fichero cgi-bin/upload.py, i modificar las rutas a las que queramos usar, que deben coincidir con las rutas definidas en DefaultConfig.php
+
+** Problemas/Errores/Etc **
+===========================
+* Abrir un ticket en https://apf.almlys.org/trac
+* Ultimas versiones disponibles desde el repositorio https://apf.almlys.org/svn, y via web en http://apf.almlys.org
+
+** E-Mail **
+============
+<almlys+apf AT almlys DOT org>
+
